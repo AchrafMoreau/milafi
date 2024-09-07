@@ -51,13 +51,13 @@
         const form = event.target;
         const name = form.elements['name'].value;
         const gender = form.elements['gender'].value;
-        const contact = form.elements['contact'].value;
+        const contact_info = form.elements['contact_info'].value;
         const CIN = form.elements['CIN'].value;
         const address = form.elements['address'].value;
         $.ajax({
             url: url, 
             method: method,
-            data: {name, gender, contact, CIN, address},
+            data: {name, gender, contact_info, CIN, address},
             constactType: 'application/json',
             headers:{
                 'X-CSRF-TOKEN': token

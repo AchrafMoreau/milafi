@@ -1,6 +1,5 @@
 <?php
 return [
-    
     'joinDate' => 'تاريخ الانضمام',
     'yesDoIt' => 'نعم أنا متأكد',
     'Low' => 'غير هامة',
@@ -90,7 +89,7 @@ return [
     'signInWith' => 'تسجيل الدخول مع',
     'signIn' => 'تسجيل الدخول',
     'rememberMe' => 'تذكرنى',
-    'signInToContinueToVelzon' => 'تسجيل الدخول للمتابعة إلى Cms',
+    'signInToContinueToVelzon' => 'تسجيل الدخول للاستمرار',
     'welcomeBack' => 'مرحبًا بعودتك',
     'password' => 'كلمة المرور',
     'welcomeMessage' => ' لوحة التحكم والإدارة المتميز',

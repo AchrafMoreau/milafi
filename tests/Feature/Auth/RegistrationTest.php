@@ -12,7 +12,14 @@ test('new users can register', function () {
         'email' => 'test@example.com',
         'password' => 'password',
         'password_confirmation' => 'password',
+        'role' => 'Admin',
+        'city' => 'Agadir',
+        'gender' => 'Male',
+        'arabName' => "اشرف",
+        'arabCity' => 'كلميم',
     ]);
+
+    // dd($response);
 
     $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));

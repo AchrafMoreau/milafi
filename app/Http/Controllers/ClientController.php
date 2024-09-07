@@ -41,10 +41,10 @@ class ClientController extends Controller
             'name' => ['required', 'max:255'],
             'contact_info' => 'string',
             'gender' => 'string',
-            'CIN' => ['string', 'unique:clients']
+            'CIN' => ['required','string', 'unique:clients']
         ]);
 
-
+        // dd($request);
 
         // this code should be on the blade  for case selected the new client ----------------------------------------
         // @if($clientSelected)
@@ -55,16 +55,18 @@ class ClientController extends Controller
         $cl = Client::create([
             'name' => $request->name,
             'avatar' => $request->avatar,
-            'contact_info' => $request->contact,
+            'contact_info' => $request->contact_info,
             'address' => $request->address,
             'gender' => $request->gender,
             'CIN' => $request->CIN
         ]);
+
+        // dd($cl);
         $notification = array(
             'message' => 'Client Created successfully!',
             'alert-type' => 'success'
         );
-        return response()->json($notification);
+        return response()->json($notification, 201);
         // return response()->json(['success'=> "Client Created Successfully"]);
     }
 
@@ -96,7 +98,7 @@ class ClientController extends Controller
         $oldClient = Client::find($client);
         $request->validate([
             'name' => ['required', 'max:255'],
-            'contact' => 'string',
+            'contact_info' => 'string',
             'gender' => 'string',
             'CIN' => [
                 'required', 
@@ -109,7 +111,7 @@ class ClientController extends Controller
         $oldClient->name = $request->input('name');
         $oldClient->address = $request->input('address');
         $oldClient->gender = $request->input('gender');
-        $oldClient->contact_info = $request->input('contact');
+        $oldClient->contact_info = $request->input('contact_info');
         $oldClient->CIN = $request->input('CIN');
 
         $oldClient->save();
@@ -119,7 +121,7 @@ class ClientController extends Controller
             'message' => 'Client Updated successfully!',
             'alert-type' => 'success'
         );
-        return response()->json($notification);
+        return response()->json($notification, 200);
     }
 
     /**
@@ -133,7 +135,7 @@ class ClientController extends Controller
         ]);
 
         Client::destroy($req->input('ids'));
-        return response()->json(['success', "Many Clients Deleted Successfully"]);
+        return response()->json(['success', "Many Clients Deleted Successfully"], 200);
     }
     public function destroy(Client $client)
     {
@@ -145,6 +147,6 @@ class ClientController extends Controller
             'alert-type' => 'success'
         );
         // return response()->json($notification);
-        return redirect('/client')->with($notification);
+        return redirect()->back()->with($notification);
     }
 }

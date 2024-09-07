@@ -45,13 +45,13 @@
                             </div><!--end col-->
                             <div class="col-xxl-6">
                                 <label for="CIN" class="form-label">@lang('translation.CIN')</label>
-                                <input type="text" value="{{ old('CIN') }}" required class="form-control " name='CIN' id="contact_info" placeholder="@lang('translation.enterCIN')">
+                                <input type="text" value="{{ old('CIN') }}" required class="form-control " name='CIN' id="CIN" placeholder="@lang('translation.enterCIN')">
                                     <span class="invalid-feedback" role="alert">
                                     </span>
                             </div><!--end col-->
                             <div class="col-xxl-6">
-                                <label for="contact" class="form-label">@lang('translation.contact')</label>
-                                <input type="text" value="{{ old('contact') }}" required class="form-control "  name='contact' id="contact" placeholder="@lang('translation.enterContact')">
+                                <label for="contact_info" class="form-label">@lang('translation.contact')</label>
+                                <input type="text" value="{{ old('contact') }}" required class="form-control "  name='contact_info' id="contact_info" placeholder="@lang('translation.enterContact')">
                                     <span class="invalid-feedback" role="alert">
                                     </span>
                             </div><!--end col-->

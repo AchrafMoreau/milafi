@@ -25,6 +25,7 @@ class CasController extends Controller
         // $cases = Cas::with(['client','court','judege'])->Paginate(10);
         $cases = Cas::with(['client', 'court', 'judge'])->orderBy('created_at', "DESC")->paginate(10);
 
+
         return view('dashboard-cases', ['cas' => $cases]);
     }
     /**
