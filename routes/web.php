@@ -37,6 +37,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('roo
 Route::middleware(['auth', 'clearNotification'])->group(function () {
     //  client routes for user / lawyer
     Route::get('/client', [ClientController::class, 'index']);
+    Route::get('/clientJson', [ClientController::class, 'getAll']);
     Route::get("/client/{client}", [ClientController::class, 'show']);
     Route::post('/store-client', [ClientController::class, 'store'])->name('store-client');
     Route::delete("/client/{client}", [ClientController::class, 'destroy']);
