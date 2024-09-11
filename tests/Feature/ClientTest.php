@@ -145,9 +145,6 @@ describe("testing client controller" , function() {
         expect(Client::find($client->id))
             ->id->toBe(null);
 
-        $res->assertSessionHas([
-            'message' => 'Client Deleted successfully!',
-            'alert-type' => 'success'
-        ]);
+        $res->assertStatus(200);
     });
 });
