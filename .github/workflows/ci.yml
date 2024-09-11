@@ -1,4 +1,4 @@
-name: Laravel CI
+name: CI
 
 on:
   push:
@@ -54,8 +54,19 @@ jobs:
 
       - name: Run migrations
         run: php artisan migrate --force
+      
+      - name: Set up node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: Build assest
+        run: npm run build
 
       - name: Run tests
-        run : |
+        run: |
           php artisan config:clear
           php artisan test
