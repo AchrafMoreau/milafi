@@ -10,7 +10,6 @@ test('email verification screen can be rendered', function () {
 
     $response = $this->actingAs($user)->get('/verify-email');
 
-    dump($response->status());
 
     $response->assertStatus(200);
 });
@@ -27,7 +26,6 @@ test('email can be verified', function () {
     );
 
     $response = $this->actingAs($user)->get($verificationUrl);
-    dump($response->status());
 
     Event::assertDispatched(Verified::class);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
@@ -42,7 +40,6 @@ test('email is not verified with invalid hash', function () {
         now()->addMinutes(60),
         ['id' => $user->id, 'hash' => sha1('wrong-email')]
     );
-    dump($response->status());
 
     $this->actingAs($user)->get($verificationUrl);
 

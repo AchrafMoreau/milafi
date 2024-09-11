@@ -145,6 +145,6 @@ describe("testing client controller" , function() {
         expect(Client::find($client->id))
             ->id->toBe(null);
 
-        $res->assertStatus(200);
+        $res->assertStatus(302);
     });
 });
