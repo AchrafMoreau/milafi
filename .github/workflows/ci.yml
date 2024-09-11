@@ -1,9 +1,12 @@
 name: CI
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
-    branches: [main]
-
+    branches:
+      - main
 
 jobs:
   laravel-tests:
@@ -16,35 +19,41 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: laravel_test
         ports:
-          - 3306: 3306
+          - 3306:3306
         options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: mbstring, intl, pdo, pdo_mysql, bcmath
-        coverage: none
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, bcmath, pdo, mysqli, dom, xml
+          coverage: none
 
-    - name: Install Composer dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Copy .env file
-      run: cp .env.example .env
+      - name: Copy .env file
+        run: cp .env.example .env
 
-    - name: Generate application key
-      run: php artisan key:generate
+      - name: Generate application key
+        run: php artisan key:generate
 
-    - name: Create testing database
-      run: |
-        php artisan config:cache
-        php artisan migrate --force --env=testing
+      - name: Configure database
+        run: |
+          php artisan config:clear
+          sed -i 's/DB_CONNECTION=mysql/DB_CONNECTION=mysql/g' .env
+          sed -i 's/DB_HOST=127.0.0.1/DB_HOST=127.0.0.1/g' .env
+          sed -i 's/DB_PORT=3306/DB_PORT=3306/g' .env
+          sed -i 's/DB_DATABASE=laravel/DB_DATABASE=laravel_test/g' .env
+          sed -i 's/DB_USERNAME=root/DB_USERNAME=root/g' .env
+          sed -i 's/DB_PASSWORD=/DB_PASSWORD=root/g' .env
 
-    - name: Run tests
-      run: |
-        php artisan config:clear
-        php artisan test
+      - name: Run migrations
+        run: php artisan migrate --force
+
+      - name: Run tests
+        run: php artisan test
