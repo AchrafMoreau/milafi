@@ -52,4 +52,6 @@ jobs:
         php artisan migrate --force --env=testing
 
     - name: Run tests
-      run: php artisan test
+      run: |
+        php artisan config:clear
+        php artisan test
