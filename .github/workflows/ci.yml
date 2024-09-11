@@ -70,3 +70,4 @@ jobs:
         run: |
           php artisan config:clear
           php artisan test
+

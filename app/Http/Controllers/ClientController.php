@@ -22,6 +22,12 @@ class ClientController extends Controller
         // return response()->json($clients);
     }
 
+    public function getAll()
+    {
+        $clients = Client::with('cas')->get();
+        return response()->json($clients, 200);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -64,7 +70,8 @@ class ClientController extends Controller
         // dd($cl);
         $notification = array(
             'message' => 'Client Created successfully!',
-            'alert-type' => 'success'
+            'alert-type' => 'success',
+            'data' => $cl
         );
         return response()->json($notification, 201);
         // return response()->json(['success'=> "Client Created Successfully"]);
@@ -119,7 +126,8 @@ class ClientController extends Controller
         // return response()->json(["message" => 'Client Was Updated Successfully']);
         $notification = array(
             'message' => 'Client Updated successfully!',
-            'alert-type' => 'success'
+            'alert-type' => 'success',
+            'data' => $oldClient
         );
         return response()->json($notification, 200);
     }
@@ -135,7 +143,11 @@ class ClientController extends Controller
         ]);
 
         Client::destroy($req->input('ids'));
-        return response()->json(['success', "Many Clients Deleted Successfully"], 200);
+        $notification = array(
+            'message' => 'Many Client Deleted successfully!',
+            'alert-type' => 'success'
+        );
+        return response()->json($notification, 200);
     }
     public function destroy(Client $client)
     {
@@ -147,6 +159,6 @@ class ClientController extends Controller
             'alert-type' => 'success'
         );
         // return response()->json($notification);
-        return redirect()->back()->with($notification);
+        return response()->json($notification, 200);
     }
 }
