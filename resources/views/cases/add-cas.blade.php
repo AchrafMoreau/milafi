@@ -270,7 +270,7 @@
                                 </span>
                             </div><!--end col-->
                             <div class="col-xxl-6">
-                                <label for="CIN" class="form-label">CIN</label>
+                                <label for="CIN" class="form-label">@lang('translation.CIN')</label>
                                 <input type="text" value="{{ old('CIN') }}" required class="form-control " name='CIN' id="contact_info" placeholder="Enter CIN">
                                     <span class="invalid-feedback" role="alert">
                                     </span>

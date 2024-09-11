@@ -37,15 +37,15 @@ class DatabaseSeeder extends Seeder
         Todo::factory(10)->create();
         Contact::factory(10)->create();
         
-        // DB::table('users')->insert([
-        //     'name'=> "Achraf",
-        //     'password'=> Hash::make('0210moreau'),
-        //     'email' => 'achraf@gmail.com',
-        //     'role' => 'Admin',
-        //     'city' => 'Agadir',
-        //     'name_in_arab' => 'اشرف',
-        //     'city_in_arab' => 'كلميم',
-        //     'gender' => "Male",
-        // ]);
+        DB::table('users')->insert([
+            'name'=> "Achraf",
+            'password'=> Hash::make('0210moreau'),
+            'email' => 'achraf@gmail.com',
+            'role' => 'Admin',
+            'city' => 'Agadir',
+            'name_in_arab' => 'اشرف',
+            'city_in_arab' => 'كلميم',
+            'gender' => "Male",
+        ]);
     }
 }
