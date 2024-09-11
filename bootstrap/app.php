@@ -23,7 +23,6 @@ return Application::configure(basePath: dirname(__DIR__))
             // \App\Http\Middleware\Authenticate::class,
             // \App\Http\Middleware\Localization::class,
         ]);
-        $middleware->appendToGroup('web', \App\Http\Middleware\Localization::class);
         $middleware->validateCsrfTokens(
             except: []
         );
