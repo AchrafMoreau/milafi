@@ -159,6 +159,7 @@ class ClientController extends Controller
             'alert-type' => 'success'
         );
         // return response()->json($notification);
-        return response()->json($notification);
+
+        return redirect()->back()->with($notification, 200);
     }
 }
