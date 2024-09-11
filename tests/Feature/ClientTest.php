@@ -146,5 +146,6 @@ describe("testing client controller" , function() {
             ->id->toBe(null);
 
         $res->assertStatus(200);
+
     });
 });
