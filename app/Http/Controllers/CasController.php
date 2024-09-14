@@ -28,6 +28,13 @@ class CasController extends Controller
 
         return view('dashboard-cases', ['cas' => $cases]);
     }
+
+    public function getAll()
+    {
+        $cases = Cas::with(['client', 'court', 'judge'])->get();
+        return response()->json($cases, 200);
+
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -46,6 +53,7 @@ class CasController extends Controller
     public function store(Request $req)
     {
         //
+        
         // dd($req->date && $req->desc && $req->invoice && $req->fee);
         $cas = Cas::create([
             'user_id' => Auth::user()->id,
@@ -63,11 +71,12 @@ class CasController extends Controller
             'status' => 'Open',
         ]);
 
-         if($req->date && $req->desc && $req->invoice && $req->fee){
+         if($req->date && $req->procedure && $req->invoice && $req->fee && $req->time){
             Procedure::create([
                 'cas_id' => $cas->id,
+                'time' => $req->time,
                 'date' => $req->date,
-                'procedure' => $req->desc,
+                'procedure' => $req->procedure,
                 'invoice' => $req->invoice,
                 'fee' => $req->fee
             ]);
@@ -90,6 +99,7 @@ class CasController extends Controller
         $clients = Client::All();
         $docs = Document::where('cas_id', $case)->first();
         $ca = Cas::with(['client', 'court', 'judge', 'document'])->find($case);
+        // return response()->json($ca);
         return view('cases.show-cas', ['case' => $ca]);
     }
 
@@ -145,11 +155,8 @@ class CasController extends Controller
             'message' => 'Case Updated successfully!',
             'alert-type' => 'success'
         );
-        return redirect('/cas')->with($notification)->withHeaders([
-            'Cache-Control' => 'no-cache, no-store, max-age=0, must-revalidate',
-            'Pragma' => 'no-cache',
-            'Expires' => 'Sun, 02 Jan 1990 00:00:00 GMT',
-        ]);
+        return redirect()->back()->with($notification);
+       
     }
 
     /**
@@ -157,6 +164,9 @@ class CasController extends Controller
      */
     public function destroyMany(Request $req){
         
+
+
+        // dd($req);
         $req->validate([
             'ids' => 'required|array',
         ]);
@@ -168,7 +178,7 @@ class CasController extends Controller
             'message' => 'Many Cases Deleted Successfully',
             'alert-type' => 'success'
         );
-        return redirect('/cas')->with($notification);
+        return response()->json($notification);
     }
     public function destroy($id)
     {
@@ -179,12 +189,8 @@ class CasController extends Controller
             'message' => 'Case Deleted Successfully',
             'alert-type' => 'success'
         );
-        return redirect()->back()->with($notification)->withHeaders([
-            'Cache-Control' => 'no-cache, no-store, max-age=0, must-revalidate',
-            'Pragma' => 'no-cache',
-            'Expires' => 'Sun, 02 Jan 1990 00:00:00 GMT',
-        ]);
-;
+
+        return response()->json($notification, 200);
     }
 
     public function ChanageStatus(Request $req, $id)
@@ -198,11 +204,6 @@ class CasController extends Controller
             'alert-type' => 'success',
             'status' => $cas->status
         );
-        return response()->json($notification)->withHeaders([
-            'Cache-Control' => 'no-cache, no-store, max-age=0, must-revalidate',
-            'Pragma' => 'no-cache',
-            'Expires' => 'Sun, 02 Jan 1990 00:00:00 GMT',
-        ]);
-
+        return response()->json($notification, 200);
     }
 }

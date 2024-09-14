@@ -33,6 +33,7 @@ class ProcedureController extends Controller
         // dd($request);
         $request->validate([
             'date' => ['required'],
+            'time' => ['required'],
             'procedure' => ['required', 'string'],
             'fee' => ['required'],
             'invoice' => ['required'],
@@ -41,6 +42,7 @@ class ProcedureController extends Controller
         $proc = Procedure::create([
             'date' => $request->date,
             'procedure' => $request->procedure,
+            'time' => $request->time,
             'fee' => $request->fee,
             'invoice' => $request->invoice,
             'cas_id' => $id

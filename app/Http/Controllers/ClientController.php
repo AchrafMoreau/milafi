@@ -57,6 +57,7 @@ class ClientController extends Controller
         //     <option selected value="{{ $clientSelected->id }}">{{ $clientSelected->name }}</option>
         // @endif 
         // this code should be on the blade ----------------------------------------
+        // dd($request);
 
         $cl = Client::create([
             'name' => $request->name,

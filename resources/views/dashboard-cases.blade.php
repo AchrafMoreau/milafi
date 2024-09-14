@@ -22,27 +22,24 @@
         <div class="listjs-table" id="customerList">
             <div class="row g-4 mb-3">
                 <div class="col-sm-auto">
-                    <div class="col-sm">
-                        <div class="d-flex justify-content-sm-end">
-                            <div class="search-box ms-2">
-                                <input type="text" class="form-control search" placeholder="Search...">
-                                <i class="ri-search-line search-icon"></i>
-                            </div>
+                    <div class="d-flex justify-content-sm-end">
+                        <div class="search-box ms-2">
+                            <input type="text" class="form-control search" placeholder="Search...">
+                            <i class="ri-search-line search-icon"></i>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm">
-                    <div class="d-flex gap-3 justify-content-end">
-                        <a href="{{ url('/case-add') }} " class='text-white'>
-                            <button type="button" class="btn btn-primary">
+                    <div class='d-flex gap-2 justify-content-sm-end'>
+                        <button class="btn btn-soft-danger " onClick="deleteMultiple()"><i
+                                class="ri-delete-bin-2-line"></i></button>
+                        <a href="{{ url('/case-add') }}">
+                        <button type="button" class="btn btn-primary add-btn" >
                                 <i class="fa-solid fa-folder-plus"></i>
                                     @lang('translation.addcase')
                             </button>
                         </a>
-                        <!-- <button class="btn btn-soft-danger" type='button' onClick="deleteMultiple('case')"><i
-                                class="ri-delete-bin-2-line"></i></button> -->
                     </div>
-
                 </div>
             </div>
 
@@ -50,98 +47,73 @@
                 <table class="table align-middle table-hover" id="customerTable">
                     <thead class="table-light">
                         <tr class= 'text-center' >
-                            <!-- <th scope="col" style="width: 50px;">
+                            <th scope="col" style="width: 50px;">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="checkAll"
                                         value="option">
                                 </div>
-                            </th> -->
-                            <th class="sort text-black px-2 m-0" data-sort="id">S.N</th>
-                            <th  class="sort" data-sort="client_name">@lang('translation.caseTitle')</th>
-                            <th  class='sort' data-sort="contact">@lang('translation.client')</th>
-                            <th class=" px-3" data-sort="gender">@lang('translation.court')</th>
-                            <th class='address'>@lang('translation.judge')</th>
+                            </th>
+                            <td class="id" style="display:none;"><a href="javascript:void(0);" class="fw-medium link-primary">test</a></td>
+                            <th class="sort text-black px-2 m-0" data-sort="serial_number">S.N</th>
+                            <th  class="sort" data-sort="name">@lang('translation.caseTitle')</th>
+                            <th  class='sort' data-sort="client">@lang('translation.client')</th>
+                            <th class=" px-3" data-sort="court">@lang('translation.court')</th>
+                            <th class='judge'>@lang('translation.judge')</th>
                             <th class="sort" data-sort="status">@lang('translation.status')</th>
-                            <th >@lang('translation.action')</th>
+                            <th>@lang('translation.action')</th>
                         </tr>
                     </thead>
                     <tbody class="list form-check-all">
-                            @foreach($cas as $case)
-                            <tr >
+                            <tr class='parent'>
                                  
-                                <!-- <th scope="row">
+                                <th scope="row" >
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="chk_child"
                                             value="option1">
                                     </div>
-                                </th> -->
-
-                                <td class="id">{{ $case->serial_number }}</td>
-                                <td class="client_name word-wrap">{{ $case->title_file }}</td>
-                                <td class="gender">{{ $case->client['name'] }}</td>
-                                <td class="address text-wrap">{{ $case->court['name'] }} </td>
-                                <td class="cases">{{ $case->judge['name'] }}</td>
+                                </th>
+    
+                                <td class="id" style='display:none;'  ><a href="javascript:void(0);"
+                                        class="fw-medium link-primary">test</a></td>
+                                <td class="serial_number" >......</td>
+                                <td class="name"><span class='test'></span>......</td>
+                                <td class="client word-wrap">......</td>
+                                <td class="court text-wrap">......</td>
+                                <td class="judge">......</td>
                                 <!-- Dropdown Variant -->
-                                <td class="status">
-                                    <button type="button" data-bs-toggle="dropdown" id='st{{$case->id}}' aria-haspopup="true" aria-expanded="false" class="btn btn-sm dropdown-toggle {{ $case->status == 'Open' ? 'bg-success-subtle text-success' : ($case->status == 'Closed' ? 'bg-danger-subtle text-danger' : 'bg-primary-subtle text-primary') }} " >@lang('translation.' . $case->status)
+                                <td class="status" >
+                                    <button type="button" data-bs-toggle="dropdown" id='st2' aria-haspopup="true" aria-expanded="false" class="btn btn-sm dropdown-toggle bg-success-subtle text-success" >@lang('translation.Open')
                                     </button>
                                     <div class="dropdown-menu cursor-pointer">
-                                        <a class="dropdown-item" onclick="handleStatusChange('Pending', {{ $case->id}})">@lang('translation.Pending')</a>
-                                        <a class="dropdown-item" onclick="handleStatusChange('Closed', {{ $case->id}})">@lang('translation.Closed')</a>
-                                        <a class="dropdown-item" onclick="handleStatusChange('Open', {{ $case->id}})">@lang('translation.Open')</a>
+                                        <a class="dropdown-item" onclick="handleStatusChange('Pending', 2)">@lang('translation.Pending')</a>
+                                        <a class="dropdown-item" onclick="handleStatusChange('Closed', 2)">@lang('translation.Closed')</a>
+                                        <a class="dropdown-item" onclick="handleStatusChange('Open', 2)">@lang('translation.Open')</a>
                                     </div>
-                                </td><!-- /btn-group -->
-                                <!-- <td class="status"><span
-                                    class="badge {{ $case->status == 'Open' ? 'bg-success-subtle text-success' : ($case->status == 'Closed' ? 'bg-danger-subtle text-danger' : 'bg-primary-subtle text-primary') }} text-uppercase" >{{ $case->status }}</span>
-                                </td> -->
-                                <td>
+                                </td>
+                               <td >
                                     <div class="d-flex gap-2">
                                     
-                                        <div class="edite">
-                                            <a href="{{ url('/case-edit/'.$case->id) }}">
-                                                <button class='btn btn-sm btn-success'>
-                                                    <i class="ri-pencil-fill align-bottom"></i>
-                                                </button>
-                                            </a>
+                                        <div class="edit">
+                                            <button class='btn btn-sm btn-success'>
+                                                <i class="ri-pencil-fill align-bottom"></i>
+                                            </button>
                                         </div>
                                         <div class="view">
-                                            <a href="{{ url('cas/'.$case->id) }}">
-                                                <button class="btn btn-sm btn-primary">
-                                                    <i class='ri-eye-fill align-middle'></i>
-                                                </button>
-                                            </a>
+                                            <button class="btn btn-sm btn-primary" >
+                                                <i class='ri-eye-fill align-middle'></i>
+                                            </button>
                                         </div>
                                         <div class="remove">
-                                            <button type="button" id='{{ $case->id }}' class="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#modal-{{$case->id}}" >
+                                            <button class="btn btn-sm btn-danger remove-item-btn"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteRecordModal">
                                                 <i class="ri-delete-bin-5-fill align-bottom"></i>
                                             </button>
-                                            <div class="modal fade bs-example-modal-center" id="modal-{{$case->id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-body text-center p-5">
-                                                            <lord-icon src="https://cdn.lordicon.com/hrqwmuhr.json"
-                                                                trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:120px;height:120px">
-                                                            </lord-icon>
-                                                            <div class="mt-4">
-                                                                <h4 class="mb-3">@lang('translation.deleteMessage') @lang('translation.client') !</h4>
-                                                                <p class="text-muted mb-4 text-wrap">@lang('translation.deleteConfirmation').</p>
-                                                                <form action="{{ url('/case-delete/'.$case->id) }}" method='POST'  class="hstack gap-2 justify-content-center">
-                                                                    @csrf
-                                                                    @method("DELETE")
-                                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
-                                                                    <button type='submit' class='btn btn-danger'>@lang('translation.yes')</button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div><!-- /.modal-content -->
-                                                </div><!-- /.modal-dialog -->
-                                            </div>
                                         </div>
                                         
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
                     </tbody>
                 </table>
                 <div class="noresult" style="display: none">
@@ -149,20 +121,52 @@
                         <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
                             colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
                         </lord-icon>
-                        <h5 class="mt-2">Sorry! No Result Found</h5>
-                        <p class="text-muted mb-0">We've searched more than 150+ Orders We did not find any
-                            orders for you search.</p>
+                        <h5 class="mt-2">@lang('translation.NoResultWasFound')</h5>
+                        <p class="text-muted mb-0">@lang('translation.searchNotFound')</p>
                     </div>
                 </div>
             </div>
 
             <div class="d-flex justify-content-end">
-                <div class="pagination-wrap hstack gap-2 d-flex flex-column">
-                            {{ $cas->links('pagination::bootstrap-5') }}
+                <div class="d-flex justify-content-end">
+                    <div class="pagination-wrap hstack gap-2">
+                        <a class="page-item pagination-prev disabled" href="javascript:void(0);">
+                            Previous
+                        </a>
+                        <ul class="pagination listjs-pagination mb-0"></ul>
+                        <a class="page-item pagination-next" href="javascript:void(0);">
+                            Next
+                        </a>
+                    </div>
                 </div>
             </div>
+            <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                id="btn-close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mt-2 text-center">
+                                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                                    colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                    <h4>@lang('translation.deleteMessage') @lang('translation.case')</h4>
+                                    <p class="text-muted mx-4 mb-0">@lang('translation.deleteConfirmation')</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                                <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
+                                <button type="button" class="btn w-sm btn-danger " id="delete-record">@lang('translation.yes')</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>       
         </div>
     </div><!-- end card -->
+
 </div>
 
   
@@ -170,13 +174,20 @@
 <!-- end table responsive -->
 @endsection
 @section('script')
+    <script>
+        window.translations = {
+            open: "{{ __('translation.Open') }}",
+            closed: "{{ __('translation.Closed') }}",
+            pending: "{{ __('translation.Pending') }}"
+        }
+    </script>
     <script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>
     <script src="{{ URL::asset('build/libs/list.js/list.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/list.pagination.js/list.pagination.min.js') }}"></script>
 
 
     <!-- listjs init -->
-    <script src="{{ URL::asset('build/js/pages/listjs.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/pages/CaseList.init.js') }}"></script>
 
     <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
@@ -197,7 +208,7 @@
                     'X-CSRF-TOKEN': token
                 },
                 success: (res) => {
-                    let btn = $(`#st${id}`);
+                    let btn = $(`#${id}`);
                     btn.removeClass()
                     if(res.status == 'Open'){
                         btn.addClass('btn btn-sm dropdown-toggle bg-success-subtle text-success ');
@@ -210,14 +221,11 @@
                         btn.text(translations.pending)
                     }
 
-                    console.log(res.message)
-
                     toastr[res['alert-type']](res.message)
 
                 },
                 error: (xhr,status, error) => console.log(error)
             })
-            console.log(e, id)
         }
         // const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const handleCase = (id)=>{

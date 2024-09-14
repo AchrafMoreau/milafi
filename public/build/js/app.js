@@ -1406,6 +1406,7 @@ File: Main Js File
 						break;
 				}
 
+				console.log(isLayoutAttributes["data-bs-theme"])
 				switch (isLayoutAttributes["data-bs-theme"]) {
 					case "light":
 						getElementUsingTagname("data-bs-theme", "light");
@@ -1938,6 +1939,7 @@ File: Main Js File
 	function initModeSetting() {
 		var html = document.getElementsByTagName("HTML")[0];
 		var lightDarkBtn = document.querySelectorAll(".light-dark-mode");
+		console.log(lightDarkBtn)
 		if (lightDarkBtn && lightDarkBtn.length) {
 			lightDarkBtn[0].addEventListener("click", function (event) {
 				html.hasAttribute("data-bs-theme") && html.getAttribute("data-bs-theme") == "dark" ?

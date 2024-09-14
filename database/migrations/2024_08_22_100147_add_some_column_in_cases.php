@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('cas', function (Blueprint $table) {
             //
-            $table->integer('report_number')->nullable();
-            $table->integer('execution_number')->nullable();
+            $table->string('report_number')->nullable();
+            $table->string('execution_number')->nullable();
             $table->string('report_file')->nullable();
             $table->string('execution_file')->nullable();
             $table->string('opponent')->nullable();

@@ -239,17 +239,19 @@
             <div class="card px-3 table-responsive mt-2">
                 <table class="table align-middle">
                     <thead>
-                        <th>@lang('translation.date')</th>
-                        <th>@lang('translation.invoices')</th>
-                        <th>@lang('translation.fees')</th>
+                        <th class='text-center'>@lang('translation.date')</th>
+                        <th class='text-center'>@lang('translation.time')</th>
+                        <th class='text-center'>@lang('translation.invoices')</th>
+                        <th class='text-center'>@lang('translation.fees')</th>
                         <th>@lang('translation.procedure')</th>
                     </thead>
                     <tbody>
                         @foreach($case->procedure as $proc)
                             <tr>
-                                <td class='px-3 text-nowrap'>{{ $proc->date }}</td>
-                                <td class='text-nowrap'>{{ number_format($proc->invoice, 2) }} {{ "   " }} @lang('translation.currency')</td>
-                                <td class='text-nowrap'>{{ number_format($proc->fee, 2) }} {{ "   " }} @lang('translation.currency')</td>
+                                <td class='px-3 text-nowrap text-center'>{{ $proc->date }}</td>
+                                <td class='px-3 text-nowrap text-center'>{{ $proc->time }}</td>
+                                <td class='text-nowrap text-center'>{{ number_format($proc->invoice, 2) }} {{ "   " }} @lang('translation.currency')</td>
+                                <td class='text-nowrap text-center'>{{ number_format($proc->fee, 2) }} {{ "   " }} @lang('translation.currency')</td>
                                 <td class='word-wrap'>{{ $proc->procedure }}</td>
                             </tr>
                         @endforeach
@@ -279,11 +281,9 @@
                     <table class="table align-middle table-nowrap" id="customerTable" id='myTable'>
                         <thead class="table-light">
                             <tr class= 'text-center' >
-                                <th class="sort text-black px-2 m-0" data-sort="id">Id</th>
-                                <th class="sort" data-sort="client_name">@lang('translation.fileName')</th>
-                                <th  data-sort="contact">@lang('translation.case')</th>
-                                <th class=" px-3" data-sort="gender">@lang('translation.filePath')</th>
-                                <th data-sort="cases">@lang('translation.createAt')</th>
+                                <th class="text-black px-2 m-0" >Id</th>
+                                <th >@lang('translation.fileName')</th>
+                                <th >@lang('translation.createAt')</th>
                                 <th >@lang('translation.action')</th>
                             </tr>
                         </thead>
@@ -291,11 +291,9 @@
                                 @foreach($case->document as $doc)
                             <tr>
                                 <td class="id">000{{ $doc->id }}</td>
-                                <td class="client_name">{{ $doc->name }}</td>
-                                <td class="contact">{{ $doc->cas->title_file }}</td>
-                                <td class="gender">{{ substr($doc->file_path, 0, 20) }}...</td>
-                                <td class="address text-wrap">{{ $doc->created_at->diffForHumans() }} </td>
-                                <td>
+                                <td class="client_name text-center">{{ $doc->name }}</td>
+                                <td class="address text-wrap text-center">{{ $doc->created_at->diffForHumans() }} </td>
+                                <td class='d-flex justify-content-center'>  
                                     <div class="d-flex gap-2">
                                     
                                         <div class="view">
@@ -334,23 +332,11 @@
     </div>       
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>                                       
-    <script src="{{ URL::asset('build/libs/list.js/list.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/list.pagination.js/list.pagination.min.js') }}"></script>
 
 
     <!-- listjs init -->
-    <script src="{{ URL::asset('build/js/pages/listjs.init.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/multi.js/multi.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/@tarekraafat/autocomplete.js/autoComplete.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/form-advanced.init.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/form-input-spin.init.js') }}"></script>
     <!-- input flag init -->
     <script src="{{URL::asset('build/js/pages/flag-input.init.js')}}"></script>
-    <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
     <script src="https://kit.fontawesome.com/5fff77269d.js" crossorigin="anonymous"></script>
-    <script src="{{ URL::asset('build/libs/cleave.js/cleave.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/form-masks.init.js') }}"></script>
 @endsection

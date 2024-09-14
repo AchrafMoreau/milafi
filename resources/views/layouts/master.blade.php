@@ -44,7 +44,17 @@
 
 <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 <script>
-     
+    function clearFields() {
+        $('#name').val("")
+        $('#name').attr('class', "form-control")
+        $('#contact_info').val("");
+        $('#contact_info').attr('class', "form-control")
+        $('#gender').prop('checked', false);
+        $("#address").val("");
+        $('#address').attr('class', "form-control")
+        $("#CIN").val("");
+        $('#CIN').attr('class', "form-control")
+    }
     const token = $('meta[name="csrf-token"]').attr('content');
     const FormSubmition = (event, method, url)=>{
         event.preventDefault();
@@ -75,7 +85,9 @@
             },
             success: (res) =>{
                 console.log(res.success)
-                window.location.reload();
+                // window.location.reload();
+                clearFields()
+                $('.btn-close').click();
                 toastr[res['alert-type']](res.message)
             },
             error: (xhr, status, error)=>{

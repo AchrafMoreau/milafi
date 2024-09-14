@@ -2,9 +2,12 @@
 @section('title') @lang('translation.form-select') @endsection
 @section('content')
     @component('components.breadcrumb')
-        @slot('li_1') Cases @endslot
-        @slot('title') Add Case @endslot
+        @slot('li_1') @lang('translation.cases') @endslot
+        @slot('title') @lang('translation.addcase') @endslot
     @endcomponent
+    <link rel="stylesheet" href="{{ URL::asset('build/libs/filepond/filepond.min.css') }}" type="text/css" />
+    <link rel="stylesheet"
+        href="{{ URL::asset('build/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css') }}">
     <link href="{{ URL::asset('build/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/classic.min.css') }}" /> <!-- 'classic' theme -->
     <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/monolith.min.css') }}" /> <!-- 'monolith' theme -->
@@ -119,8 +122,7 @@
                                 <div class='d-flex flex-column '>
                                     <div class="row d-flex justify-center-center align-items-end">
                                         <label for="choices-single-default" class="form-label ">@lang('translation.client') :</label>
-                                        <select data-choices 
-                                        id="choices-single-default" name='client' onchange="fillPhoneInput(event)" class='form-control'>
+                                        <select data-choices id="choices-single-default" name='client' onchange="fillPhoneInput(event)" class='form-control'>
                                             <option value="{{ $case->client->id }}">{{ $case->client->name }}</option>
                                             @foreach($clients  as $client)
                                                 <option value="{{ $client->id }}">{{ $client->name }}</option>
@@ -140,7 +142,7 @@
                             <div class="col-xxl-3 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="clinet_contact" class="form-label fs-6">@lang('translation.phone') :</label>
-                                    <input type="text" name='phone' class="form-control disable" id="case_contact_info" disabled value='{{ $case->client->contact_info }}'>
+                                    <input type="text" name='phone' class="form-control disable" id="case_contact_info" value='{{ $case->client->contact_info }}'>
                                 </div>
                             </div>
                             <div class="col-xxl-3 col-md-6">
@@ -210,14 +212,15 @@
                 </div>
                 <div class="card-footer border-bottom">
                     <div class="row">
-                        <div class="col-12 d-flex gap-3 flex-row-reverse">
-                            <button class='w-auto btn-success btn ' id='submit' type='submit'>@lang('translation.edit')</button>
+                        <div class="col-12 d-flex gap-3">
+                            <button class='w-auto btn-success btn btn-lg' id='case-form' type='submit'>@lang('translation.submit')</button>
                             <a href="{{ url('/cas') }}">
-                                <button class='w-auto btn-light btn ' type='button'>@lang('translation.cancel')</button>
+                                <button class='w-auto btn-light btn btn-lg ' type='button'>@lang('translation.cancel')</button>
                             </a>
                         </div>
                     </div>
                 </div> 
+
             </div>
         </form>
 
@@ -272,6 +275,7 @@
                                     </div>
                                 </div><!--end col-->
                             </div><!--end row-->
+
                         </form>
                     </div>
                 </div>
@@ -288,14 +292,29 @@
                     <div class="col-lg-3">
                         <label for="cleave-date" class="form-label">@lang('translation.date')</label>
                     </div>
-                    <div class="col-lg-9">
-                        <input type="text" class="form-control @error('date') is-invalid @enderror" 
-                            name='date' value="{{ old('date') }}" placeholder="DD-MM-YYYY" id="cleave-date">
+                    <div class="col-lg-3">
+                        <input type="text"  value="{{ old('date') }}"  class="form-control @error('date') is-invalid @enderror" name='date'data-provider="flatpickr" id="dateInput" >
                         @error('date')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-lg-3">
+                        <label for="cleave-date" class="form-label">@lang('translation.time')</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <!-- <input type="date" class="form-control"> -->
+                        <input type="time" class="form-control @error('time') is-invalid @enderror" name='time' data-provider="timepickr" data-time-basic="true" id="timeInput">
+                        <span class='text-sm text-muted text-nowrap'>@lang('translation.PMtotheAm')</span>
+                        <!-- <input type="text" class="form-control data-provider="flatpickr" id="dateInput" > -->
+                            @error('time')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -356,13 +375,22 @@
     
         </form>
     </div>
-    <!-- Vertical alignment -->
+
+
+
+    <!--  ///////////////// PROCEDURES TABLE   /////////////////////// -->
     <div class="row">
+        <div class="cardHead m-3">
+            <h3>
+                @lang('translation.procedure')
+            </h3>
+        </div>
         <div class="col-lg-12">
             <div class="card px-3 table-responsive mt-2">
                 <table class="table align-middle">
                     <thead>
                         <th>@lang('translation.date')</th>
+                        <th>@lang('translation.time')</th>
                         <th>@lang('translation.invoices')</th>
                         <th>@lang('translation.fees')</th>
                         <th>@lang('translation.procedure')</th>
@@ -371,6 +399,7 @@
                         @foreach($case->procedure as $proc)
                             <tr>
                                 <td class='px-3 text-nowrap'>{{ $proc->date }}</td>
+                                <td class='px-3 text-nowrap'>{{ $proc->time }}</td>
                                 <td class='text-nowrap'>{{ number_format($proc->invoice, 2) }} {{ "   " }} @lang('translation.currency')</td>
                                 <td class='text-nowrap'>{{ number_format($proc->fee, 2) }} {{ "   " }} @lang('translation.currency')</td>
                                 <td class='word-wrap'>{{ $proc->procedure }}</td>
@@ -380,6 +409,146 @@
                 </table>
             </div>
         </div>
+    </div>
+
+
+
+    <!--  ///////////////// DOCUMENTS TABLE   /////////////////////// -->
+    <div class="row">
+        <div class="row">
+        <div class="cardHead  m-3">
+            <h3>
+                @lang('translation.documents')
+            </h3>
+        </div>
+        <div class="col-sm justify-content-end d-flex">
+            <div class="d-flex">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ducmentModal">
+                    <i class="fa-solid fa-file-circle-plus"></i>
+                    @lang('translation.addDocument')
+                </button>
+            </div>
+        </div>
+
+        </div>
+    <div class="card col-lg-12 my-3">
+        <div class="listjs-table my-3" id="customerList">
+            <div class="row g-4 mb-3">
+            </div>
+
+            <div class="table-responsive table-card mt-3 mb-1">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            
+                            <th class="text-black px-5 m-0" data-sort="id">Id</th>
+                            <th class="text-center" data-sort="client_name">@lang('translation.fileName')</th>
+                            <th class='text-center'>@lang('translation.createAt')</th>
+                            <th class='text-center'>@lang('translation.action')</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            @foreach($case->document as $doc)
+                        <tr>
+                            <td class="id px-5">000{{ $doc->id }}</td>
+                            <td class="client_name text-center">{{ $doc->name }}</td>
+                            <td class="address text-center text-wrap ">{{ $doc->created_at->diffForHumans() }} </td>
+                            <td class='text-center'>
+                                <div class="d-flex gap-2 justify-content-center">
+                                    <div class="view">
+                                        <a href="{{ url('/show-doc/'.$doc->id) }}">
+                                            <button type="button" class="btn btn-sm btn-primary">
+                                                <i class='ri-eye-fill align-middle'></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="download">
+                                        <a href="{{ url('/uploadFile/'.$doc->file_path) }}">
+                                            <button class="btn btn-light btn-sm" type='button'>
+                                                <i class='las la-download'></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="remove">
+                                        <button type="button" id='{{ $doc->id }}' class="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#modal-{{$doc->id}}" >
+                                            <i class=' las la-trash'></i>
+                                        </button>
+                                        <div class="modal fade bs-example-modal-center" id="modal-{{$doc->id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-body text-center p-5">
+                                                        <lord-icon src="https://cdn.lordicon.com/hrqwmuhr.json"
+                                                            trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:120px;height:120px">
+                                                        </lord-icon>
+                                                       <div class="mt-4">
+                                                            <h4 class="mb-3 text-wrap">@lang('translation.deleteMessage') @lang('translation.document') !</h4>
+                                                            <p class="text-muted mb-4 text-wrap">@lang('translation.deleteConfirmation').</p>
+                                                            <form action="{{ url('/doc-delete/'.$doc->id) }}" method='POST'  class="hstack gap-2 justify-content-center">
+                                                                @csrf
+                                                                @method("DELETE")
+                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
+                                                                <button type='submit' class='btn btn-danger'>@lang('translation.yes')</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="ducmentModal" tabindex="-1" aria-labelledby="ducmentModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ducmentModalLabel">@lang('translation.addDocument')</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url('/store-doc') }}" method='POST' enctype="multipart/form-data" >
+                        @csrf
+                        @method('POST')
+                        <div class="row g-3">
+                            <div class="col-xxl-6">
+                                <div>
+                                    <label for="name" class="form-label">@lang("translation.fileName")</label>
+                                    <input type="text" name='name' class="form-control" id="name" placeholder="@lang('translation.enterFileName')">
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-xxl-6">
+                                <label for="case" class="form-label">@lang("translation.case")</label>
+                                <select data-choices name="case" required
+                                id="choices-single-default-cases"  class='form-control ' >
+                                    <option value="{{ $case->id }}">{{ $case->title_file }}</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="card-body" >
+                                    <p class="text-muted">@lang("translation.fileMessage").</p>
+                                    <input type="file" class="filepond filepond-input-multiple" id='docs' name="docs"
+                                        data-allow-reorder="true" data-max-files="3">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="hstack gap-2 justify-content-end">
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
+                                    <button type="submit" class="btn btn-primary">@lang('translation.submit')</button>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
 @endsection
@@ -393,22 +562,28 @@
             phoneInput.value = phone;
         }
     </script>
-    <script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>                                       
-    <script src="{{ URL::asset('build/libs/list.js/list.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/list.pagination.js/list.pagination.min.js') }}"></script>
 
 
+    <script src="{{ URL::asset('build/libs/filepond/filepond.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}">
+    </script>
+    <script
+        src="{{ URL::asset('build/libs/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}">
+    </script>
+    <script
+        src="{{ URL::asset('build/libs/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js') }}">
+    </script>
+    <script src="{{ URL::asset('build/libs/filepond-plugin-file-encode/filepond-plugin-file-encode.min.js') }}"></script>
+
+    <script src="{{ URL::asset('build/js/pages/form-file-upload.init.js') }}"></script>
     <!-- listjs init -->
-    <script src="{{ URL::asset('build/js/pages/listjs.init.js') }}"></script>
     <script src="{{ URL::asset('build/libs/multi.js/multi.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/@tarekraafat/autocomplete.js/autoComplete.min.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/form-advanced.init.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/form-input-spin.init.js') }}"></script>
     <!-- input flag init -->
     <script src="{{URL::asset('build/js/pages/flag-input.init.js')}}"></script>
-    <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
     <script src="https://kit.fontawesome.com/5fff77269d.js" crossorigin="anonymous"></script>
     <script src="{{ URL::asset('build/libs/cleave.js/cleave.min.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/form-masks.init.js') }}"></script>
