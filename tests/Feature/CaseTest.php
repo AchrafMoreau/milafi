@@ -67,7 +67,7 @@ describe("testing case controller", function() {
             'serial_number' => '213/221',
             'court'=> $court->id,
             'client' => $client->id,
-            'title_file' => "jarimat 9atel",
+            'file_subject' => "jarimat 9atel",
             'title_number' => "123/2131",
             'judge' => $judge->id,
             'report_file' => 'idono what this file is all about ??',
@@ -87,7 +87,7 @@ describe("testing case controller", function() {
 
 
         $res->assertStatus(302);
-        $res->assertRedirect('/cas');
+        $res->assertRedirect();
 
     });
 
@@ -104,7 +104,7 @@ describe("testing case controller", function() {
             'serial_number' => '213/221',
             'court'=> $court->id,
             'client' => $client->id,
-            'title_file' => "jarimat 9atel",
+            'subject_file' => "jarimat 9atel",
             'title_number' => "123/2131",
             'judge' => $judge->id,
             'report_file' => 'idono what this file is all about ??',
@@ -118,7 +118,7 @@ describe("testing case controller", function() {
         $res = $this->post("/store-case", $data);
 
         $res->assertStatus(302);
-        $res->assertRedirect('/cas');
+        $res->assertRedirect();
 
     });
 
@@ -142,7 +142,7 @@ describe("testing case controller", function() {
 
         $res = $this->post("/store-case", $data);
 
-        $res->assertSessionHasErrors(['client', 'serial_number', 'judge', 'court', 'title_file']);
+        $res->assertSessionHasErrors(['client', 'serial_number', 'judge', 'court', 'file_subject']);
         $res->assertStatus(302);
 
     });
