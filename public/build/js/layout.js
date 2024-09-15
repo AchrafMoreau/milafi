@@ -21,8 +21,8 @@ File: Layout Js File
                 CurrentLayoutAttributes[nodeKey] = key[1].nodeValue;
             }
           });
+        
 
-          console.log(sessionStorage.getItem('defaultAttribute') !== JSON.stringify(CurrentLayoutAttributes))
         if(sessionStorage.getItem('defaultAttribute') !== JSON.stringify(CurrentLayoutAttributes)) {
             sessionStorage.clear();
             window.location.reload();

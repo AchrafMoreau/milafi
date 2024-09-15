@@ -1418,6 +1418,7 @@ File: Main Js File
 						break;
 				}
 
+
 				switch (isLayoutAttributes["data-bs-theme"]) {
 					case "light":
 						getElementUsingTagname("data-bs-theme", "light");
@@ -1956,6 +1957,7 @@ File: Main Js File
 					setLayoutMode("data-bs-theme", "light", "layout-mode-light", html) :
 					setLayoutMode("data-bs-theme", "dark", "layout-mode-dark", html);
 					// Dispatch the resize event on the window object
+					sessionStorage.setItem("data-bs-theme", html.getAttribute('data-bs-theme'));
 					window.dispatchEvent(resizeEvent);
 			});
 		}
