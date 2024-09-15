@@ -132,7 +132,7 @@
                 <div class="card-body">
                     <div class="live-preview mt-3">
                         <div class="row gy-4">
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <div class="row d-flex justify-center-center align-items-end">
                                         <label for="choices-single-default" class="form-label ">@lang('translation.client') :</label>
@@ -144,28 +144,28 @@
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_type" class="form-label fs-6">@lang('translation.fileSubject') : </label>
                                     <input disabled name='title' type="text" class="form-control" id="case_type" value='{{ $case->title_file }}'>
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 
                                 <div class='d-flex flex-column '>
                                     <label for="clinet_contact" class="form-label fs-6">@lang('translation.phone') :</label>
                                     <input disabled type="text" name='phone' class="form-control disable" id="case_contact_info" disabled value='{{ $case->client->contact_info }}'>
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_number" class="form-label fs-6">@lang('translation.fileNumber') :</label>
                                     <input type="text" disabled name='titleNumber' class="form-control" id="case_number" value='{{ $case->title_number }}'>
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="choices-single-default" class="form-label ">@lang('translation.client') :</label>
                                     <select data-choices 
@@ -174,38 +174,38 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="opponent" class="form-label fs-6">@lang('translation.opponent') : </label>
                                     <input disabled type="text" name='opponent' class="form-control" id="opponent" value='{{ $case->opponent }}'>
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_report" class="form-label fs-6">@lang('translation.fileReport') :</label>
                                     <input disabled type="text" name='fileReport' class="form-control" id="case_report" value='{{ $case->report_file }}'>
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_exec" class="form-label fs-6">@lang('translation.fileExecution') : </label>
                                     <input disabled type="text" name='fileExecution' class="form-control" id="case_exec" value='{{ $case->execution_file }}'>
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="report_number" class="form-label fs-6">@lang('translation.fileNumber') :  </label>
                                     <input type="text" disabled name='reportNumber' class="form-control"  id="report_number" value="{{ $case->report_number }}">
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="report_number" class="form-label fs-6">@lang('translation.fileNumber') :</label>
                                     <input type="text" disabled name='executionNumber' class="form-control" id="report_number" value=" {{ $case->execution_number }}" >
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="report_number" class="form-label fs-6">@lang('translation.status') :</label>
                                     <select disabled name='status'value="{{ $case->status }}"  class="form-select mb-3"  aria-label="Default select example">
@@ -239,17 +239,19 @@
             <div class="card px-3 table-responsive mt-2">
                 <table class="table align-middle">
                     <thead>
-                        <th>@lang('translation.date')</th>
-                        <th>@lang('translation.invoices')</th>
-                        <th>@lang('translation.fees')</th>
+                        <th class='text-center'>@lang('translation.date')</th>
+                        <th class='text-center'>@lang('translation.time')</th>
+                        <th class='text-center'>@lang('translation.invoices')</th>
+                        <th class='text-center'>@lang('translation.fees')</th>
                         <th>@lang('translation.procedure')</th>
                     </thead>
                     <tbody>
                         @foreach($case->procedure as $proc)
                             <tr>
-                                <td class='px-3 text-nowrap'>{{ $proc->date }}</td>
-                                <td class='text-nowrap'>{{ number_format($proc->invoice, 2) }} {{ "   " }} @lang('translation.currency')</td>
-                                <td class='text-nowrap'>{{ number_format($proc->fee, 2) }} {{ "   " }} @lang('translation.currency')</td>
+                                <td class='px-3 text-nowrap text-center'>{{ $proc->date }}</td>
+                                <td class='px-3 text-nowrap text-center'>{{ $proc->time }}</td>
+                                <td class='text-nowrap text-center'>{{ number_format($proc->invoice, 2) }} {{ "   " }} @lang('translation.currency')</td>
+                                <td class='text-nowrap text-center'>{{ number_format($proc->fee, 2) }} {{ "   " }} @lang('translation.currency')</td>
                                 <td class='word-wrap'>{{ $proc->procedure }}</td>
                             </tr>
                         @endforeach
@@ -279,11 +281,9 @@
                     <table class="table align-middle table-nowrap" id="customerTable" id='myTable'>
                         <thead class="table-light">
                             <tr class= 'text-center' >
-                                <th class="sort text-black px-2 m-0" data-sort="id">Id</th>
-                                <th class="sort" data-sort="client_name">@lang('translation.fileName')</th>
-                                <th  data-sort="contact">@lang('translation.case')</th>
-                                <th class=" px-3" data-sort="gender">@lang('translation.filePath')</th>
-                                <th data-sort="cases">@lang('translation.createAt')</th>
+                                <th class="text-black px-2 m-0" >Id</th>
+                                <th >@lang('translation.fileName')</th>
+                                <th >@lang('translation.createAt')</th>
                                 <th >@lang('translation.action')</th>
                             </tr>
                         </thead>
@@ -291,11 +291,9 @@
                                 @foreach($case->document as $doc)
                             <tr>
                                 <td class="id">000{{ $doc->id }}</td>
-                                <td class="client_name">{{ $doc->name }}</td>
-                                <td class="contact">{{ $doc->cas->title_file }}</td>
-                                <td class="gender">{{ substr($doc->file_path, 0, 20) }}...</td>
-                                <td class="address text-wrap">{{ $doc->created_at->diffForHumans() }} </td>
-                                <td>
+                                <td class="client_name text-center">{{ $doc->name }}</td>
+                                <td class="address text-wrap text-center">{{ $doc->created_at->diffForHumans() }} </td>
+                                <td class='d-flex justify-content-center'>  
                                     <div class="d-flex gap-2">
                                     
                                         <div class="view">
@@ -334,23 +332,11 @@
     </div>       
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>                                       
-    <script src="{{ URL::asset('build/libs/list.js/list.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/list.pagination.js/list.pagination.min.js') }}"></script>
 
 
     <!-- listjs init -->
-    <script src="{{ URL::asset('build/js/pages/listjs.init.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/multi.js/multi.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/@tarekraafat/autocomplete.js/autoComplete.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/form-advanced.init.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/form-input-spin.init.js') }}"></script>
     <!-- input flag init -->
     <script src="{{URL::asset('build/js/pages/flag-input.init.js')}}"></script>
-    <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
     <script src="https://kit.fontawesome.com/5fff77269d.js" crossorigin="anonymous"></script>
-    <script src="{{ URL::asset('build/libs/cleave.js/cleave.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/form-masks.init.js') }}"></script>
 @endsection

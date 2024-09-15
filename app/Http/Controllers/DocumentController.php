@@ -43,6 +43,7 @@ class DocumentController extends Controller
             'case' => 'required',
         ]);
 
+
         $doc = TemporaryFiles::where("folder", $request->docs)->first();
         if($doc){
             $filepath = storage_path('app/public/uploads/' . $request->docs . '/' . $doc->filename);

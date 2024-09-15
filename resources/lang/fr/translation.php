@@ -1,5 +1,9 @@
 <?php
 return [
+    'enterProcedure' => 'saisissez vos procédures',
+    'PMtotheAm' => "gardez à l'esprit que PM couvre les heures de l'après-midi et du soir et AM couvre les heures du matin.",
+    'day' => 'اليوم',
+    'time' => 'الوقت',
     'confirmPassword' => "Confirmez le mot de passe",
     'oldPassword' => 'ancien mot de passe',
     'newPassword' => "nouveau mot de passe",
@@ -201,7 +205,7 @@ return [
     'avatar'=> 'Avatar',
     'date' => 'Date',
     "fees" => 'Frais',
-    "invoices" => 'Factures',
+    // "invoices" => 'Factures',
     "procedure" => 'Procédure',
     "fileExecution" => "Fichier D'exécution",
     "fileReport" => 'Fichier De Rapport',

@@ -24,6 +24,7 @@ class ProcedureFactory extends Factory
             'date' => $this->faker->date(),
             'procedure' => $this->faker->text(),
             'fee' => $this->faker->randomFloat(2),
+            'time' => $this->faker->time(),
             'invoice' => $this->faker->randomFloat(2)
         ];
     }

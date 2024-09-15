@@ -15,6 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('cas_id');
             $table->foreign('cas_id')->references('id')->on('cas')->onDelete('cascade')->onUpdate('cascade');
             $table->string('date');
+            $table->time('time');
             $table->text('procedure');
             $table->integer('fee');
             $table->integer('invoice');

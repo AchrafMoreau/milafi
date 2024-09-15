@@ -47,71 +47,7 @@
                 </div>
             </div>
 
-            <!-- <div class="table-responsive table-card mt-3 mb-1">
-                <table class="table align-middle table-nowrap table-hover" id="customerTable">
-                    <thead class="table-light">
-                        <tr class= 'text-center' >
-                            <th scope="col" style="width: 50px;">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="checkAll"
-                                        value="option">
-                                </div>
-                            </th>
-                            <th class="sort text-black px-2 m-0" data-sort="id">Id</th>
-                            <th class="sort" data-sort="name" >@lang('translation.name')</th>
-                            <th  data-sort="contact">@lang('translation.contact')</th>
-                            <th class=" px-3" data-sort="gender" >@lang('translation.gender')</th>
-                            <th class=" px-3 text-break" data-sort="CIN" >CIN</th>
-                            <th class='address'  data-sort='address'>@lang('translation.address')</th>
-                            <th data-sort="case" >@lang('translation.cases')</th>
-                            <th >@lang('translation.action')</th>
-                        </tr>
-                    </thead>
           
-                    <body class='list form-check-all'>
-                        <tr >
-                            <th scope="row">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="chk_child"
-                                        value="option1">
-                                </div>
-                            </th>
-                            <td class="id" style="display:none;"><a href="javascript:void(0);"
-                                    class="fw-medium link-primary">#VZ2101</a></td>
-                            <td class="name">Mary Cousar</td>
-                            <td class="contact">marycousar@velzon.com</td>
-                            <td class="gender">06 Apr, 2021</td>
-                            <td class="address">580-464-4694</td>
-                            <td class="case"><span
-                                    class="badge bg-success-subtle text-success text-uppercase">Active</span>
-                            </td>
-                            <td>
-                                <div class="d-flex gap-2">
-                                    <div class="edit">
-                                        <button class="btn btn-sm btn-success edit-item-btn"
-                                            data-bs-toggle="modal" data-bs-target="#showModal">Edit</button>
-                                    </div>
-                                    <div class="remove">
-                                        <button class="btn btn-sm btn-danger remove-item-btn"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteRecordModal">Remove</button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </body>
-                </table>
-                <div class="noresult" style="display: none">
-                    <div class="text-center">
-                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                            colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
-                        </lord-icon>
-                        <h5 class="mt-2">Sorry! No Result Found</h5>
-                        <p class="text-muted mb-0">We've searched more than 150+ Orders We did not find any
-                            orders for you search.</p>
-                    </div>
-                </div>
-            </div> -->
 
                 <div class="table-responsive table-card mt-3 mb-1">
                     <table class="table align-middle table-nowrap" id="customerTable">

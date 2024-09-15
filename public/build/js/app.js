@@ -6,6 +6,7 @@ Website: https://Themesbrand.com/
 Contact: Themesbrand@gmail.com
 File: Main Js File
 */
+
 (function () {
 	("use strict");
 
@@ -14,12 +15,11 @@ File: Main Js File
 	 */
 	var navbarMenuHTML = document.querySelector(".navbar-menu").innerHTML;
 	var horizontalMenuSplit = 7; // after this number all horizontal menus will be moved in More menu options
-	var default_lang = "ae"; // set Default Language
+	var default_lang = "en"; // set Default Language
 	var language = localStorage.getItem("language");
 
 	function initLanguage() {
 		// Set new language
-		// console.log(language, default_lang)
 		(language === null) ? setLanguage(default_lang) : setLanguage(language);
 		var languages = document.getElementsByClassName("language");
 		languages && Array.from(languages).forEach(function (dropdown) {
@@ -31,7 +31,19 @@ File: Main Js File
 
 	function setLanguage(lang) {
 		if (document.getElementById("header-lang-img")) {
-			if (lang == "fr") {
+			if (lang == "en") {
+				document.getElementById("header-lang-img").src = "build/images/flags/us.svg";
+			} else if (lang == "sp") {
+				document.getElementById("header-lang-img").src = "build/images/flags/spain.svg";
+			} else if (lang == "gr") {
+				document.getElementById("header-lang-img").src = "build/images/flags/germany.svg";
+			} else if (lang == "it") {
+				document.getElementById("header-lang-img").src = "build/images/flags/italy.svg";
+			} else if (lang == "ru") {
+				document.getElementById("header-lang-img").src = "build/images/flags/russia.svg";
+			} else if (lang == "ch") {
+				document.getElementById("header-lang-img").src = "build/images/flags/china.svg";
+			} else if (lang == "fr") {
 				document.getElementById("header-lang-img").src = "build/images/flags/french.svg";
 			} else if (lang == "ar") {
 				document.getElementById("header-lang-img").src = "build/images/flags/ae.svg";

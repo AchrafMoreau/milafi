@@ -1,5 +1,9 @@
 <?php
 return [
+    'enterProcedure' => 'أدخل إجراءاتك',
+    'PMtotheAm' => 'ضع في اعتبارك أن PM يغطي ساعات بعد الظهر والمساء، و AM يغطي ساعات الصباح.',
+    'day' => 'اليوم',
+    'time' => 'الوقت',
     'confirmPassword' => 'تأكيد كلمة المرور',
     'oldPassword' => 'كلمة المرور القديمة',
     'newPassword' => "كلمة المرور الجديدة",
@@ -265,7 +269,7 @@ return [
     "my-wallet" => "محفظتى",
     "ico-list" => "قائمة ICO",
     "kyc-application" => "تطبيق KYC",
-    "invoices" => "الفواتير",
+    // "invoices" => "الفواتير",
     "details" => "تفاصيل",
     "create-invoice" => "تفاصيل",
     "supprt-tickets" => "تذاكر الدعم الفني",

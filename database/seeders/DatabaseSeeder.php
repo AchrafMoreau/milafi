@@ -30,22 +30,24 @@ class DatabaseSeeder extends Seeder
         Client::factory(10)->create();
         Court::factory(10)->create();
         Judge::factory(10)->create();
-        Cas::factory(10)->create();
+        Cas::factory(50)->create();
         // Document::factory(10)->create();
         Invoice::factory(10)->create();
         Procedure::factory(50)->create();
         Todo::factory(10)->create();
         Contact::factory(10)->create();
         
-        DB::table('users')->insert([
-            'name'=> "Achraf",
-            'password'=> Hash::make('0210moreau'),
-            'email' => 'achraf@gmail.com',
-            'role' => 'Admin',
-            'city' => 'Agadir',
-            'name_in_arab' => 'اشرف',
-            'city_in_arab' => 'كلميم',
-            'gender' => "Male",
-        ]);
+        if(!User::where('name', 'Achraf')->first()){
+            DB::table('users')->insert([
+                'name'=> "Achraf",
+                'password'=> Hash::make('0210moreau'),
+                'email' => 'achraf@gmail.com',
+                'role' => 'Admin',
+                'city' => 'Agadir',
+                'name_in_arab' => 'اشرف',
+                'city_in_arab' => 'كلميم',
+                'gender' => "Male",
+            ]);
+        }
     }
 }

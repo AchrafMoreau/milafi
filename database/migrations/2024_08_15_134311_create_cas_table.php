@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade')->onUpdate('cascade');
             $table->string('serial_number');
             $table->string('title_file')->nullable();
-            $table->integer('title_number')->nullable();
+            $table->string('title_number')->nullable();
             $table->enum('status', ['Open', 'Closed', 'Pending']);
             $table->unsignedBigInteger('court_id');
             $table->foreign('court_id')->references('id')->on('courts')->onDelete('cascade')->onUpdate('cascade');

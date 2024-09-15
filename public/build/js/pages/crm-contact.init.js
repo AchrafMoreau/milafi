@@ -229,7 +229,8 @@ var tagInputField = new Choices('#taginput-choices', {
       removeItemButton: true,
     }
 );
-
+JSON.stringify
+JSON.parse
 var tagInputFieldValue = tagInputField.getValue(true);
 var tagHtmlValue = '';
 Array.from(tagInputFieldValue).forEach((tag, index) => {

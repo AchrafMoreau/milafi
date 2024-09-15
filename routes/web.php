@@ -54,6 +54,7 @@ Route::middleware(['auth', 'clearNotification'])->group(function () {
 
     // case route for user / lawyer
     Route::get('/cas', [CasController::class, 'index']);
+    Route::get('/caseJson', [CasController::class, 'getAll']);
     Route::get('/cas/{id}', [CasController::class, 'show']);
     Route::get('/case-edit/{id}', [CasController::class, 'edit']);
     Route::post('/case-update/{id}', [CasController::class, 'update']);
