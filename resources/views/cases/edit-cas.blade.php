@@ -118,7 +118,7 @@
                 <div class="card-body">
                     <div class="live-preview mt-3">
                         <div class="row gy-4">
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <div class="row d-flex justify-center-center align-items-end">
                                         <label for="choices-single-default" class="form-label ">@lang('translation.client') :</label>
@@ -132,27 +132,40 @@
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_type" class="form-label fs-6">@lang('translation.fileSubject') : </label>
                                     <input name='title' type="text" class="form-control" id="case_type" value='{{ $case->title_file }}'>
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="clinet_contact" class="form-label fs-6">@lang('translation.phone') :</label>
-                                    <input type="text" name='phone' class="form-control disable" id="case_contact_info" value='{{ $case->client->contact_info }}'>
+                                    <div class="input-group" data-input-flag>
+                                        <input type="text" class="form-control rounded-end flag-input" name='contact_info' value="{{ $case->client->contact_info }}" placeholder="Enter number" id='case_contact_info'  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
+                                        <!-- <div class="dropdown-menu w-100">
+                                            <div class="p-2 px-3 pt-1 searchlist-input">
+                                                <input type="text" class="form-control form-control-sm border search-countryList"  placeholder="Search country name or country code..." />
+                                            </div>
+                                            <ul class="list-unstyled dropdown-menu-list mb-0"></ul>
+                                        </div> -->
+                                        <button style='z-index:0;' class="btn btn-light border " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="ml-3 country-codeno">+ 212</span>
+                                            <img src="{{URL::asset('build/images/flags/ma.svg')}}" alt="flag img" height="20" class="country-flagimg rounded">
+                                        </button>
+                                    </div>
+                                    <!-- <input type="text" name='phone' class="form-control disable" id="case_contact_info" value='{{ $case->client->contact_info }}'> -->
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_number" class="form-label fs-6">@lang('translation.fileNumber') :</label>
                                     <input type="text" name='titleNumber' class="form-control" id="case_number" value='{{ $case->title_number }}'>
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="choices-single-default" class="form-label ">@lang('translation.client') :</label>
                                     <select data-choices 
@@ -164,38 +177,38 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="opponent" class="form-label fs-6">@lang('translation.opponent') : </label>
                                     <input type="text" name='opponent' class="form-control" id="opponent" value='{{ $case->opponent }}'>
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_report" class="form-label fs-6">@lang('translation.fileReport') :</label>
                                     <input type="text" name='fileReport' class="form-control" id="case_report" value='{{ $case->report_file }}'>
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_exec" class="form-label fs-6">@lang('translation.fileExecution') : </label>
                                     <input type="text" name='fileExecution' class="form-control" id="case_exec" value='{{ $case->execution_file }}'>
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="report_number" class="form-label fs-6">@lang('translation.fileNumber') :  </label>
                                     <input type="text" name='reportNumber' class="form-control"  id="report_number" value="{{ $case->report_number }}">
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="report_number" class="form-label fs-6">@lang('translation.fileNumber') :</label>
                                     <input type="text" name='executionNumber' class="form-control" id="report_number" value=" {{ $case->execution_number }}" >
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="report_number" class="form-label fs-6">@lang('translation.status') :</label>
                                     <select name='status'value="{{ $case->status }}"  class="form-select mb-3"  aria-label="Default select example">
@@ -562,29 +575,21 @@
             phoneInput.value = phone;
         }
     </script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>                                       
 
+    <!-- <script src="{{ URL::asset('build/js/pages/form-masks.init.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/multi.js/multi.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/cleave.js/cleave.min.js') }}"></script>
+    <script src="{{URL::asset('build/js/pages/flag-input.init.js')}}"></script> -->
 
     <script src="{{ URL::asset('build/libs/filepond/filepond.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}">
-    </script>
-    <script
-        src="{{ URL::asset('build/libs/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}">
-    </script>
-    <script
-        src="{{ URL::asset('build/libs/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js') }}">
-    </script>
+    <script src="{{ URL::asset('build/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/filepond-plugin-file-encode/filepond-plugin-file-encode.min.js') }}"></script>
 
     <script src="{{ URL::asset('build/js/pages/form-file-upload.init.js') }}"></script>
     <!-- listjs init -->
-    <script src="{{ URL::asset('build/libs/multi.js/multi.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/@tarekraafat/autocomplete.js/autoComplete.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/form-advanced.init.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/form-input-spin.init.js') }}"></script>
-    <!-- input flag init -->
-    <script src="{{URL::asset('build/js/pages/flag-input.init.js')}}"></script>
     <script src="https://kit.fontawesome.com/5fff77269d.js" crossorigin="anonymous"></script>
-    <script src="{{ URL::asset('build/libs/cleave.js/cleave.min.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/form-masks.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/app.js') }}"></script>                                       
+
 @endsection

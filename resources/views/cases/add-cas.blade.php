@@ -34,7 +34,7 @@
             <div class="card" stye="background:#e37ba4;">
                 <div class="form-check w-auto mt-3 mx-3 form-switch form-switch-right form-switch-md">
                     <div >
-                        <input name='serial_number' class="w-auto form-control form-control-sm" required type="text" placeholder="@lang('translation.reference')">
+                        <input name='serial_number'  class="w-auto form-control form-control-sm" required type="text" placeholder="@lang('translation.reference')">
                     </div>
                 </div>
                 <div class="card-header align-items-center d-flex justify-content-end">
@@ -64,13 +64,13 @@
                 <div class="card-body">
                     <div class="live-preview mt-3">
                         <div class="row gy-4">
-                            <div class="col-xxl-3 col-lg-6">
+                            <div class="col-xxl-6 col-lg-6">
                                 <div class='d-flex flex-column '>
                                     <div class="row d-flex justify-center-center align-items-end">
                                         <div class="col-7">
-                                            <label for="choices-single-default" class="form-label ">@lang('translation.client') :</label>
+                                            <label for="selectClient" class="form-label ">@lang('translation.client') :</label>
                                             <select required data-choices name="client" onchange="fillPhoneInput(event)"
-                                            id="choices-single-default" class='form-control clientSelect' onload="getClients()">
+                                            id="selectClient" class='form-control clientSelect' onload="getClients()">
                                                 <option value="">This is a placeholder</option>
                                                 @foreach($clients  as $client)
                                                     <option value="{{ $client->id }}">{{ $client->name }}</option>
@@ -87,33 +87,46 @@
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-lg-6">
+                            <div class="col-xxl-6 col-lg-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_type" class="form-label fs-6">@lang('translation.fileSubject') : </label>
                                     <input type="text" required value="{{ old('file_subject') }}" class="form-control" name='file_subject' id="case_type">
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-lg-6">
+                            <div class="col-xxl-6 col-lg-6">
                                 <div class='d-flex flex-column '>
                                     <label for="clinet_contact" class="form-label fs-6">@lang('translation.phone') :</label>
-                                    <input type="text" required id="case_contact_info" class="form-control disable" name='contact_info'>
+                                    <div class="input-group" data-input-flag>
+                                        <input type="text" class="form-control rounded-end flag-input" name='contact_info' value="" placeholder="Enter number" id='case_contact_info'  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
+                                        <div class="dropdown-menu w-100">
+                                            <div class="p-2 px-3 pt-1 searchlist-input">
+                                                <input type="text" class="form-control form-control-sm border search-countryList"  placeholder="Search country name or country code..." />
+                                            </div>
+                                            <ul class="list-unstyled dropdown-menu-list mb-0"></ul>
+                                        </div>
+                                        <button style='z-index:0;' class="btn btn-light border " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="ml-3 country-codeno">+ 212</span>
+                                            <img src="{{URL::asset('build/images/flags/ma.svg')}}" alt="flag img" height="20" class="country-flagimg rounded">
+                                        </button>
+                                    </div>
+                                    <!-- <input type="text" required id="case_contact_info" class="form-control disable" name='contact_info'> -->
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-lg-6">
+                            <div class="col-xxl-6 col-lg-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_number" class="form-label fs-6">@lang('translation.fileNumber') :</label>
                                     <input type="text" class="form-control" required id="case_number" name='title_number'>
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-lg-6">
+                            <div class="col-xxl-6 col-lg-6">
                                 <div class='d-flex flex-column '>
                                     <div class="row d-flex justify-contact-between align-items-end">
                                         <div class="col-7">
-                                            <label for="choices-single-default" class="form-label ">@lang('translation.judge') :</label>
+                                            <label for="selectJudge" class="form-label ">@lang('translation.judge') :</label>
                                             <select data-choices  required 
-                                            id="choices-single-default" name='judge' class='form-control'>
+                                            id="selectJudge" name='judge' class='form-control'>
                                                 @foreach($judges  as $judge)
                                                     <option value="{{ $judge->id }}">{{ $judge->name }}</option>
                                                 @endforeach
@@ -150,32 +163,32 @@
                                     </div>
                                 </div> -->
                             </div>
-                            <div class="col-xxl-3 col-lg-6">
+                            <div class="col-xxl-6 col-lg-6">
                                 <div class='d-flex flex-column '>
                                     <label for="opponent" class="form-label fs-6">@lang('translation.opponent') : </label>
                                     <input type="text" class="form-control" name='opponent' required id="opponent">
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-lg-6">
+                            <div class="col-xxl-6 col-lg-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_report" class="form-label fs-6">@lang('translation.fileReport') :</label>
                                     <input type="text" class="form-control"  name='report_file' id="case_report">
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-lg-6">
+                            <div class="col-xxl-6 col-lg-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_exec" class="form-label fs-6">@lang('translation.fileExecution') : </label>
                                     <input type="text" class="form-control"  id="case_exec" name='execution_file'>
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-lg-6">
+                            <div class="col-xxl-6 col-lg-6">
                                 <div class='d-flex flex-column '>
                                     <label for="report_number" class="form-label fs-6">@lang('translation.reportNumber') :  </label>
                                     <input type="text" class="form-control"  id="report_number" name='report_number'>
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-lg-6">
+                            <div class="col-xxl-6 col-lg-6">
                                 <div class='d-flex flex-column '>
                                     <label for="report_number" class="form-label fs-6">@lang('translation.executionNumber') :</label>
                                     <input type="text" class="form-control"  id="report_number" name='execution_number'>
@@ -291,7 +304,7 @@
                 <div class="modal-body">
                     <form id="addClient" >
                         <div class="row g-3">
-                            <div class="col-xxl-6">
+                            <div class="col-xxl-12">
                                 <div>
                                     <label for="name" class="form-label">@lang('translation.fullName')</label>
                                     <input type="text" required name='name' value='{{ old("name") }}' class="form-control" id="name" placeholder="@lang('translation.enterFullName')">
@@ -326,7 +339,7 @@
                                     <span class="invalid-feedback" role="alert">
                                     </span>
                             </div><!--end col-->
-                            <div class="col-xxl-6">
+                            <div class="col-xxl-12">
                                 <label for="address" class="form-label">@lang('translation.address')</label>
                                 <input type="text" value="{{ old('address') }}" class="form-control " id="address" name='address' placeholder="@lang('translation.enterAddress')">
                                     <span class="invalid-feedback" role="alert">
@@ -353,11 +366,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url('/store-judge') }}" method='POST'>
-                        @csrf
-                        @method('POST')
+                    <form id='addJudge' >
                         <div class="row g-3">
-                            <div class="col-xxl-6">
+                            <div class="col-xxl-12">
                                 <div>
                                     <label for="name" class="form-label">@lang("translation.fullName")</label>
                                     <input type="text" name='name' class="form-control" id="name" placeholder="@lang('translation.enterFullName')">
@@ -376,11 +387,11 @@
                                     </div>
                                 </div>
                             </div><!--end col-->
-                            <div class="col-xxl-6">
+                            <div class="col-xxl-12">
                                 <label for="contact_info" class="form-label">@lang("translation.contact")</label>
                                 <input type="texth" class="form-control" name='contact_info' id="contact_info" placeholder="@lang('translation.enterContact')">
                             </div><!--end col-->
-                            <div class="col-xxl-6">
+                            <div class="col-xxl-12">
                                 <label for="choices-single-default" class="form-label m-0 p-0">
                                         @lang('translation.court')
                                 </label>
@@ -395,7 +406,7 @@
                             <div class="col-lg-12">
                                 <div class="hstack gap-2 justify-content-end">
                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
-                                    <button type="submit" class="btn btn-primary">@lang('translation.submit')</button>
+                                    <button type="submit" id='submit' class="btn btn-primary">@lang('translation.submit')</button>
                                 </div>
                             </div><!--end col-->
                         </div><!--end row-->
@@ -415,43 +426,42 @@
 @section('script')
     <script>
 
-        // Array.from(tagInputFieldValue).forEach((tag, index) => {
-        //     tagHtmlValue += '<span class="badge bg-primary-subtle text-primary me-1">'+tag+'</span>'
-        // })
-        // const getClients = ()=>{
-        //     $.ajax({
-        //         url: `/clientJson`,
-        //         method: "GET",
-        //         headers:{
-        //             'Content-Type': 'application/json',
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
-        //         success: (res) =>{
-        //             const clientSelect = $('#choices-single-default')
-        //             clientSelect.html(res.map((elm)=> `<option value=${elm.id}>${elm.name} </option>\n`))
-        //             console.log(clientSelect)
-        //             console.log(clientSelect.html())
-        //         },
-        //         error: (xhr, status, error) => console.log(error)
-        //     })
-        // }
         
+        
+        const clientSelectElement = document.querySelector('#selectClient');
+        const clientSelect = new Choices(clientSelectElement, {
+            searchEnabled: true,
+            itemSelectText: '',
+        });
        
+        const judgeSelectElement = document.querySelector('#selectJudge');
+        const judgeSelect = new Choices(judgeSelectElement, {
+            searchEnabled: true,
+            itemSelectText: '',
+        });
 
-        $('#addClient').on('submit', ()=> {
-            FormSubmition(event, 'POST', '/store-client')
-        })
-        const fillPhoneInput = (event)=>{
-            const id = event.target.value
+        $('#addClient').on('submit', ()=> FormSubmition(event, 'POST', '/store-client'))
+        $('#addJudge').on('submit', ()=> FormSubmitionJudge(event, 'POST', '/store-judge'))
+
+
+        const fillPhoneInput = (event, phoneNumber=null)=>{
+            console.log(phoneNumber, event)
+            const id = event?.target?.value
             const client = @json($clients);
-            const phone = client.filter((elm) => elm.id == id)[0].contact_info
-            console.log(phone)
-            const phoneInput =  document.getElementById('case_contact_info');
-            phoneInput.value = phone;
+            if(id) {
+                const phone = client.filter((elm) => elm.id == id)[0].contact_info
+                const phoneInput =  document.getElementById('case_contact_info');
+                phoneInput.value = phone;
+            }else{
+                const phoneInput =  document.getElementById('case_contact_info');
+                phoneInput.value = phoneNumber;
+            }
         }
     </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>                                       
     <script src="https://kit.fontawesome.com/5fff77269d.js" crossorigin="anonymous"></script>
     <script src="{{ URL::asset('build/libs/cleave.js/cleave.min.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/form-masks.init.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/multi.js/multi.min.js') }}"></script>
+    <script src="{{URL::asset('build/js/pages/flag-input.init.js')}}"></script>
 @endsection

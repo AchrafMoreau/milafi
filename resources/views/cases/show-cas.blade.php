@@ -132,7 +132,7 @@
                 <div class="card-body">
                     <div class="live-preview mt-3">
                         <div class="row gy-4">
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <div class="row d-flex justify-center-center align-items-end">
                                         <label for="choices-single-default" class="form-label ">@lang('translation.client') :</label>
@@ -144,28 +144,28 @@
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_type" class="form-label fs-6">@lang('translation.fileSubject') : </label>
                                     <input disabled name='title' type="text" class="form-control" id="case_type" value='{{ $case->title_file }}'>
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 
                                 <div class='d-flex flex-column '>
                                     <label for="clinet_contact" class="form-label fs-6">@lang('translation.phone') :</label>
                                     <input disabled type="text" name='phone' class="form-control disable" id="case_contact_info" disabled value='{{ $case->client->contact_info }}'>
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_number" class="form-label fs-6">@lang('translation.fileNumber') :</label>
                                     <input type="text" disabled name='titleNumber' class="form-control" id="case_number" value='{{ $case->title_number }}'>
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="choices-single-default" class="form-label ">@lang('translation.client') :</label>
                                     <select data-choices 
@@ -174,38 +174,38 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="opponent" class="form-label fs-6">@lang('translation.opponent') : </label>
                                     <input disabled type="text" name='opponent' class="form-control" id="opponent" value='{{ $case->opponent }}'>
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_report" class="form-label fs-6">@lang('translation.fileReport') :</label>
                                     <input disabled type="text" name='fileReport' class="form-control" id="case_report" value='{{ $case->report_file }}'>
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="case_exec" class="form-label fs-6">@lang('translation.fileExecution') : </label>
                                     <input disabled type="text" name='fileExecution' class="form-control" id="case_exec" value='{{ $case->execution_file }}'>
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="report_number" class="form-label fs-6">@lang('translation.fileNumber') :  </label>
                                     <input type="text" disabled name='reportNumber' class="form-control"  id="report_number" value="{{ $case->report_number }}">
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="report_number" class="form-label fs-6">@lang('translation.fileNumber') :</label>
                                     <input type="text" disabled name='executionNumber' class="form-control" id="report_number" value=" {{ $case->execution_number }}" >
                                 </div>
                             </div>
-                            <div class="col-xxl-3 col-md-6">
+                            <div class="col-xxl-6 col-md-6">
                                 <div class='d-flex flex-column '>
                                     <label for="report_number" class="form-label fs-6">@lang('translation.status') :</label>
                                     <select disabled name='status'value="{{ $case->status }}"  class="form-select mb-3"  aria-label="Default select example">

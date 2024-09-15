@@ -40,7 +40,7 @@ class JudgeController extends Controller
             'court'=> 'required'
         ]);
 
-        Judge::create([
+        $judge = Judge::create([
             'name' => $request->name,
             'contact_info' => $request->contact_info,
             'court_id' => $request->court,
@@ -50,9 +50,10 @@ class JudgeController extends Controller
 
         $notification = array(
             'message' => 'Judge Created successfully!',
-            'alert-type' => 'success'
+            'alert-type' => 'success',
+            'data' => $judge
         );
-        return redirect()->back()->with($notification);
+        return response()->json($notification, 201);
     }
 
     /**

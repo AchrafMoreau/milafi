@@ -56,6 +56,64 @@
         $('#CIN').attr('class', "form-control")
     }
     const token = $('meta[name="csrf-token"]').attr('content');
+    const FormSubmitionJudge = (event, method, url)=>{
+        event.preventDefault();
+        const form = event.target;
+        const name = form.elements['name'].value;
+        const gender = form.elements['gender'].value;
+        const contact_info = form.elements['contact_info'].value;
+        const court = form.elements['court'].value;
+
+        $.ajax({
+            url: url, 
+            method: method,
+            data: {name, gender, contact_info, court},
+            constactType: 'application/json',
+            headers:{
+                'X-CSRF-TOKEN': token
+            },
+            beforeSend: ()=>{
+                $('button#submit').html(`
+                    <div style='width:1rem; height:1rem;' class="spinner-border text-success" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                `);
+            },
+            complete: ()=>{
+                $('button#submit').html("@lang('translation.submit')");
+
+            },
+            success: (res) =>{
+                clearFields()
+                $('.btn-close').click();
+                toastr[res['alert-type']](res.message)
+                let elements = judgeSelect.config.choices
+                elements.push({value: res.data.id , label: res.data.name, selected: true, disabled: false, placeholder: false})
+                judgeSelect.clearStore(); 
+                judgeSelect.setChoices(elements, 'value', 'label', false);
+                form.elements['name'].value = "";
+                form.elements['contact_info'].value = ""
+                form.elements['court'].selectedIndex = 0; // This selects the first option
+                const genderRadios = form.elements['gender'];
+                for (let i = 0; i < genderRadios.length; i++) {
+                    genderRadios[i].checked = false;
+                }
+
+            },
+            error: (xhr, status, error)=>{
+                const err = xhr.responseJSON.errors
+                for(const key in err){
+                    console.log(err[key])
+                    const input = form.elements[key] 
+                    input.classList.add('is-invalid');
+                    $(input).next('.invalid-feedback').html(`<strong>${err[key]}</strong>`);
+                }
+
+            }
+
+
+        })
+    }
     const FormSubmition = (event, method, url)=>{
         event.preventDefault();
         const form = event.target;
@@ -84,11 +142,19 @@
 
             },
             success: (res) =>{
-                console.log(res.success)
-                // window.location.reload();
                 clearFields()
                 $('.btn-close').click();
                 toastr[res['alert-type']](res.message)
+
+                let elements = clientSelect.config.choices
+                elements.push({value: res.data.id , label: res.data.name, selected: true, disabled: false, placeholder: false})
+                console.log(elements)
+                clientSelect.clearStore(); 
+                clientSelect.setChoices(elements, 'value', 'label', false);
+
+                console.log(`New option added: <option value="${res.data.id}">${res.data.name}</option>`);
+                console.log(clientSelectElement.options); 
+                fillPhoneInput(null, res.data.contact_info);
             },
             error: (xhr, status, error)=>{
                 const err = xhr.responseJSON.errors
@@ -103,5 +169,7 @@
         });
        
     }
+
+
 </script>
 </html>

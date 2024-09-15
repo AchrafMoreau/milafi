@@ -53,7 +53,6 @@ var options = {
 if (document.getElementById("customerList"))
     var customerList = new List("customerList", options).on("updated", function (list) {
         const search =  $('.search').val()
-        console.log(search)
         list.matchingItems.length == 0 && search.length < 0 ?
             (document.getElementsByClassName("noresult")[0].style.display = "block") :
             (document.getElementsByClassName("noresult")[0].style.display = "none");
@@ -86,6 +85,7 @@ if (document.getElementById("customerList"))
             document.getElementsByClassName("noresult")[0].style.display = "block";
             console.log('should not enter if search is fill');
         }
+        
     });
 
 const xhttp = new XMLHttpRequest();
@@ -384,7 +384,6 @@ function deleteMultiple() {
     }
   });
 
-  console.log(ids_array);
   if (typeof ids_array !== 'undefined' && ids_array.length > 0) {
     if (confirm('Are you sure you want to delete this?')) {
         $.ajax({
