@@ -10,7 +10,7 @@ use App\Models\Cas;
 class Judge extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'contact_info', 'court_id'];
+    protected $fillable = ['name', 'contact_info', 'court_id', 'gender'];
 
     public function court(){
         return $this->belongsTo(Court::class);

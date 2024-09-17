@@ -15,13 +15,16 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->validateCsrfTokens(except: [
         //     "http://localhost:8000/*"
         // ]);
+        $middleware->appendToGroup('web', \App\Http\Middleware\Localization::class);
+
         $middleware->alias([
             'auth' =>  \App\Http\Middleware\Authenticate::class,
             'clearNotification' =>  \App\Http\Middleware\ClearNotificationSession::class,
         ]);
         $middleware->append([
             // \App\Http\Middleware\Authenticate::class,
-            // \App\Http\Middleware\Localization::class,
+            \App\Http\Middleware\Localization::class,
+
         ]);
         $middleware->validateCsrfTokens(
             except: []

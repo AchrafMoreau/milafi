@@ -18,6 +18,11 @@ class CourtController extends Controller
         return view('dashboard-court', ['courts' => $courts, 'categories' => $category]);
     }
 
+    public function getAll()
+    {
+        $courts = Court::All();
+        return response()->json($courts);
+    }
     /**
      * Show the form for creating a new resource.
      */

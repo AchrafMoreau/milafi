@@ -44,7 +44,7 @@
 
 <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 <script>
-    function clearFields() {
+    function clearFieldsforClient() {
         $('#name').val("")
         $('#name').attr('class', "form-control")
         $('#contact_info').val("");
@@ -84,7 +84,7 @@
 
             },
             success: (res) =>{
-                clearFields()
+                clearFieldsforClient()
                 $('.btn-close').click();
                 toastr[res['alert-type']](res.message)
                 let elements = judgeSelect.config.choices

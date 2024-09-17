@@ -41,11 +41,11 @@ class HomeController extends Controller
     /*Language Translation*/
     public function lang($locale)
     {
+        // dd($locale);
         if ($locale) {
             App::setLocale($locale);
             Session::put('lang', $locale);
             Session::save();
-            // return response()->json(['app'=> $app, 'put'=> $put, 'save' => $save, 'local' => $locale]);
             return redirect()->back()->with('locale', $locale);
         } else {
             return redirect()->back();

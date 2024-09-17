@@ -19,6 +19,12 @@ class JudgeController extends Controller
         return view('dashboard-judges', ['judges' => $judges, 'courts' => $court]);
     }
 
+    public function getAll()
+    {
+        $judges = Judge::with(['court'])->get();
+        return response()->json($judges);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -35,18 +41,20 @@ class JudgeController extends Controller
         //
         $request->validate([
             'name' => 'required',
-            'gender' => 'required',
             'contact_info' => 'required',
             'court'=> 'required'
         ]);
 
-        $judge = Judge::create([
+        // dd($request);
+
+        $ju = Judge::create([
             'name' => $request->name,
             'contact_info' => $request->contact_info,
             'court_id' => $request->court,
             'gender' => $request->gender
         ]);
 
+        $judge = Judge::with('court')->find($ju->id);
 
         $notification = array(
             'message' => 'Judge Created successfully!',
@@ -81,7 +89,6 @@ class JudgeController extends Controller
         
         $request->validate([
             'name' => 'required',
-            'gender' => 'required',
             'contact_info' => 'required',
             'court'=> 'required'
         ]);
@@ -95,11 +102,14 @@ class JudgeController extends Controller
 
         $judge->save();
 
+        $juge = Judge::with('court')->find($judge->id);
+
         $notification = array(
             'message' => 'Judge Updated successfully!',
-            'alert-type' => 'success'
+            'alert-type' => 'success',
+            'data' => $juge
         );
-        return redirect()->back()->with($notification);
+        return response()->json($notification, 200);
         
     }
 
@@ -120,7 +130,7 @@ class JudgeController extends Controller
             'message' => 'Many Judges Deleted Successfully',
             'alert-type' => 'success'
         );
-        return redirect()->back()->with($notification);
+        return response()->json($notification);
     }
     public function destroy(Judge $judege, $id)
     {
@@ -130,6 +140,6 @@ class JudgeController extends Controller
             'message' => 'Judge Was Deleted Successfully',
             'alert-type' => 'success'
         );
-        return redirect()->back()->with($notification);
+        return response()->json($notification);
     }
 }

@@ -111,9 +111,8 @@
                             <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
                                 colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
                             </lord-icon>
-                            <h5 class="mt-2">Sorry! No Result Found</h5>
-                            <p class="text-muted mb-0">We've searched more than 150+ Orders We did not find any
-                                orders for you search.</p>
+                            <h5 class="mt-2">@lang('translation.NoResultWasFound')</h5>
+                            <p class="text-muted mb-0">@lang('translation.searchNotFound')</p>
                         </div>
                     </div>
                 </div>
@@ -217,13 +216,13 @@
                         <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
                             colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
                         <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                            <h4>Are you Sure ?</h4>
-                            <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this Record ?</p>
+                            <h4>@lang('translation.deleteMessage') @lang('translation.case')</h4>
+                            <p class="text-muted mx-4 mb-0">@lang('translation.deleteConfirmation')</p>
                         </div>
                     </div>
                     <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn w-sm btn-danger " id="delete-record">Yes, Delete It!</button>
+                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
+                        <button type="button" class="btn w-sm btn-danger " id="delete-record">@lang('translation.yes')</button>
                     </div>
                 </div>
             </div>
@@ -246,21 +245,7 @@
 <script>
     $('#addClient').on('submit', ()=> FormSubmition(event, 'POST', '/store-client'))
     $('#updateClient').on('submit', ()=> FormSubmition(event, 'PUT', `/client/${event.target.classList[0]}`))
-
 </script>
-    <!-- <script>
-        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const handelClient = (id)=>{
-            console.log(id, parseInt(id))
-            fetch('http://localhost:8000/client/'+parseInt(id),{
-                method: "GET",
-                headers:{
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': token
-                }
-            })
-        }
-    </script> -->
     <script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>
     <script src="{{ URL::asset('build/libs/list.js/list.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/list.pagination.js/list.pagination.min.js') }}"></script>

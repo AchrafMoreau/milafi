@@ -18,9 +18,6 @@ Route::get('/', function () {
     return  view('welcome');
 });
 
-Route::get('/token', function(){
-    return csrf_token();
-});
 
 
 
@@ -46,6 +43,7 @@ Route::middleware(['auth', 'clearNotification'])->group(function () {
 
     // judge routes for user / lawyer
     Route::get('/judge', [JudgeController::class, 'index']);
+    Route::get('/judgeJson', [JudgeController::class, 'getAll']);
     Route::delete('/judge-delete/{id}', [JudgeController::class, 'destroy']);
     Route::delete('/destroyMany-judge', [JudgeController::class, 'destroyMany']);
     Route::put('/judge/{id}', [JudgeController::class, 'update']);
@@ -66,6 +64,7 @@ Route::middleware(['auth', 'clearNotification'])->group(function () {
 
     // court route for user / lawyer
     Route::get('/court', [CourtController::class, 'index']);
+    Route::get('/courtJson', [CourtController::class, 'getAll']);
     Route::put('/court/{id}', [CourtController::class, 'update']);
     Route::delete('/court-delete/{id}', [CourtController::class, 'destroy']);
     Route::delete('/destroyMany-court', [CourtController::class, 'destroyMany']);

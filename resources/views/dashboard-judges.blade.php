@@ -22,21 +22,21 @@
         <div class="listjs-table" id="customerList">
             <div class="row g-4 mb-3">
                 <div class="col-sm-auto">
-                    <div class="col-sm">
-                        <div class="d-flex justify-content-sm-end">
-                            <div class="search-box ms-2">
-                                <input type="text" class="form-control search" placeholder="Search...">
-                                <i class="ri-search-line search-icon"></i>
-                            </div>
-                        </div>
+                    <div>
+                        <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
+                            id="create-btn" data-bs-target="#showModal"><i
+                                class="ri-add-line align-bottom me-1"></i>@lang('translation.addJudge')</button>
+                        <button class="btn btn-soft-danger" onClick="deleteMultiple()"><i
+                                class="ri-delete-bin-2-line"></i></button>
                     </div>
                 </div>
                 <div class="col-sm">
-                    <div class="d-flex gap-3 justify-content-end">
-                    @component('judges.add-judge', ['courts' => $courts])
-                    @endcomponent
+                    <div class="d-flex justify-content-sm-end">
+                        <div class="search-box ms-2">
+                            <input type="text" class="form-control search" placeholder="Search...">
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
                     </div>
-
                 </div>
             </div>
 
@@ -44,60 +44,52 @@
                 <table class="table align-middle table-nowrap" id="customerTable" id='myTable'>
                     <thead class="table-light">
                         <tr class= 'text-center' >
+                            <th scope="col" style="width: 50px;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="checkAll"
+                                        value="option">
+                                </div>
+                            </th>
                             <th class="sort text-black px-2 m-0" data-sort="id">Id</th>
-                            <th class="sort" data-sort="client_name">@lang('translation.name')</th>
-                            <th  data-sort="contact">@lang('translation.contact')</th>
-                            <th class=" px-3" data-sort="gender">@lang('translation.gender')</th>
-                            <th data-sort="cases">@lang('translation.court')</th>
+                            <th class="sort" data-sort="name">@lang('translation.name')</th>
+                            <th >@lang('translation.contact')</th>
+                            <th class=" px-3" >@lang('translation.gender')</th>
+                            <th >@lang('translation.court')</th>
                             <th >@lang('translation.action')</th>
                         </tr>
                     </thead>
                     <tbody class="list form-check-all">
-                            @foreach($judges as $judge)
                         <tr>
-                            
-                            <td class="id">000{{ $judge->id }}</td>
-                            <td class="client_name">{{ $judge->name }}</td>
-                            <td class="contact">{{ $judge->contact_info }}</td>
-                            <td class="gender">{{ $judge->gender }}</td>
-                            <td class="address text-wrap">{{ $judge->court->name }} </td>
-                            <td>
-                                <div class="d-flex gap-2 justify-content-center">
-                                
-                                    <div class="edite">
-                                        @component('judges.edit-judge', ['judge'=> $judge, 'courts' => $courts])
-                                        @endcomponent
+                            <th scope="row">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="chk_child"
+                                        value="option1">
+                                </div>
+                            </th>
+                            <td class="id"><a href="javascript:void(0);"
+                                        class="fw-medium link-primary">...</a></td>
+                            <td class="name">...</td>
+                            <td class="contact">...</td>
+                            <td class="gender">...</td>
+                            <td class="court text-wrap">...</td>
+                            <td class='d-flex justify-content-center'>
+                                <div class="d-flex gap-2">
+                                    <div class="edit">
+                                        <button class="btn btn-sm btn-success edit-item-btn"
+                                            data-bs-toggle="modal" data-bs-target="#showModal">
+                                                <i class="ri-pencil-fill align-bottom"></i>
+                                        </button>
                                     </div>
                                     <div class="remove">
-                                        <button type="button" id='{{ $judge->id }}' class="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#modal-{{$judge->id}}" >
-                                            <i class='las la-trash'></i>
+                                        <button class="btn btn-sm btn-danger remove-item-btn"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteRecordModal">
+                                            <i class="ri-delete-bin-5-fill align-bottom"></i>
                                         </button>
-                                        <div class="modal fade bs-example-modal-center" id="modal-{{$judge->id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-body text-center p-5">
-                                                        <lord-icon src="https://cdn.lordicon.com/hrqwmuhr.json"
-                                                            trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:120px;height:120px">
-                                                        </lord-icon>
-                                                       <div class="mt-4">
-                                                            <h4 class="mb-3">@lang('translation.deleteMessage') @lang('translation.judge') !</h4>
-                                                            <p class="text-muted mb-4 text-wrap">@lang('translation.deleteConfirmation').</p>
-                                                            <form action="{{ url('/judge-delete/'.$judge->id) }}" method='POST'  class="hstack gap-2 justify-content-center">
-                                                                @csrf
-                                                                @method("DELETE")
-                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
-                                                                <button type='submit' class='btn btn-danger'>@lang('translation.yes')</button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div><!-- /.modal-content -->
-                                            </div><!-- /.modal-dialog -->
-                                        </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        @endforeach
                     </tbody>
                 </table>
                 <div class="noresult" style="display: none">
@@ -105,20 +97,127 @@
                         <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
                             colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
                         </lord-icon>
-                        <h5 class="mt-2">Sorry! No Result Found</h5>
-                        <p class="text-muted mb-0">We've searched more than 150+ Orders We did not find any
-                            orders for you search.</p>
+                        <h5 class="mt-2">@lang('translation.NoResultWasFound')</h5>
+                        <p class="text-muted mb-0">@lang('translation.searchNotFound')</p>
                     </div>
                 </div>
             </div>
 
+
             <div class="d-flex justify-content-end">
-                <div class="pagination-wrap hstack gap-2 d-flex flex-column">
-                    {{ $judges->links('pagination::bootstrap-5') }}
+                <div class="d-flex justify-content-end">
+                    <div class="pagination-wrap hstack gap-2">
+                        <a class="page-item pagination-prev disabled" href="javascript:void(0);">
+                            @lang('translation.previous')
+                        </a>
+                        <ul class="pagination listjs-pagination mb-0"></ul>
+                        <a class="page-item pagination-next" href="javascript:void(0);">
+                            @lang('translation.next')
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div><!-- end card -->
+
+
+    <!--  add or edit form modal -->
+    <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-light p-3">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="tablelist-form" autocomplete="off">
+                        <div class="row g-3">
+                            <div class="mb-3" id="modal-id" style="display: none;">
+                                <label for="id-field" class="form-label">ID</label>
+                                <input type="text" id="id-field" class="form-control" placeholder="ID" readonly />
+                            </div>
+                            <div class="col-xxl-6">
+                                <div>
+                                    <label for="name" class="form-label">@lang('translation.fullName')</label>
+                                    <input type="text" required name='name' value='{{ old("name") }}' class="form-control  " id="name-field" placeholder="@lang('translation.enterFullName')">
+                                    <span class="invalid-feedback" role="alert">
+                                    </span>
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-lg-12">
+                                <label class="form-label">@lang('translation.gender')</label>
+                                <div id='gender-field'>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" checked type="radio" name="gender" id="gender-male" value="male">
+                                        <label value="{{ old('gender') }}" class="form-check-label " for="gender-male">@lang('translation.male')</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="gender-female" value="female">
+                                        <label value="{{ old('gender') }}" class="form-check-label " for="gender-female">@lang('translation.female')</label>
+                                    </div>
+                                </div>
+                                <span class="invalid-feedback" role="alert">
+                                </span>
+                            </div><!--end col-->
+                            <div class="col-xxl-6">
+                                <label for="contact" class="form-label">@lang('translation.contact')</label>
+                                <input type="text" value="{{ old('contact') }}" required class="form-control "  name='contact_info' id="contact_info-field" placeholder="@lang('translation.enterContact')">
+                                    <span class="invalid-feedback" role="alert">
+                                    </span>
+                            </div><!--end col-->
+                            <div class="col-xxl-6">
+                                <label for="court-field" class="form-label">Status</label>
+                                <select class="form-control" data-trigger name="court" id="court-field" >
+                                    <option value="">@lang('translation.courts')</option>
+                                    @foreach($courts  as $court)
+                                        <option value="{{ $court->id }}" >{{ $court->name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="invalid-feedback" role="alert">
+                                </span>
+                            </div><!--end col-->
+                            <div class="modal-footer">
+                                <div class="hstack gap-2 justify-content-end">
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
+                                    <button type="submit" class="btn btn-success" id="add-btn">@lang('translation.addJudge')</button>
+                                    <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
+                                </div>
+                            </div>
+                        </div><!--end row-->
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--  deleter modal -->
+
+    <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mt-2 text-center">
+                        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                            colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                            <h4>@lang('translation.deleteMessage') @lang('translation.case')</h4>
+                            <p class="text-muted mx-4 mb-0">@lang('translation.deleteConfirmation')</p>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
+                        <button type="button" class="btn w-sm btn-danger " id="delete-record">@lang('translation.yes')</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
   
@@ -126,13 +225,23 @@
 <!-- end table responsive -->
 @endsection
 @section('script')
+    <script>
+        window.translations = {
+            addJudge: "{{ __('translation.addJudge') }}",
+            editJudge: "{{ __('translation.editJudge') }}",
+            male: "{{ __('translation.male') }}",
+            female: "{{ __('translation.female') }}",
+            selectCourt: "{{ __('translation.selectCourt') }}"
+        }
+
+    </script>
     <script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>
     <script src="{{ URL::asset('build/libs/list.js/list.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/list.pagination.js/list.pagination.min.js') }}"></script>
 
 
     <!-- listjs init -->
-    <script src="{{ URL::asset('build/js/pages/listjs.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/pages/judgeList.init.js') }}"></script>
 
     <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>

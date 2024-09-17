@@ -1,5 +1,7 @@
 <?php
 return [
+    'selectCourt' => 'veuillez sélectionner le tribunal',
+    'editJudge' => 'modifier le juge',
     'enterProcedure' => 'saisissez vos procédures',
     'PMtotheAm' => "gardez à l'esprit que PM couvre les heures de l'après-midi et du soir et AM couvre les heures du matin.",
     'day' => 'اليوم',
