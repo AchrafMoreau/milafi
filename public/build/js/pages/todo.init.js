@@ -45,8 +45,8 @@ flatpickr("#task-duedate-input", {
 
 Array.from(document.getElementsByClassName("createTask")).forEach(function (elem) {
     elem.addEventListener("click", function () {
-        document.getElementById("createTaskLabel").innerHTML = "Create Task";
-        document.getElementById("addNewTodo").innerHTML = "Add Task";
+        document.getElementById("createTaskLabel").innerHTML = window.translations.createTask;
+        document.getElementById("addNewTodo").innerHTML = window.translations.createTask;
         clearFields();
     });
 });
@@ -108,12 +108,17 @@ document.getElementById("creattask-form").addEventListener("submit", function (e
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': tokenize
             },
+            beforeSend: ()=>{
+                $('#addNewTodo').html(`<div class="spinner-border text-light" style='width:1rem; height:1rem;' role="status" ><span class="sr-only">loading...</span></div>`)
+            },
             data: JSON.stringify(newTodo),
             success: (res) => {
-                todoList.unshift(res)
-                sortElementsById();
+                todoList.push(res)
+                sortElementsById('asc');
                 editList = false;
                 document.getElementById("createTaskBtn-close").click();
+                // $('#delete-record').html("")
+                // $('#delete-record').text(window.translations.yes)
             },
             error: (xhr, status, error) => console.log(error)
         })
@@ -137,8 +142,26 @@ document.getElementById("creattask-form").addEventListener("submit", function (e
                 'X-CSRF-TOKEN': tokenize
             },
             data: JSON.stringify(editObj),
+            beforeSend: ()=>{
+                $('#addNewTodo').html(`<div class="spinner-border text-light" style='width:1rem; height:1rem;' role="status" ><span class="sr-only">loading...</span></div>`)
+            },
             success: (res) => {
-                window.location.reload()
+                // window.location.reload()
+                todoList = todoList.map(function (item) {
+                    if (item.id == getEditid) {
+                        if (statusVal.getValue(true) == "Completed") {
+                            item.checkedElem = true
+                        } else {
+                            item.checkedElem = false
+                        }
+                       
+                       console.log(res)
+                        return res;
+                    }
+                    return item;
+                });
+                console.log
+                load(todoList)
                 editList = false;
                 document.getElementById("createTaskBtn-close").click();
             },
@@ -330,24 +353,24 @@ function tooltipElm(){
 function isStatus(val) {
     switch (val) {
         case "Pending":
-            return ('<span class="badge bg-warning-subtle text-warning text-uppercase">' + val + "</span>");
+            return ('<span class="badge bg-warning-subtle text-warning text-uppercase">' + window.translations.pending + "</span>");
         case "Inprogress":
-            return ('<span class="badge bg-secondary-subtle text-secondary text-uppercase">' + val + "</span>");
+            return ('<span class="badge bg-secondary-subtle text-secondary text-uppercase">' +window.translations.inprogress + "</span>");
         case "Completed":
-            return ('<span class="badge bg-success-subtle text-success text-uppercase">' + val + "</span>");
+            return ('<span class="badge bg-success-subtle text-success text-uppercase">' + window.translations.completed + "</span>");
         case "New":
-            return ('<span class="badge bg-info-subtle text-info text-uppercase">' + val + "</span>");
+            return ('<span class="badge bg-info-subtle text-info text-uppercase">' + window.translations.new + "</span>");
     }
 }
 
 function isPriority(val) {
     switch (val) {
         case "High":
-            return ('<span class="badge bg-danger text-uppercase">' + val + "</span>");
+            return ('<span class="badge bg-danger text-uppercase">' + window.translations.high + "</span>");
         case "Low":
-            return ('<span class="badge bg-success text-uppercase">' + val + "</span>");
+            return ('<span class="badge bg-success text-uppercase">' + window.translations.low + "</span>");
         case "Medium":
-            return ('<span class="badge bg-warning text-uppercase">' + val + "</span>");
+            return ('<span class="badge bg-warning text-uppercase">' + window.translations.medium + "</span>");
     }
 }
 
@@ -385,8 +408,8 @@ function editTodoList() {
             todoList = todoList.map(function (item) {
                 if (item.id == getEditid) {
                     editList = true;
-                    document.getElementById("createTaskLabel").innerHTML = "Edit Task";
-                    document.getElementById("addNewTodo").innerHTML = "Save";
+                    document.getElementById("createTaskLabel").innerHTML = window.translations.editTask;
+                    document.getElementById("addNewTodo").innerHTML = window.translations.save;
                     document.getElementById("taskid-input").value = item.id;
                     document.getElementById("task-title-input").value = item.title;
                     document.getElementById("task-description-input").value = item.description;
@@ -421,6 +444,9 @@ function removeSingleItem() {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': tokenize
                     },
+                    beforeSend: ()=>{
+                        $('#remove-todoitem').html(`<div class="spinner-border text-light" style='width:1rem; height:1rem;' role="status" ><span class="sr-only">loading...</span></div>`)
+                    },
                     success: (res) => {
                         function arrayRemove(arr, value) {
                             return arr.filter(function (ele) {
@@ -433,6 +459,8 @@ function removeSingleItem() {
 
                         load(todoList);
                         document.getElementById("close-removetodomodal").click();
+                        $('#remove-todoitem').html("")
+                        $('#remove-todoitem').text(window.translations.yes)
                     },
                     error: (xhr, status, error) => console.log(error)
                 })

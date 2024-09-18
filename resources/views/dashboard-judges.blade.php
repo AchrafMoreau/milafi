@@ -167,7 +167,7 @@
                                     </span>
                             </div><!--end col-->
                             <div class="col-xxl-6">
-                                <label for="court-field" class="form-label">Status</label>
+                                <label for="court-field" class="form-label">@lang('translation.courts')</label>
                                 <select class="form-control" data-trigger name="court" id="court-field" >
                                     <option value="">@lang('translation.courts')</option>
                                     @foreach($courts  as $court)
@@ -231,13 +231,14 @@
             editJudge: "{{ __('translation.editJudge') }}",
             male: "{{ __('translation.male') }}",
             female: "{{ __('translation.female') }}",
-            selectCourt: "{{ __('translation.selectCourt') }}"
+            selectCourt: "{{ __('translation.selectCourt') }}",
+            yes: "{{ __('translation.yes') }}",
         }
 
     </script>
     <script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/list.js/list.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/list.pagination.js/list.pagination.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/list.js/list.min.js') }}"></script>
 
 
     <!-- listjs init -->

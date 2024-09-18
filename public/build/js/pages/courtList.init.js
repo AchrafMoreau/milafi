@@ -1,4 +1,3 @@
-
 var checkAll = document.getElementById("checkAll");
 if (checkAll) {
     checkAll.onclick = function () {
@@ -25,9 +24,8 @@ var options = {
     valueNames: [
         "id",
         "name",
-        "contact",
-        "gender",
-        "court",
+        "location",
+        "category",
     ],
     page: perPage,
     pagination: true,
@@ -86,9 +84,8 @@ xhttp.onload = function () {
     customerList.add({
       id: `000${raw.id}`,
       name: raw.name,
-      contact: raw.contact_info,
-      gender: raw.gender === 'Male' ? window.translations.male : window.translations.female, 
-      court: raw.court.name,
+      location: raw.location,
+      category: setCategory(raw.category),
     });
     customerList.sort('id', { order: "desc" });
     refreshCallbacks();
@@ -98,7 +95,7 @@ xhttp.onload = function () {
 
 //   document.getElementsByClassName('firstRaw').style.display = 'block'
 }
-xhttp.open("GET", "/judgeJson");
+xhttp.open("GET", "/courtJson");
 xhttp.send();
 
 // isCount = new DOMParser().parseFromString(
@@ -110,9 +107,8 @@ xhttp.send();
 
 var idField = document.getElementById("id-field"),
     nameField = document.getElementById("name-field"),
-    contact_infoField = document.getElementById("contact_info-field"),
-    genderField = document.getElementById("gender-field"),
-    courtsField = document.getElementById("court-field"),
+    locationField = document.getElementById("location-field"),
+    categoryField = document.getElementById("category-field"),
     addBtn = document.getElementById("add-btn"),
     editBtn = document.getElementById("edit-btn"),
     removeBtns = document.getElementsByClassName("remove-item-btn"),
@@ -167,13 +163,13 @@ function updateList() {
 if (document.getElementById("showModal")) {
     document.getElementById("showModal").addEventListener("show.bs.modal", function (e) {
         if (e.relatedTarget.classList.contains("edit-item-btn")) {
-            document.getElementById("exampleModalLabel").innerHTML = window.translations.editJudge;
+            document.getElementById("exampleModalLabel").innerHTML = window.translations.editCourt;
             document.getElementById("showModal").querySelector(".modal-footer").style.display = "block";
-            document.getElementById("add-btn").innerHTML = window.translations.editJudge;
+            document.getElementById("add-btn").innerHTML = window.translations.editCourt;
         } else if (e.relatedTarget.classList.contains("add-btn")) {
-            document.getElementById("exampleModalLabel").innerHTML = window.translations.addJudge;
+            document.getElementById("exampleModalLabel").innerHTML = window.translations.addCourt;
             document.getElementById("showModal").querySelector(".modal-footer").style.display = "block";
-            document.getElementById("add-btn").innerHTML = window.translations.addJudge;
+            document.getElementById("add-btn").innerHTML = window.translations.addCourt;
         } else {
             document.getElementById("exampleModalLabel").innerHTML = "List Customer";
             document.getElementById("showModal").querySelector(".modal-footer").style.display = "none";
@@ -207,82 +203,76 @@ Array.prototype.slice.call(forms).forEach(function (form) {
             event.preventDefault();
             if (
                 nameField.value !== "" &&
-                contact_infoField.value !== "" && !editlist
+                locationField.value !== "" && !editlist
             ) {
+                if(courtVal.getValue().value === ""){
+                    Swal.fire({
+                        title: window.translations.selectCourt,
+                        showCloseButton: true
+                    });
+                }else{
+                    const data = {
+                        name: nameField.value,
+                        location: locationField.value,
+                        category: courtVal.getValue().value,
+                    }
 
-                const initGender = document.querySelector('input[name="gender"]:checked')
-                console.log(initGender)
-                const data = {
-                    name: nameField.value,
-                    contact_info: contact_infoField.value,
-                    gender: selectedGender ? selectedGender : initGender.value,
-                    court: courtsField.value,
-                }
-
-                console.log(data)
-                
-                $.ajax({
-                    url: "/store-judge",
-                    method: "POST",
-                    data: JSON.stringify(data),
-                    headers:{
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': token
-                    },
-                    // beforeSend: ()=>{
-                    //     document.getElementById('add-btn').innerHTML = 
-                    // },
-                    beforeSend: ()=>{
-                        $('#add-btn').html(`<div class="spinner-border text-primary" style='width:1rem; height:1rem;' role="status" ><span class="sr-only">loading...</span></div>`)
-                    },
-                    success: (res) =>{
-                        toastr[res['alert-type']](res.message)
-                        console.log(res.data.gender)
-                        console.log(res.data.gender === "Male" ? window.translations.male : window.translations.female), 
-                        customerList.add({
-                            id: `000${res.data.id}`,
-                            name: res.data.name,
-                            contact: res.data.contact_info,
-                            gender: res.data.gender === "Male" ? window.translations.male : window.translations.female, 
-                            court : res.data.court.name,
-                        });
-                        customerList.sort('id', { order: "desc" });
-                        document.getElementById("close-modal").click();
-                        refreshCallbacks();
-                        clearFields();
-                        count++;
-                    },
-                    error: (xhr, status, error) => {
-                        $('#add-btn').html(``)
-                        $('#add-btn').text(window.translations.addJudge)
-                        const err = xhr.responseJSON.errors
-                        for(const key in err){
-                            console.log(key)
-                            if(key === 'court'){
-                                Swal.fire({
-                                    title: window.translations.selectCourt,
-                                    showCloseButton: true
-                                });
-                            }else{
-                                const input = event.target.elements[key] 
-                                if(err[key][0].split('.')[1] === 'required'){
-                                    input.classList.add('is-invalid');
-                                    $(input).next('.invalid-feedback').html(`<strong>this field are required</strong>`);
-                                }else if(err[key][0].split('.')[1] === 'unique'){
-                                    input.classList.add('is-invalid');
-                                    $(input).next('.invalid-feedback').html(`<strong>this field should be unique </strong>`);
+                    
+                    $.ajax({
+                        url: "/store-court",
+                        method: "POST",
+                        data: JSON.stringify(data),
+                        headers:{
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        beforeSend: ()=>{
+                            $('#add-btn').html(`<div class="spinner-border text-primary" style='width:1rem; height:1rem;' role="status" ><span class="sr-only">loading...</span></div>`)
+                        },
+                        success: (res) =>{
+                            toastr[res['alert-type']](res.message)
+                            customerList.add({
+                                id: `000${res.data.id}`,
+                                name: res.data.name,
+                                location: res.data.location,
+                                category: setCategory(res.data.category)
+                            });
+                            customerList.sort('id', { order: "desc" });
+                            document.getElementById("close-modal").click();
+                            refreshCallbacks();
+                            clearFields();
+                            count++;
+                        },
+                        error: (xhr, status, error) => {
+                            const err = xhr.responseJSON.errors
+                            $('#add-btn').html(``)
+                            $('#add-btn').text(window.translations.addCourt)
+                            for(const key in err){
+                                if(key === 'category'){
+                                    Swal.fire({
+                                        title: window.translations.selectCourt,
+                                        showCloseButton: true
+                                    });
                                 }else{
-                                    input.classList.add('is-invalid');
-                                    $(input).next('.invalid-feedback').html(`<strong>${err[key]}</strong>`);
+                                    const input = event.target.elements[key] 
+                                    if(err[key][0].split('.')[1] === 'required'){
+                                        input.classList.add('is-invalid');
+                                        $(input).next('.invalid-feedback').html(`<strong>this field are required</strong>`);
+                                    }else if(err[key][0].split('.')[1] === 'unique'){
+                                        input.classList.add('is-invalid');
+                                        $(input).next('.invalid-feedback').html(`<strong>this field should be unique </strong>`);
+                                    }else{
+                                        input.classList.add('is-invalid');
+                                        $(input).next('.invalid-feedback').html(`<strong>${err[key]}</strong>`);
+                                    }
                                 }
                             }
                         }
-                    }
-                });
+                    });
+                }
             } else if (
                 nameField.value !== "" &&
-                contact_infoField.value !== "" &&
-                courtsField.value !== "" && editlist
+                location.value !== "" && editlist
             ){
                 var editValues = customerList.get({
                     id: idField.value,
@@ -293,13 +283,12 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                     if (selectedid == itemId) {
                         const data = {
                             name: nameField.value,
-                            contact_info: contact_infoField.value,
-                            gender: selectedGender ? selectedGender : x._values.gender,
-                            court: courtsField.value,
+                            location: locationField.value,
+                            category: courtVal.getValue().value,
                         }
                         console.log(data)
                         $.ajax({
-                            url: `/judge/${parseInt(selectedid)}`,
+                            url: `/court/${parseInt(selectedid)}`,
                             method: "PUT",
                             data: JSON.stringify(data),
                             headers:{
@@ -314,17 +303,16 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                                 x.values({
                                     id: `000${res.data.id}`,
                                     name: res.data.name,
-                                    contact: res.data.contact_info,
-                                    gender: res.data.gender === 'Male' ? window.translations.male : window.translations.female, 
-                                    court: res.data.court.name,
+                                    location: res.data.location,
+                                    category: setCategory(res.data.category),
                                 });
                                 document.getElementById("close-modal").click();
                                 clearFields();
                             },
                             error: (xhr, status, error) => {
-                                $('#add-btn').html(``)
-                                $('#add-btn').text(window.translations.editJudge)
                                 const err = xhr.responseJSON.errors
+                                $('#add-btn').html(``)
+                                $('#add-btn').text(window.translations.editCourt)
                                 for(const key in err){
                                     console.log(key)
                                     const input = event.target.elements[key] 
@@ -353,7 +341,7 @@ Array.prototype.slice.call(forms).forEach(function (form) {
 
 
 
-var courtVal = new Choices(courtsField);
+var courtVal = new Choices(categoryField);
 function isStatus(val) {
     switch (val) {
         case "Active":
@@ -402,7 +390,7 @@ function refreshCallbacks() {
                     document.getElementById("delete-record").addEventListener("click", function () {
                         if(itemId == x._values.id){
                             $.ajax({
-                                url: `/judge-delete/${parseInt(isdeleteid)}`,
+                                url: `/court-delete/${parseInt(isdeleteid)}`,
                                 method: "DELETE",
                                 headers:{
                                     'Content-Type': 'application/json',
@@ -443,18 +431,12 @@ function refreshCallbacks() {
                         editlist = true;
                         idField.value = selectedid;
                         nameField.value = x._values.name;
-                        contact_infoField.value = x._values.contact;
-                        if(x._values.gender === window.translations.male){
-                            document.getElementById('gender-male').checked = true
-                        }else{
-                            document.getElementById('gender-female').checked = true
-                        }
+                        locationField.value = x._values.location;
 
                         if (courtVal) courtVal.destroy();
-                        courtVal = new Choices(courtsField);
-                        val = new DOMParser().parseFromString(x._values.court, "text/html");
-                        const selectedValue = courtVal.config.choices.find((elm)=> elm.label == x._values.court);
-                        courtVal.setChoiceByValue(selectedValue.value);
+                        courtVal = new Choices(categoryField);
+                        var catVal = setCategory(x._values.category)
+                        courtVal.setChoiceByValue(catVal);
                     }
                 });
             });
@@ -464,15 +446,8 @@ function refreshCallbacks() {
 
 function clearFields() {
     nameField.value = "";
-    contact_infoField.value = "";
-    genderField.value = "";
-    courtsField.value = "";
-    for (let i = 0; i < genderRadios.length; i++) {
-        if(genderRadios[i].value === 'male'){
-            genderRadios[i].checked = true;
-        }
-        genderRadios[i].checked = false;
-    }
+    locationField.value = "";
+    courtVal.setChoiceByValue("")
     editlist = false
 }
 
@@ -489,7 +464,7 @@ function deleteMultiple() {
   if (typeof ids_array !== 'undefined' && ids_array.length > 0) {
     if (confirm('Are you sure you want to delete this?')) {
         $.ajax({
-            url: "/destroyMany-judge",
+            url: "/destroyMany-court",
             method: "DELETE",
             data: {ids: ids_array},
             headers:{
@@ -535,6 +510,46 @@ document.querySelectorAll(".listjs-table").forEach(function(item){
     });
 });
 
+
+function setCategory(cat){
+    switch(cat){
+        case window.translations.premierInstance:
+            return 'première instance';
+        case window.translations.center: 
+            return 'Centres des juges résidents';
+        case window.translations.cassation:
+            return 'cassation';
+        case window.translations.appelCommerce:
+            return 'appel de commerce';
+        case window.translations.appel:
+            return 'appel';
+        case window.translations.commercial:
+            return 'commerciaux';
+        case window.translations.administratif:
+            return 'administratifs';
+        case window.translations.appelAdmin:
+            return 'appel administratives';
+        case 'première instance':
+            return window.translations.premierInstance;
+        case 'Centres des juges résidents':
+            return window.translations.center;
+        case 'cassation':
+            return window.translations.cassation;
+        case 'appel de commerce':
+            return window.translations.appelCommerce;
+        case 'appel' :
+            return window.translations.appel;
+        case 'commerciaux':
+            return window.translations.commercial;
+        case 'administratifs':
+            return window.translations.administratif;
+        case 'appel administratives':
+            return window.translations.appelAdmin;
+        default:
+            console.log(cat)
+            return window.translations.court;
+    }
+}
 
 // data- attribute example
 var attroptions = {

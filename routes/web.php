@@ -72,6 +72,7 @@ Route::middleware(['auth', 'clearNotification'])->group(function () {
 
     // document route for user / lawyer
     Route::get('/document', [DocumentController::class, 'index']);
+    Route::get('/documentJson', [DocumentController::class, 'getAll']);
     Route::get('/show-doc/{id}', [DocumentController::class, 'show']);
     Route::get('/uploadFile/{folder}/{filename}', [DocumentController::class, 'downloadFile']);
     Route::put('/document/{id}', [DocumentController::class, 'update']);

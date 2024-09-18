@@ -90,7 +90,7 @@ xhttp.onload = function () {
       id: raw.id,
       name: raw.name,
       contact: raw.contact_info,
-      gender: raw.gender,
+      gender: raw.gender === 'male' ? window.translations.male : window.translations.female, 
       address: raw.address,
       CIN: raw.CIN,
       case: `<span class="badge bg-primary-subtle text-success text-uppercase">${raw.cas.length}</span>`
@@ -173,13 +173,13 @@ function updateList() {
 if (document.getElementById("showModal")) {
     document.getElementById("showModal").addEventListener("show.bs.modal", function (e) {
         if (e.relatedTarget.classList.contains("edit-item-btn")) {
-            document.getElementById("exampleModalLabel").innerHTML = "add CLient";
+            document.getElementById("exampleModalLabel").innerHTML = window.translations.editClient;
             document.getElementById("showModal").querySelector(".modal-footer").style.display = "block";
-            document.getElementById("add-btn").innerHTML = "Update";
+            document.getElementById("add-btn").innerHTML = window.translations.update;
         } else if (e.relatedTarget.classList.contains("add-btn")) {
-            document.getElementById("exampleModalLabel").innerHTML = "Add Customer";
+            document.getElementById("exampleModalLabel").innerHTML = window.translations.addClient;
             document.getElementById("showModal").querySelector(".modal-footer").style.display = "block";
-            document.getElementById("add-btn").innerHTML = "Add Customer";
+            document.getElementById("add-btn").innerHTML = window.translations.addClient;
         } else {
             document.getElementById("exampleModalLabel").innerHTML = "List Customer";
             document.getElementById("showModal").querySelector(".modal-footer").style.display = "none";
@@ -235,16 +235,16 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': token
                     },
-                    // beforeSend: ()=>{
-                    //     document.getElementById('add-btn').innerHTML = 
-                    // },
+                    beforeSend: ()=>{
+                        $('#add-btn').html(`<div class="spinner-border text-primary" style='width:1rem; height:1rem;' role="status" ><span class="sr-only">loading...</span></div>`)
+                    },
                     success: (res) =>{
                         toastr[res['alert-type']](res.message)
                         customerList.add({
                             id: res.data.id,
                             name: res.data.name,
                             contact: res.data.contact_info,
-                            gender: res.data.gender,
+                            gender: res.data.gender === 'male' ? window.translations.male : window.translations.female, 
                             address : res.data.address,
                             CIN: res.data.CIN,
                             case: `<span class="badge bg-primary-subtle text-success text-uppercase">0</span>`
@@ -257,6 +257,8 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                         count++;
                     },
                     error: (xhr, status, error) => {
+                        $('#add-btn').html(``)
+                        $('#add-btn').text(window.translations.addClient)
                         const err = xhr.responseJSON.errors
                         for(const key in err){
                             const input = event.target.elements[key] 
@@ -301,13 +303,16 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                                 'Content-Type': 'application/json',
                                 'X-CSRF-TOKEN': token
                             },
+                            beforeSend: ()=>{
+                                $('#add-btn').html(`<div class="spinner-border text-primary" style='width:1rem; height:1rem;' role="status" ><span class="sr-only">loading...</span></div>`)
+                            },
                             success: (res) =>{
                                 toastr[res['alert-type']](res.message)
                                 x.values({
                                     id: res.data.id,
                                     name: res.data.name,
                                     contact: res.data.contact_info,
-                                    gender: res.data.gender,
+                                    gender: res.data.gender === 'male' ? window.translations.male : window.translations.female,
                                     address: res.data.address,
                                     CIN: res.data.CIN,
                                 });
@@ -315,6 +320,8 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                                 clearFields();
                             },
                             error: (xhr, status, error) => {
+                                $('#add-btn').html(``)
+                                $('#add-btn').text(window.translations.editClient)
                                 const err = xhr.responseJSON.errors
                                 for(const key in err){
                                     console.log(key)
@@ -396,11 +403,16 @@ function refreshCallbacks() {
                                     'Content-Type': 'application/json',
                                     'X-CSRF-TOKEN': token
                                 },
+                                beforeSend: ()=>{
+                                    $('#delete-record').html(`<div class="spinner-border text-primary" style='width:1rem; height:1rem;' role="status" ><span class="sr-only">loading...</span></div>`)
+                                },
                                 success: (res) =>{
                                     toastr[res['alert-type']](res.message)
                                     customerList.remove("id", isElem.innerHTML);
                                     document.getElementById("btn-close").click();
                                     
+                                    $('#delete-record').html("")
+                                    $('#delete-record').text(window.translations.yes)
                                 },
                                 error: (xhr, status, error) => console.log(error)
                             })
@@ -428,13 +440,14 @@ function refreshCallbacks() {
                         idField.value = selectedid;
                         nameField.value = x._values.name;
                         contact_infoField.value = x._values.contact;
-                        if(x._values.gender === 'male'){
+                        if(x._values.gender.toLowerCase() == window.translations.male.toLowerCase()){
                             document.getElementById('gender-male').checked = true
                         }else{
                             document.getElementById('gender-female').checked = true
                         }
                         cinField.value = x._values.CIN;
                         addressField.value = x._values.address;
+
 
                     }
                 });
@@ -444,10 +457,19 @@ function refreshCallbacks() {
 
 function clearFields() {
     nameField.value = "";
+    nameField.classList = 'form-control'
     contact_infoField.value = "";
-    genderField.value = "";
+    contact_infoField.classList = 'form-control'
+    for (let i = 0; i < genderRadios.length; i++) {
+        if(genderRadios[i].value === 'male'){
+            genderRadios[i].checked = true;
+        }
+        genderRadios[i].checked = false;
+    }
     addressField.value = "";
+    addressField.classList = 'form-control'
     cinField.value = "";
+    cinField.classList = 'form-control'
     editlist = false
 }
 

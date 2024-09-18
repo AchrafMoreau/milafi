@@ -22,6 +22,7 @@ class TodoController extends Controller
     {
         
         $todo = Todo::orderBy('created_at', "ASC")->get();
+        // $todo = Todo::All();
         return response()->json($todo);
     }
 

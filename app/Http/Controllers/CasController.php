@@ -90,7 +90,7 @@ class CasController extends Controller
         }
 
         $notification = array(
-            'message' => 'Case Created successfully!',
+            'message' => 'Case Created successfully',
             'alert-type' => 'success'
         );
         return redirect('/cas')->with($notification);
@@ -157,7 +157,7 @@ class CasController extends Controller
         $cas->save();
 
         $notification = array(
-            'message' => 'Case Updated successfully!',
+            'message' => 'Case Updated successfully',
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification);

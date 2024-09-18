@@ -23,6 +23,11 @@ class DocumentController extends Controller
         return view('dashboard-documnet', ['docs' => $docs, 'cases' => $cases]);
     }
 
+    public function getAll()
+    {
+        $docs = Document::with('cas')->get();
+        return response()->json($docs);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -38,6 +43,7 @@ class DocumentController extends Controller
     {
         //
         // dd($request, $request->file('docs'));
+        $do;
         $request->validate([
             'name' => 'required',
             'case' => 'required',
@@ -50,9 +56,10 @@ class DocumentController extends Controller
             // dd($file);
             // $filename = $file->name;
             // $file->storeAs('uploads', $filename, 'public');
-            $d = Document::create([
+            $do = Document::create([
                 'name' => $request->name,
                 'cas_id' => $request->case,
+                'file_desc' => $request->file_desc,
                 'user_id' => Auth::user()->id,
                 'file_path' => $doc->folder . '/' . $doc->filename,
             ]);
@@ -60,19 +67,22 @@ class DocumentController extends Controller
      
 
         }else{
-            $d = Document::create([
+            $do = Document::create([
                 'name' => $request->name,
                 'cas_id' => $request->case,
+                'file_desc' => $request->file_desc,
                 'user_id' => Auth::user()->id
             ]);
         }
 
         // dd($d);
+        $document = Document::with('cas')->find($do->id);
         $notification = array(
-            'message' => 'Documents Created successfully!',
-            'alert-type' => 'success'
+            'message' => 'Documents Created successfully',
+            'alert-type' => 'success',
+            'data' => $document
         );
-        return redirect()->back()->with($notification);
+        return response()->json($notification);
         
     }
 
@@ -121,22 +131,27 @@ class DocumentController extends Controller
            
             $oldDocument->name = $request->name;
             $oldDocument->cas_id = $request->case;
+            $oldDocument->file_desc = $request->file_desc;
             $oldDocument->file_path = $doc->folder . '/' . $doc->filename;
 
             $oldDocument->save();
 
         }else{
             $oldDocument->name = $request->name;
+            $oldDocument->file_desc = $request->file_desc;
             $oldDocument->cas_id = $request->case;
 
             $oldDocument->save();
         }
 
+        $document = Document::with('cas')->find($oldDocument->id);
+
         $notification = array(
-            'message' => 'Documents Update successfully!',
-            'alert-type' => 'success'
+            'message' => 'Documents Update successfully',
+            'alert-type' => 'success',
+            'data' => $document
         );
-        return redirect()->back()->with($notification);
+        return response()->json($notification);
     }
 
     /**
@@ -148,10 +163,10 @@ class DocumentController extends Controller
         Document::findOrFail($id)->delete();
 
         $notification = array(
-            'message' => 'Documents Deleted successfully!',
+            'message' => 'Documents Deleted successfully',
             'alert-type' => 'success'
         );
-        return redirect()->back()->with($notification);
+        return response()->json($notification);
     }
 
     public function destroyMany(Request $req){
@@ -164,10 +179,10 @@ class DocumentController extends Controller
 
         $da = Document::whereIn('id', $req->input('ids'))->delete();
         $notification = array(
-            'message' => 'Many Judges Deleted Successfully!',
+            'message' => 'Many Judges Deleted Successfully',
             'alert-type' => 'success'
         );
-        return redirect()->back()->with($notification);
+        return response()->json($notification);
     }
     public function downloadFile($folder, $filename){
 

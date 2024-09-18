@@ -43,7 +43,7 @@ class CourtController extends Controller
             'category' => 'required',
         ]);
 
-        Court::create([
+        $court = Court::create([
             'name' => $request->name,
             'location' => $request->location,
             'category' => $request->category,
@@ -51,10 +51,11 @@ class CourtController extends Controller
 
 
         $notification = array(
-            'message' => 'Court Created successfully!',
-            'alert-type' => 'success'
+            'message' => 'Court Created successfully',
+            'alert-type' => 'success',
+            'data' => $court
         );
-        return redirect()->back()->with($notification);
+        return response()->json($notification);
     }
 
     /**
@@ -94,10 +95,11 @@ class CourtController extends Controller
         $court->save();
 
         $notification = array(
-            'message' => 'Court Update successfully!',
-            'alert-type' => 'success'
+            'message' => 'Court Update successfully',
+            'alert-type' => 'success',
+            'data' => $court
         );
-        return redirect()->back()->with($notification);
+        return response()->json($notification);
     }
 
     /**
@@ -116,16 +118,16 @@ class CourtController extends Controller
             'message' => 'Many Courts Deleted Successfully',
             'alert-type' => 'success'
         );
-        return redirect()->back()->with($notification);
+        return response()->json($notification);
     }
     public function destroy(Court $court, $id)
     {
         //
         Court::find($id)->delete();
         $notification = array(
-            'message' => 'Court Deleted successfully!',
+            'message' => 'Court Deleted successfully',
             'alert-type' => 'success'
         );
-        return redirect()->back()->with($notification);
+        return response()->json($notification);
     }
 }

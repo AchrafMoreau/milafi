@@ -50,7 +50,7 @@ class ContactController extends Controller
         ]);
 
         $notification = array(
-            'message' => 'Contact Created successfully!',
+            'message' => 'Contact Created successfully',
             'alert-type' => 'success'
         );
         // return redirect('/cas')->with($notification);
@@ -88,7 +88,7 @@ class ContactController extends Controller
 
         $contact->save();
         $notification = array(
-            'message' => 'Contact Created successfully!',
+            'message' => 'Contact Created successfully',
             'alert-type' => 'success'
         );
         // return redirect('/cas')->with($notification);
@@ -105,7 +105,7 @@ class ContactController extends Controller
         $cnt = Contact::where('id',$contact->id)->delete();
         // return response()->json(['message' => 'Contact Was Deleted Successfuly']);
         $notification = array(
-            'message' => 'Contact Created successfully!',
+            'message' => 'Contact Created successfully',
             'alert-type' => 'success'
         );
         // return redirect('/cas')->with($notification);

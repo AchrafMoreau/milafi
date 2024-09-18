@@ -25,6 +25,7 @@ class DocumentFactory extends Factory
             'name' => $this->faker->name(),
             'cas_id' => Cas::inRandomOrder()->value('id'),
             'user_id' => User::inRandomOrder()->value('id'),
+            'file_desc' => $this->faker->text(),
             'file_path' => $this->faker->imageUrl()
         ];
     }

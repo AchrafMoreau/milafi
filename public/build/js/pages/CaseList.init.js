@@ -355,11 +355,15 @@ function refreshCallbacks() {
                                     'Content-Type': 'application/json',
                                     'X-CSRF-TOKEN': token
                                 },
+                                beforeSend: ()=>{
+                                    $('#delete-record').html(`<div class="spinner-border text-primary" style='width:1rem; height:1rem;' role="status" ><span class="sr-only">loading...</span></div>`)
+                                },
                                 success: (res) =>{
                                     toastr[res['alert-type']](res.message)
                                     customerList.remove("id", isElem.innerHTML);
                                     document.getElementById("btn-close").click();
-                                    
+                                    $('#delete-record').html("")
+                                    $('#delete-record').text(window.translations.yes)
                                 },
                                 error: (xhr, status, error) => console.log(error)
                             })

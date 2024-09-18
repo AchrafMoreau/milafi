@@ -70,7 +70,7 @@ class ClientController extends Controller
 
         // dd($cl);
         $notification = array(
-            'message' => 'Client Created successfully!',
+            'message' => 'Client Created successfully',
             'alert-type' => 'success',
             'data' => $cl
         );
@@ -126,7 +126,7 @@ class ClientController extends Controller
         
         // return response()->json(["message" => 'Client Was Updated Successfully']);
         $notification = array(
-            'message' => 'Client Updated successfully!',
+            'message' => 'Client Updated successfully',
             'alert-type' => 'success',
             'data' => $oldClient
         );
@@ -145,7 +145,7 @@ class ClientController extends Controller
 
         Client::destroy($req->input('ids'));
         $notification = array(
-            'message' => 'Many Client Deleted successfully!',
+            'message' => 'Many Client Deleted successfully',
             'alert-type' => 'success'
         );
         return response()->json($notification, 200);
@@ -156,7 +156,7 @@ class ClientController extends Controller
         // dd($client);
         Client::where('id', $client->id)->delete();
         $notification = array(
-            'message' => 'Client Deleted successfully!',
+            'message' => 'Client Deleted successfully',
             'alert-type' => 'success'
         );
         // return response()->json($notification);

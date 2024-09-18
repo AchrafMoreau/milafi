@@ -178,7 +178,8 @@
         window.translations = {
             open: "{{ __('translation.Open') }}",
             closed: "{{ __('translation.Closed') }}",
-            pending: "{{ __('translation.Pending') }}"
+            pending: "{{ __('translation.Pending') }}",
+            yes: "{{ __('translation.yes') }}",
         }
     </script>
     <script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>

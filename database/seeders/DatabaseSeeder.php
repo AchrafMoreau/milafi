@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         Court::factory(10)->create();
         Judge::factory(10)->create();
         Cas::factory(50)->create();
-        // Document::factory(10)->create();
+        Document::factory(10)->create();
         Invoice::factory(10)->create();
         Procedure::factory(50)->create();
         Todo::factory(10)->create();

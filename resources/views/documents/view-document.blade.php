@@ -5,13 +5,6 @@
         @slot('li_1') Cases @endslot
         @slot('title') Add Case @endslot
     @endcomponent
-    <link href="{{ URL::asset('build/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/classic.min.css') }}" /> <!-- 'classic' theme -->
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/monolith.min.css') }}" /> <!-- 'monolith' theme -->
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/nano.min.css') }}" /> <!-- 'nano' theme -->
-    <link href="/resources/css/app.css" rel="stylesheet">
-
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     
 
@@ -43,15 +36,5 @@
 
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/list.js/list.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/list.pagination.js/list.pagination.min.js') }}"></script>
-
-
-    <!-- listjs init -->
-    <script src="{{ URL::asset('build/js/pages/listjs.init.js') }}"></script>
-
-    <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
-    <script src="https://kit.fontawesome.com/5fff77269d.js" crossorigin="anonymous"></script>
 @endsection

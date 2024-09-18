@@ -32,7 +32,7 @@
                     <div>
                         <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
                             id="create-btn" data-bs-target="#showModal"><i
-                                class="ri-add-line align-bottom me-1"></i> Add</button>
+                                class="ri-add-line align-bottom me-1"></i>@lang('translation.addclient')</button>
                         <button class="btn btn-soft-danger" onClick="deleteMultiple()"><i
                                 class="ri-delete-bin-2-line"></i></button>
                     </div>
@@ -78,13 +78,13 @@
                                 </th>
                                 <td class="id" style="display:none;"><a href="javascript:void(0);"
                                         class="fw-medium link-primary">test</a></td>
-                                <td class="name">test</td>
-                                <td class="contact">064508445</td>
-                                <td class="gender">male</td>
-                                <td class="CIN">ja12345</td>
-                                <td class="address">21-street</td>
+                                <td class="name">...</td>
+                                <td class="contact">...</td>
+                                <td class="gender">...</td>
+                                <td class="CIN">...</td>
+                                <td class="address">...</td>
                                 <td class="case"><span
-                                        class="badge bg-success-subtle text-success text-uppercase">2</span>
+                                        class="badge bg-success-subtle text-success text-uppercase">0</span>
                                 </td>
                                 <td>
                                     <div class="d-flex gap-2">
@@ -192,8 +192,8 @@
                             </div><!--end col-->
                             <div class="modal-footer">
                                 <div class="hstack gap-2 justify-content-end">
-                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-success" id="add-btn">Add Customer</button>
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
+                                    <button type="submit" class="btn btn-success" id="add-btn">@lang('translation.addclient')</button>
                                     <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
                                 </div>
                             </div>
@@ -216,7 +216,7 @@
                         <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
                             colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
                         <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                            <h4>@lang('translation.deleteMessage') @lang('translation.case')</h4>
+                            <h4>@lang('translation.deleteMessage') @lang('translation.client')</h4>
                             <p class="text-muted mx-4 mb-0">@lang('translation.deleteConfirmation')</p>
                         </div>
                     </div>
@@ -239,13 +239,20 @@
 <!-- end table responsive -->
 @endsection
 @section('script')
+    <script>
+        window.translations = {
+            addClient: "{{ __('translation.addclient') }}",
+            editClient: "{{ __('translation.editClient') }}",
+            male: "{{ __('translation.male') }}",
+            female: "{{ __('translation.female') }}",
+            selectCourt: "{{ __('translation.selectCourt') }}",
+            update: "{{ __('translation.update') }}",
+            yes: "{{ __('translation.yes') }}",
+        }
+    </script>
     <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/sweetalerts.init.js') }}"></script>
     
-<script>
-    $('#addClient').on('submit', ()=> FormSubmition(event, 'POST', '/store-client'))
-    $('#updateClient').on('submit', ()=> FormSubmition(event, 'PUT', `/client/${event.target.classList[0]}`))
-</script>
     <script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>
     <script src="{{ URL::asset('build/libs/list.js/list.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/list.pagination.js/list.pagination.min.js') }}"></script>

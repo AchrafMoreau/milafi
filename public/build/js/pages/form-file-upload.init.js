@@ -41,7 +41,7 @@ Array.from(inputMultipleElements).forEach(function (inputElement) {
     FilePond.create(inputElement);
 })
 
-FilePond.create(
+const fileInput = FilePond.create(
     document.querySelector('.filepond-input-circle'), {
         labelIdle: 'Drag & Drop your picture or <span class="filepond--label-action">Browse</span>',
         imagePreviewHeight: 170,

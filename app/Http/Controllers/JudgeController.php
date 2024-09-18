@@ -57,7 +57,7 @@ class JudgeController extends Controller
         $judge = Judge::with('court')->find($ju->id);
 
         $notification = array(
-            'message' => 'Judge Created successfully!',
+            'message' => 'Judge Created successfully',
             'alert-type' => 'success',
             'data' => $judge
         );
@@ -105,7 +105,7 @@ class JudgeController extends Controller
         $juge = Judge::with('court')->find($judge->id);
 
         $notification = array(
-            'message' => 'Judge Updated successfully!',
+            'message' => 'Judge Updated successfully',
             'alert-type' => 'success',
             'data' => $juge
         );
