@@ -1,7 +1,6 @@
-const vite = require('vite');
+import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import { viteStaticCopy } from 'vite-plugin-static-copy'
-
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import fs from 'fs-extra';
 import path from 'path';
 
@@ -12,7 +11,7 @@ const folder = {
     dist_assets: "public/build/" //build assets files
 };
 
-export default vite.defineConfig({
+export default defineConfig({
     build: {
         manifest: true,
         rtl: true,
@@ -22,7 +21,7 @@ export default vite.defineConfig({
             output: {
                 assetFileNames: (css) => {
                     if (css.name.split('.').pop() == 'css') {
-                        return 'css/' + `[name]` + '.min.' + 'css';
+                        return 'css/' + `[name].min.css`;
                     } else {
                         return 'icons/' + css.name;
                     }
@@ -32,17 +31,15 @@ export default vite.defineConfig({
         },
     },
     plugins: [
-        laravel(
-            {
-                input: [
-                    'resources/scss/bootstrap.scss',
-                    'resources/scss/icons.scss',
-                    'resources/scss/app.scss',
-                    'resources/scss/custom.scss',
-                ],
-                refresh: true
-            }
-        ),
+        laravel({
+            input: [
+                'resources/scss/bootstrap.scss',
+                'resources/scss/icons.scss',
+                'resources/scss/app.scss',
+                'resources/scss/custom.scss',
+            ],
+            refresh: true,
+        }),
         viteStaticCopy({
             targets: [
                 {
@@ -61,7 +58,7 @@ export default vite.defineConfig({
                     src: 'resources/json',
                     dest: ''
                 },
-            ]
+            ],
         }),
         {
             name: 'copy-specific-packages',
@@ -92,7 +89,5 @@ export default vite.defineConfig({
                 }
             },
         },
-
     ],
 });
-
