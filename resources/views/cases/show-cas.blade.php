@@ -12,102 +12,20 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <style>
-        #case{
-            position: relative;
-        }
-        #case::after{
-            position: absolute;
-            content: attr(data-label);
-            height: 150px;
-            top: -14px;
-            padding: 0.5rem;
-            width: 2rem;
-            background: #3949ab;
-            color: white;
-            text-align: center;
-            font-family: 'Roboto', sans-serif;
-            box-shadow: 4px 4px 15px rgba(26, 35, 126, 0.2);
-        }
-        #case::before{
-            position: absolute;
-            z-index: -1;
-            top: -0.5rem;
-            content: '';
-            background: #283593;
-            height: 28px;
-            width: 28px;
-            transform: rotate(45deg);
-        }
 
-        #headerCard{
-            position: relative;
-        }
-        #headerCard::before{
-            position: absolute;
-            top: 110px;
-            z-index: 1;
-            content: '';
-            background: #fff;
-            height: 28px;
-            width: 28px;
-            transform: rotate(45deg);
-        }
-    </style>
-
-    @if($case->status == 'Closed')
-    <style>
-        #case::after{
-            background: #f7666e !important;
-        }
-        #case::before{
-            background: red !important;
-        }
-
-    </style>
-    @endif
-    @if($case->status == 'Open')
-    <style>
-        #case::after{
-            background: #3cd188 !important;
-        }
-        #case::before{
-            background: green !important;
-        }
-    </style>
-    @endif
-    @if(app()->getLocale() == 'fr')
-        <style>
-            #case::after{
-                right: 30px !important;
-            }
-            #case::before{
-                right: 3rem !important;
-            }
-            #headerCard::before{
-                right: 1rem;
-            }
-        </style>
-    @else
-        <style>
-            #case::after{
-                left: 30px;
-            }
-            #case::before{
-                left: 3rem;
-            }
-            #headerCard::before{
-                left:1rem;
-            }           
-        </style>
-    @endif
     <div class="row">
         <div class="col-lg-12" id='case-form'>
             @csrf
             @method('POST')
-            <div class="card" id='case' >
-                <div id="glass"></div>
-                <div id='headerCard' class="form-check w-auto mt-3 mx-3 form-switch form-switch-right form-switch-md">
+            <div class="card ribbon-box" >
+                @if($case->status == 'Open')
+                    <div class="ribbon ribbon-success ribbon-shape">@lang("translation.Open")</div>
+                @elseif($case->status == 'Closed')
+                    <div class="ribbon ribbon-danger  ribbon-shape">@lang("translation.Closed")</div>
+                @else
+                    <div class="ribbon ribbon-primary  ribbon-shape">@lang("translation.Pending")</div>
+                @endif
+                <div  class="form-check d-flex justify-content-end w-auto mt-3 mx-3 form-switch form-switch-right form-switch-md"  style="float: left;">
                     <div >
                         <input value='{{ $case->serial_number }}'  class="w-auto form-control form-control-sm" type="text" name='serial_number' disabled placeholder="@lang('translation.reference')">
                     </div>
@@ -222,10 +140,7 @@
                 </div>
                 
             </div>
-    </div>
-
- 
-       
+        </div>
     </div>
 
     <!-- Vertical alignment -->

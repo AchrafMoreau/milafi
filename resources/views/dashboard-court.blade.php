@@ -17,7 +17,7 @@
     @endcomponent
     <!-- Rounded with Label -->
 <div class="card mb-5">
-            
+   
     <div class="card-body">
         <div class="listjs-table" id="customerList">
             <div class="row g-4 mb-3">

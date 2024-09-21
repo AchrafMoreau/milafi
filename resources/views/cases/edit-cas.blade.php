@@ -14,78 +14,20 @@
     <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/nano.min.css') }}" /> <!-- 'nano' theme -->
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <style>
-        #case{
-            position: relative;
-        }
-        #case::after{
-            position: absolute;
-            content: attr(data-label);
-            height: 150px;
-            top: -14px;
-            left: 30px;
-            padding: 0.5rem;
-            width: 2rem;
-            background: #3949ab;
-            color: white;
-            text-align: center;
-            font-family: 'Roboto', sans-serif;
-            box-shadow: 4px 4px 15px rgba(26, 35, 126, 0.2);
-        }
-        #case::before{
-            position: absolute;
-            z-index: -1;
-            top: -0.5rem;
-            left: 3rem;
-            content: '';
-            background: #283593;
-            height: 28px;
-            width: 28px;
-            transform: rotate(45deg);
-        }
-
-        #headerCard{
-            position: relative;
-        }
-        #headerCard::before{
-            position: absolute;
-            top: 110px;
-            left: 1rem;
-            z-index: 1;
-            content: '';
-            background: #fff;
-            height: 28px;
-            width: 28px;
-            transform: rotate(45deg);
-        }
-    </style>
-    @if($case->status === 'Closed')
-    <style>
-        #case::after{
-            background: #f7666e !important;
-        }
-        #case::before{
-            background: red !important;
-        }
-
-    </style>
-    @endif
-    @if($case->status === 'Open')
-    <style>
-        #case::after{
-            background: #3cd188 !important;
-        }
-        #case::before{
-            background: green !important;
-        }
-    </style>
-    @endif
+ 
     <div class="row">
         <form class="col-lg-12" action="{{ url('/case-update/'.$case->id) }}" method="POST">
             @csrf
             @method('POST')
-            <div class="card" id='case' >
-                <div id='headerCard' class="form-check w-auto mt-3 mx-3 form-switch form-switch-right form-switch-md">
+            <div class="card ribbon-box">
+                @if($case->status == 'Open')
+                    <div class="ribbon ribbon-success ribbon-shape">@lang("translation.Open")</div>
+                @elseif($case->status == 'Closed')
+                    <div class="ribbon ribbon-danger  ribbon-shape">@lang("translation.Closed")</div>
+                @else
+                    <div class="ribbon ribbon-primary  ribbon-shape">@lang("translation.Pending")</div>
+                @endif
+                <div  class="form-check d-flex justify-content-end w-auto mt-3 mx-3 form-switch form-switch-right form-switch-md"  style="float: left;">
                     <div >
                         <input value='{{ $case->serial_number }}'  class="w-auto form-control form-control-sm" type="text" name='serial_number' disabled placeholder="@lang('translation.reference')">
                     </div>
@@ -576,11 +518,6 @@
         }
     </script>
 
-    <!-- <script src="{{ URL::asset('build/js/pages/form-masks.init.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/multi.js/multi.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/cleave.js/cleave.min.js') }}"></script>
-    <script src="{{URL::asset('build/js/pages/flag-input.init.js')}}"></script> -->
-
     <script src="{{ URL::asset('build/libs/filepond/filepond.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}"></script>
@@ -590,6 +527,7 @@
     <script src="{{ URL::asset('build/js/pages/form-file-upload.init.js') }}"></script>
     <!-- listjs init -->
     <script src="https://kit.fontawesome.com/5fff77269d.js" crossorigin="anonymous"></script>
+    <script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>                                       
 
 @endsection

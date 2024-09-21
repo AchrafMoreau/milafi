@@ -30,7 +30,7 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'image' => $this->faker->imageUrl(),
+            'avatar' => $this->faker->imageUrl(),
             'gender' => $this->faker->randomElement(['Male', 'Female']),
             'name_in_arab' => 'ابو حسين حبيب قلبي',
             'city_in_arab' => 'امريكا',

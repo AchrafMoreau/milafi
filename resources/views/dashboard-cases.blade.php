@@ -16,8 +16,28 @@
         @endslot
     @endcomponent
     <!-- Rounded with Label -->
+    <div class="p-3 mb-5 rounded mb-4">
+        <form action="{{ url('/importSchadule') }}" method="POST"> 
+            @csrf
+            @method('POST')
+            <div class="row g-2">
+                <div class="col-lg-auto">
+                    <button class="btn btn-primary createTask" type='submit' type="button" data-bs-toggle="modal" data-bs-target="#createTask">
+                        <i class="ri-add-fill align-bottom"></i>@lang('translation.printSchedule')
+                    </button>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control @error('date') is-invalid @enderror" name='from'data-provider="flatpickr" id="dateInput"  placeholder='@lang("translation.fromday")'>
+                </div>
+                <div class="col-lg">
+                    <input type="text" class="form-control @error('date') is-invalid @enderror" placeholder="@lang('translation.today')" name='to' data-provider="flatpickr" id="dateInput" >
+                </div>
+            </div>
+
+        </form>
+    </div>
 <div class="card mb-5">
-            
+    
     <div class="card-body">
         <div class="listjs-table" id="customerList">
             <div class="row g-4 mb-3">

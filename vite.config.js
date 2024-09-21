@@ -21,7 +21,7 @@ export default defineConfig({
             output: {
                 assetFileNames: (css) => {
                     if (css.name.split('.').pop() == 'css') {
-                        return 'css/' + `[name].min.css`;
+                        return 'css/' + `[name]` + '.min.' + 'css';
                     } else {
                         return 'icons/' + css.name;
                     }
@@ -33,10 +33,13 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/scss/bootstrap.scss',
+                // 'resources/scss/bootstrap.scss',
                 'resources/scss/icons.scss',
-                'resources/scss/app.scss',
+                // 'resources/js/app.js',
                 'resources/scss/custom.scss',
+                'resources/css/somestyle.css',
+                'resources/css/bootstrap.css',
+                'resources/css/app.css',
             ],
             refresh: true,
         }),

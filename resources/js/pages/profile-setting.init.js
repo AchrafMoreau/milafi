@@ -31,6 +31,7 @@ if (document.querySelector("#profile-img-file-input")) {
     document.querySelector("#profile-img-file-input").addEventListener("change", function () {
         var preview = document.querySelector(".user-profile-image");
         var file = document.querySelector(".profile-img-file-input").files[0];
+        console.log('file', file)
         var reader = new FileReader();
         reader.addEventListener(
             "load",

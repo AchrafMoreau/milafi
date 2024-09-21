@@ -3,8 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Cas;
+use App\Models\Procedure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use PDF;
+use ArPHP\I18N\Arabic;
+
+
 
 class EventController extends Controller
 {
@@ -146,5 +153,64 @@ class EventController extends Controller
         Event::where('id', $id)->delete();
         $events = Event::All();
         // return response()->json($events);
+    }
+
+    public function import(Request $req)
+    {
+        $req->validate([
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $procedure = Procedure::with([
+            'cas' => function ($query) {
+                $query->with(['court', 'judge', 'client']); 
+            }
+        ])->whereBetween('date' , [$req->from, $req->to])->get();
+
+        $schedule = [];
+        foreach($procedure as $proc){
+            // Set the locale to Arabic for the day name only
+            Carbon::setLocale('fr');
+            $date = Carbon::parse($proc->date);
+
+            // Get the day name in Arabic and manually format the rest with Western numerals
+            $arabicDayName = $date->translatedFormat('l'); // Get the day name in Arabic
+            $westernDate = $date->format('Y/m/d'); // Use Western numerals for the date
+            $formattedDate = $arabicDayName . ' ' . $westernDate;
+
+            $obj = [
+                "court" => $proc->cas->court->name,
+                "title_file" => $proc->cas->title_file,
+                "serial_number" => $proc->cas->serial_number,
+                "decision" => "",
+                "client" => $proc->cas->client->name,
+                "time" => $proc->time,
+                "procedure" => $proc->procedure,
+                "require" => ""
+            ];
+            if (array_key_exists($proc->date, $schedule)) {
+                $schedule[$formattedDate][] = $obj;
+            } else {
+                $schedule[$formattedDate] = [$obj];
+            }
+        };
+
+        $reportHtml = view('schedule', compact('schedule'))->render();
+
+        $arabic = new Arabic();
+        $p = $arabic->arIdentify($reportHtml);
+
+        for ($i = count($p)-1; $i >= 0; $i-=2) {
+            $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+            $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+        }
+        // $pdf = PDF::loadHTML($reportHtml);
+        $pdf = PDF::setOption('direction', 'rtl')->loadHTML($reportHtml);
+
+        return $pdf->download('WeekSchedule.pdf');
+        // return $pdf->stream();
+        return view('schedule', compact('schedule'));
+        
     }
 }

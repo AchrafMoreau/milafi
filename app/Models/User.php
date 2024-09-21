@@ -28,7 +28,9 @@ class User extends Authenticatable
         'city',
         'gender',
         'name_in_arab',
-        'city_in_arab'
+        'city_in_arab',
+        'phone',
+        'background'
     ];
 
 

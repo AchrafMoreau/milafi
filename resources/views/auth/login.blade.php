@@ -22,7 +22,7 @@
                 <div class="col-lg-12">
                     <div class="text-center mt-sm-5 mb-4 text-white-50">
                         <div>
-                            <a href="index" class="d-inline-block auth-logo">
+                            <a href="" class="d-inline-block auth-logo">
                                 <img src="{{ URL::asset('build/images/logo-02.png')}}" alt="" height="100px">
                                 <!-- <h1>lawyer App</h1> -->
                             </a>
@@ -47,7 +47,7 @@
                                     @csrf
                                     <div class="mb-3">
                                         <label for="username" class="form-label">@lang('translation.email') <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" id="username" name="email" placeholder="Enter Email">
+                                        <input type="text" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" id="username" name="email" placeholder="@lang('translation.enterEmail')">
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -56,12 +56,12 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <div class="float-end">
+                                        <!-- <div class="float-end">
                                             <a href="{{ route('password.update') }}" class="text-muted">@lang('translation.forgotPassword?')</a>
-                                        </div>
+                                        </div> -->
                                         <label class="form-label" for="password-input">@lang('translation.password') <span class="text-danger">*</span></label>
                                         <div class="position-relative auth-pass-inputgroup mb-3">
-                                            <input type="password" class="form-control password-input pe-5 @error('password') is-invalid @enderror" name="password" placeholder="Enter password" id="password-input" value="">
+                                            <input type="password" class="form-control password-input pe-5 @error('password') is-invalid @enderror" name="password" placeholder="@lang('translation.enterPassword')" id="password-input" value="">
                                             <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
@@ -79,27 +79,9 @@
                                     <div class="mt-4">
                                         <button class="btn btn-success w-100" type="submit">@lang('translation.signIn')</button>
                                     </div>
-
-                                    <div class="mt-4 text-center">
-                                        <div class="signin-other-title">
-                                            <h5 class="fs-13 mb-4 title">@lang('translation.signInWith')</h5>
-                                        </div>
-                                        <div>
-                                            <button type="button" class="btn btn-primary btn-icon waves-effect waves-light"><i class="ri-facebook-fill fs-16"></i></button>
-                                            <button type="button" class="btn btn-danger btn-icon waves-effect waves-light"><i class="ri-google-fill fs-16"></i></button>
-                                            <button type="button" class="btn btn-dark btn-icon waves-effect waves-light"><i class="ri-github-fill fs-16"></i></button>
-                                            <button type="button" class="btn btn-info btn-icon waves-effect waves-light"><i class="ri-twitter-fill fs-16"></i></button>
-                                        </div>
-                                    </div>
                                 </form>
                             </div>
                         </div>
-                        <!-- end card body -->
-                    </div>
-                    <!-- end card -->
-
-                    <div class="mt-4 text-center">
-                        <p class="mb-0">Don't have an account ? <a href="{{ route('register') }}" class="fw-semibold text-primary text-decoration-underline"> Signup </a> </p>
                     </div>
 
                 </div>
@@ -116,7 +98,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <p class="mb-0 text-muted">&copy; <script>document.write(new Date().getFullYear())</script> Velzon. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                        <p class="mb-0 text-muted">&copy; <script>document.write(new Date().getFullYear())</script> Milafi. Crafted with <i class="mdi mdi-heart text-danger"></i> by Dispark</p>
                     </div>
                 </div>
             </div>

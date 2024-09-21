@@ -14,11 +14,10 @@ use App\Http\Controllers\TodoController;
 use App\Http\Controllers\ContactController;
 
 
-Route::get('/', function () {
-    return  view('welcome');
-});
 
-
+Route::get("/dashboard", function(){
+    return view("calendar");
+})->name('dashboard');
 
 
 
@@ -86,6 +85,7 @@ Route::middleware(['auth', 'clearNotification'])->group(function () {
     Route::post('/events', [EventController::class, 'store']);
     Route::put('/events/{id}', [EventController::class, 'update']);
     Route::delete('/events/{id}', [EventController::class, 'destroy']);
+    Route::post('/importSchadule', [EventController::class, 'import']);
     // uplaod docs
     Route::post('/upload', [uplaodContnroller::class, 'store']);
     // calander route
@@ -107,13 +107,11 @@ Route::middleware(['auth', 'clearNotification'])->group(function () {
     // procedure route for user / laywer
     Route::post('/procedude-add/{id}', [ProcedureController::class, 'store']);
     // dashboard 
-    Route::get('/dashboard', function(){
-        return view('dashboard');
-    })->name('dashboard');
     // auth route 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::put('/profile/avatar', [ProfileController::class, 'updateAvatar']);
 });
 
 require __dir__.'/auth.php';

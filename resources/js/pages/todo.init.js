@@ -10,6 +10,7 @@ statusVal = new Choices(statusField, {
     searchEnabled: false,
 });
 
+
 let priorityField = document.getElementById("priority-field");
 priorityVal = new Choices(priorityField, {
     searchEnabled: false,
@@ -26,16 +27,10 @@ $.ajax({
     datatype: 'json',
     success: (res)=>{
         todoList = res;
-        init();
+        drawList(todoList);
     },
     error: (xhr, status, error)=> console.log(error)
-});
-// add new project
-//Create a new folder
-const init = () => {
-
-
-
+})
 editList = false;
 
 
@@ -69,10 +64,10 @@ document.getElementById("creattask-form").addEventListener("submit", function (e
     
     var text;
     if(inputTitle.length == 0){
-      text = "Please enter task name";
+    text = "Please enter task name";
         errorMsg.style.display = "block";
-      errorMsg.innerHTML = text;
-      return false;
+    errorMsg.innerHTML = text;
+    return false;
     }
     if(statusInputFieldValue == ""){
         text = "Please select task status";
@@ -154,8 +149,8 @@ document.getElementById("creattask-form").addEventListener("submit", function (e
                         } else {
                             item.checkedElem = false
                         }
-                       
-                       console.log(res)
+                    
+                    console.log(res)
                         return res;
                     }
                     return item;
@@ -264,6 +259,7 @@ searchTaskList.addEventListener("keyup", function () {
 
 function loadList(manyTodos) {
     function elmLoader() {
+        console.log(manyTodos)
         document.getElementById("elmLoader").innerHTML = '';
         drawList(manyTodos);
     }
@@ -512,6 +508,7 @@ taskSortListInput.passedElement.element.addEventListener('change', function (eve
 
 
 function load(manyTodos) {
+    console.log("from load", manyTodos)
     loadList(manyTodos);
 };
 
@@ -519,4 +516,4 @@ window.onload = function () {
     $('.todo-content').css('height', 'auto');
     sortElementsById('asc');
 };
-}
+

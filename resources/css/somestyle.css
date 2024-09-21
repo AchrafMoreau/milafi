@@ -1,0 +1,31 @@
+
+
+.btn{
+    display: flex;
+}
+#courtSelect .choices .choices__inner{
+    width: 100%;
+    border: none;
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+#courtSelect .choices .choices__inner .choices__item{
+    color: #495057;
+}
+
+/*# sourceMappingURL=app-rtl.min.css.map */
+
+[data-letters]:before {
+    content:attr(data-letters);
+    display:inline-block;
+    font-size:1em;
+    width:2.5em;
+    height:2.5em;
+    line-height:2.5em;
+    text-align:center;
+    border-radius:50%;
+    background: darkblue;
+    vertical-align:middle;
+    margin-left :1em;
+    color:white;
+}

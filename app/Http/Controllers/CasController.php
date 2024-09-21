@@ -103,7 +103,7 @@ class CasController extends Controller
     public function show(Cas $cas,$case)
     {
         //
-        $ca = Cas::with(['client', 'court', 'judge', 'document'])->find($case);
+        $ca = Cas::with(['client', 'court', 'judge', 'document', 'procedure'])->find($case);
         // return response()->json($ca);
         return view('cases.show-cas', ['case' => $ca]);
     }

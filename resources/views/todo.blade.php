@@ -192,9 +192,11 @@
         save : "{{ __('translation.edit') }}",
         yes : "{{ __('translation.yesDoIt') }}",
     }
+
+    console.log("hello")
 </script>
 <script src="{{URL::asset('build/libs/dragula/dragula.min.js')}}"></script>
 <script src="{{URL::asset('build/libs/dom-autoscroller/dom-autoscroller.min.js')}}"></script>
-<script src="{{URL::asset('build/js/pages/todo.init.js')}}"></script>
 <script src="{{ URL::asset('build/js/app.js') }}"></script>
+<script src="{{URL::asset('build/js/pages/todo.init.js')}}"></script>
 @endsection

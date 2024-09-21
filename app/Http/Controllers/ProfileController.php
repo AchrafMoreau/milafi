@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -28,15 +29,31 @@ class ProfileController extends Controller
     {
         $request->user()->fill($request->validated());
 
+
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
+        $user = User::find($request->user()->id)->update($request->all());
+        // dd($user);
+
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $notification = array(
+            'message' => 'User Was Updated successfully',
+            'alert-type' => 'success'
+        );
+        return Redirect::route('profile.edit')->with($notification);
     }
 
+    public function updateAvatar(Request $req)
+    {
+        if ($req->hasFile('avatar')) {
+            dd($req->file('avatar'));
+        }else{
+            dd('zabi');
+        }
+    }
     /**
      * Delete the user's account.
      */

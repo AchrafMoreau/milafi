@@ -35,7 +35,7 @@ class HomeController extends Controller
 
     public function root()
     {
-        return view('welcome');
+        return view('auth.login');
     }
 
     /*Language Translation*/

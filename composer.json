@@ -6,9 +6,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "barryvdh/laravel-dompdf": "^3.0",
+        "carlos-meneses/laravel-mpdf": "^1.1",
+        "dompdf/dompdf": "^3.0",
+        "khaled.alshamaa/ar-php": "^6.3",
         "kyslik/column-sortable": "^6.6",
         "laravel/framework": "^11.9",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "mpdf/mpdf": "^6.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
