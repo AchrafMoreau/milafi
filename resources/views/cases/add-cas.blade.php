@@ -316,11 +316,11 @@
                                 <label class="form-label">@lang('translation.gender')</label>
                                 <div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input"  type="radio" name="gender" id="gender" value="male">
+                                        <input class="form-check-input"  type="radio" name="gender" id="gender" value="male" required>
                                         <label value="{{ old('gender') }}" class="form-check-label " for="inlineRadio1">@lang('translation.male')</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gender" id="gender" value="female">
+                                        <input class="form-check-input" type="radio" name="gender" id="gender" value="female" required>
                                         <label value="{{ old('gender') }}" class="form-check-label " for="inlineRadio2">@lang('translation.female')</label>
                                     </div>
                                 </div>

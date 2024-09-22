@@ -325,20 +325,28 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                                 $('#add-btn').html(``)
                                 $('#add-btn').text(window.translations.editJudge)
                                 const err = xhr.responseJSON.errors
-                                for(const key in err){
-                                    console.log(key)
-                                    const input = event.target.elements[key] 
-                                    console.log(input)
-                                    if(err[key][0].split('.')[1] === 'required'){
-                                        input.classList.add('is-invalid');
-                                        $(input).next('.invalid-feedback').html(`<strong>this field are required</strong>`);
-                                    }else if(err[key][0].split('.')[1] === 'unique'){
-                                        input.classList.add('is-invalid');
-                                        $(input).next('.invalid-feedback').html(`<strong>this field should be unique </strong>`);
-                                    }else{
-                                        if(input.classList){
+                                console.log(err)
+                                if(!err){
+                                    clearfields();
+                                    console.log('hello')
+                                    toastr['error']("you can't modify the default court")
+                                    document.getelementbyid("close-modal").click();
+                                }else{
+                                    for(const key in err){
+                                        console.log(key)
+                                        const input = event.target.elements[key] 
+                                        console.log(input)
+                                        if(err[key][0].split('.')[1] === 'required'){
                                             input.classList.add('is-invalid');
-                                            $(input).next('.invalid-feedback').html(`<strong>${err[key]}</strong>`);
+                                            $(input).next('.invalid-feedback').html(`<strong>this field are required</strong>`);
+                                        }else if(err[key][0].split('.')[1] === 'unique'){
+                                            input.classList.add('is-invalid');
+                                            $(input).next('.invalid-feedback').html(`<strong>this field should be unique </strong>`);
+                                        }else{
+                                            if(input.classList){
+                                                input.classList.add('is-invalid');
+                                                $(input).next('.invalid-feedback').html(`<strong>${err[key]}</strong>`);
+                                            }
                                         }
                                     }
                                 }
@@ -418,7 +426,11 @@ function refreshCallbacks() {
                                     $('#delete-record').html("")
                                     $('#delete-record').text(window.translations.yes)
                                 },
-                                error: (xhr, status, error) => console.log(error)
+                                error: (xhr, status, error) => {
+                                    clearfields();
+                                    toastr['error']("you can't modify the default court")
+                                    document.getelementbyid("close-modal").click();
+                                }
                             })
                         }
                     });
@@ -502,7 +514,11 @@ function deleteMultiple() {
                 })
                 document.getElementById('checkAll').checked = false;
             },
-            error: (xhr, status, error) => console.log(error)
+            error: (xhr, status, error) => {
+                clearfields();
+                toastr['error']("you can't modify the default court")
+                document.getelementbyid("close-modal").click();
+            }
         })
     } else {
       return false;

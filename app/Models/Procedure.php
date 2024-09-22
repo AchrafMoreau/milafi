@@ -9,7 +9,7 @@ use App\Models\Cas;
 class Procedure extends Model
 {
     use HasFactory;
-    protected $fillable = ['cas_id', 'date', 'procedure', 'fee', 'invoice', 'time'];
+    protected $fillable = ['cas_id', 'date', 'user_id','procedure', 'fee', 'invoice', 'time'];
 
     public function cas(){
         return $this->belongsTo(Cas::class);

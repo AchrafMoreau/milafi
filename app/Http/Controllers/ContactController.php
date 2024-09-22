@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\contact;
+use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
@@ -13,7 +14,7 @@ class ContactController extends Controller
     public function index()
     {
         //
-        $contacts = Contact::orderBy('created_at', 'DESC')->get();;
+        $contacts = Contact::where('user_id', Auth::id())->orderBy('created_at', 'DESC')->get();;
         // dd($contacts);
         // return response()->json($contacts);
         return view('contact', ['contacts' => $contacts]);
@@ -25,8 +26,7 @@ class ContactController extends Controller
 
     public function getAll()
     {
-    
-        $contacts = Contact::All();
+        $contacts = Contact::where('user_id', Auth::id())->get();
         return response()->json(['contacts' => $contacts]);
     }
     public function create()
@@ -42,6 +42,7 @@ class ContactController extends Controller
 
         // dd(json_encode($request->tag));
         $cont = Contact::create([
+            'user_id' => Auth::id(),
             "name" => $request->name,
             "email" => $request->email,
             "phone" => $request->phone,
@@ -80,6 +81,7 @@ class ContactController extends Controller
     public function update(Request $request, contact $contact)
     {
         //
+
         $contact->name = $request->name;
         $contact->email = $request->email;
         $contact->phone = $request->phone;
@@ -102,7 +104,9 @@ class ContactController extends Controller
     public function destroy(contact $contact)
     {
         //
-        $cnt = Contact::where('id',$contact->id)->delete();
+        $cnt = Contact::where('id',$contact->id)
+            ->where('user_id', Auth::id())
+            ->delete();
         // return response()->json(['message' => 'Contact Was Deleted Successfuly']);
         $notification = array(
             'message' => 'Contact Created successfully',

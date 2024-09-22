@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Faker\Factory as Faker;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,6 +25,7 @@ class ClientFactory extends Factory
             "contact_info" => $this->faker->e164PhoneNumber(),
             "address" => $this->faker->address(),
             "avatar" => $this->faker->imageUrl(),
+            'user_id' => User::inRandomOrder()->value('id'),
             'gender'=> $this->faker->randomElement(['male', 'female']),
             'CIN'=> $this->faker->iban(),
         ];

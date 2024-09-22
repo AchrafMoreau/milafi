@@ -29,7 +29,9 @@ class CasController extends Controller
 
     public function getAll()
     {
-        $cases = Cas::with(['client', 'court', 'judge'])->get();
+        $cases = Cas::with(['client', 'court', 'judge'])
+            ->where('user_id', Auth::user()->id)
+            ->get();
         return response()->json($cases, 200);
 
     }
@@ -39,9 +41,13 @@ class CasController extends Controller
     public function create()
     {
         //
-        $clients = Client::All();
-        $courts = Court::All();
-        $judge = Judge::All();
+        $clients = Client::where('user_id', Auth::user()->id)->get();
+        $courts = Court::where('user_id', Auth::user()->id)
+            ->orWhere('isDefault', 1)
+            ->get();
+        $judge = Judge::where('user_id', Auth::user()->id)
+            ->orWhere('isDefault', 1)
+            ->get();
         return view('cases.add-cas', ['courts' => $courts, 'judges' => $judge, 'clients' => $clients]);
     }
 
@@ -80,6 +86,7 @@ class CasController extends Controller
 
          if($res->date && $res->procedure && $res->invoice && $res->fee && $res->time){
             Procedure::create([
+                'user_id' => Auth::user()->id,
                 'cas_id' => $cas->id,
                 'time' => $res->time,
                 'date' => $res->date,
@@ -103,8 +110,10 @@ class CasController extends Controller
     public function show(Cas $cas,$case)
     {
         //
-        $ca = Cas::with(['client', 'court', 'judge', 'document', 'procedure'])->find($case);
-        // return response()->json($ca);
+        $ca = Cas::with(['client', 'court', 'judge', 'document', 'procedure'])
+            ->where('user_id', Auth::user()->id)
+            ->where('id', $case) 
+            ->first();
         return view('cases.show-cas', ['case' => $ca]);
     }
 
@@ -114,14 +123,18 @@ class CasController extends Controller
     public function edit($id)
     {
         //
-        $clients = Client::All();
-        $court = Court::All();
-        // $proc = Procedure::find('cas_id', $id);
-        $judge = Judge::All();
-        $cas = Cas::with(['client', 'court', 'judge', 'document', 'procedure'])->find($id);
-        // dd($cas);
-        // return response()->json($cas);
-        return view('cases.edit-cas', ['case' => $cas, 'clients' => $clients, 'judges' => $judge, 'court' => $court]);
+        $clients = Client::where('user_id', Auth::user()->id)->get();
+        $courts = Court::where('user_id', Auth::user()->id)
+            ->orWhere('isDefault', 1)
+            ->get();
+        $judge = Judge::where('user_id', Auth::user()->id)
+            ->orWhere('isDefault', 1)
+            ->get();
+        $cas = Cas::with(['client', 'court', 'judge', 'document', 'procedure'])
+            ->where('user_id', Auth::user()->id)
+            ->where('id', $id) 
+            ->first();
+        return view('cases.edit-cas', ['case' => $cas, 'clients' => $clients, 'judges' => $judge, 'court' => $courts]);
 
     }
 
@@ -139,7 +152,9 @@ class CasController extends Controller
         ]);
 
 
-        $cas = Cas::findOrFail($id);
+        $cas = Cas::where('user_id', Auth::user()->id)
+            ->where('id', $case)
+            ->first();
         // $cas->serial_number = $req->serial_number;
         $cas->title_file = $req->title;
         $cas->title_number = $req->titleNumber;
@@ -173,7 +188,9 @@ class CasController extends Controller
             'ids' => 'required|array',
         ]);
         
-        $da = Cas::whereIn('serial_number', $req->input('ids'))->delete();
+        $da = Cas::whereIn('serial_number', $req->input('ids'))
+            ->where('user_id', Auth::user()->id)
+            ->delete();
         $notification = array(
             'message' => 'Many Cases Deleted Successfully',
             'alert-type' => 'success'
@@ -184,7 +201,9 @@ class CasController extends Controller
     public function destroy($id)
     {
         //
-        Cas::findOrFail($id)->delete();
+        Cas::where('id', $id)
+            ->where("user_id", Auth::id())
+            ->delete();
 
         $notification = array(
             'message' => 'Case Deleted Successfully',
@@ -196,7 +215,9 @@ class CasController extends Controller
 
     public function ChanageStatus(Request $req, $id)
     {
-        $cas = Cas::where('id', $id)->first();
+        $cas = Cas::where('id', $id)
+            ->where("user_id", Auth::id())
+            ->first();
         $cas->status = $req->status;
         $cas->save();
 

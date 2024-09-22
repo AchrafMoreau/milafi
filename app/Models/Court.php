@@ -11,7 +11,7 @@ use App\Models\Cas;
 class Court extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'location', 'category'];
+    protected $fillable = ['name','user_id', 'location','isDefault', 'category'];
 
     public function judge(){
         return $this->hasMany(Judge::class);

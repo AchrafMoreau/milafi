@@ -17,15 +17,20 @@ class DocumentController extends Controller
     public function index()
     {
         //
-        $cases = Cas::All();
-        $docs =  Document::with('cas')->orderBy('created_at', 'DESC')->Paginate(10);
+        $cases = Cas::where('user_id', Auth::id())->get();
+        $docs =  Document::where("user_id", Auth::id())
+            ->with('cas')
+            ->orderBy('created_at', 'DESC')
+            ->Paginate(10);
         // return response()->json($docs);
         return view('dashboard-documnet', ['docs' => $docs, 'cases' => $cases]);
     }
 
     public function getAll()
     {
-        $docs = Document::with('cas')->get();
+        $docs = Document::with('cas')
+            ->where("user_id", Auth::id())
+            ->get();
         return response()->json($docs);
     }
     /**
@@ -39,6 +44,52 @@ class DocumentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    public function storeFromCase(Request $request)
+    {
+        $do;
+        $request->validate([
+            'name' => 'required',
+            'case' => 'required',
+        ]);
+
+
+        $doc = TemporaryFiles::where("folder", $request->docs)->first();
+        if($doc){
+            $filepath = storage_path('app/public/uploads/' . $request->docs . '/' . $doc->filename);
+            // dd($file);
+            // $filename = $file->name;
+            // $file->storeAs('uploads', $filename, 'public');
+            $do = Document::create([
+                'name' => $request->name,
+                'cas_id' => $request->case,
+                'file_desc' => $request->file_desc,
+                'user_id' => Auth::user()->id,
+                'file_path' => $doc->folder . '/' . $doc->filename,
+            ]);
+
+     
+
+        }else{
+            $do = Document::create([
+                'name' => $request->name,
+                'cas_id' => $request->case,
+                'file_desc' => $request->file_desc,
+                'user_id' => Auth::user()->id
+            ]);
+        }
+
+        // dd($d);
+        $document = Document::with('cas')
+            ->where('user_id', Auth::id())
+            ->find($do->id);
+        $notification = array(
+            'message' => 'Documents Created successfully',
+            'alert-type' => 'success',
+            'data' => $document
+        );
+        return redirect()->back()->with($notification);
+
+    }
     public function store(Request $request)
     {
         //
@@ -76,7 +127,9 @@ class DocumentController extends Controller
         }
 
         // dd($d);
-        $document = Document::with('cas')->find($do->id);
+        $document = Document::with('cas')
+            ->where('user_id', Auth::id())
+            ->find($do->id);
         $notification = array(
             'message' => 'Documents Created successfully',
             'alert-type' => 'success',
@@ -92,7 +145,8 @@ class DocumentController extends Controller
     public function show($id)
     {
         //
-        $doc = Document::findOrFail($id);
+        $doc = Document::where('user_id', Auth::id())
+            ->findOrFail($id);
         return view('documents.view-document', ['doc' => $doc]);
     }
 
@@ -117,7 +171,8 @@ class DocumentController extends Controller
             'case' => 'required',
         ]);
 
-        $oldDocument = Document::findorFail($id);
+        $oldDocument = Document::where('user_id', Auth::id())
+            ->findorFail($id);
         $doc = TemporaryFiles::where("folder", $request->docs)->first();
 
         if($doc){
@@ -144,7 +199,9 @@ class DocumentController extends Controller
             $oldDocument->save();
         }
 
-        $document = Document::with('cas')->find($oldDocument->id);
+        $document = Document::with('cas')
+            ->where("user_id", Auth::id())
+            ->find($oldDocument->id);
 
         $notification = array(
             'message' => 'Documents Update successfully',
@@ -160,7 +217,9 @@ class DocumentController extends Controller
     public function destroy($id)
     {
         //
-        Document::findOrFail($id)->delete();
+        Document::where('user_id', Auth::id())
+            ->findOrFail($id)
+            ->delete();
 
         $notification = array(
             'message' => 'Documents Deleted successfully',
@@ -177,7 +236,9 @@ class DocumentController extends Controller
         
         // return 'hello';
 
-        $da = Document::whereIn('id', $req->input('ids'))->delete();
+        $da = Document::where("user_id", Auth::id())
+            ->whereIn('id', $req->input('ids'))
+            ->delete();
         $notification = array(
             'message' => 'Many Judges Deleted Successfully',
             'alert-type' => 'success'

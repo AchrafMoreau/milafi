@@ -269,7 +269,7 @@ Array.prototype.slice.call(forms).forEach(function (form) {
             ) {
                 if(caseVal.getValue().value === ""){
                     Swal.fire({
-                        title: window.translations.selecetCase,
+                        title: window.translations.selectCase,
                         showCloseButton: true
                     });
                 }else{
@@ -342,68 +342,75 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                 nameField.value !== "" &&
                 fileDescField.value !== "" && editlist
             ){
-                var editValues = customerList.get({
-                    id: idField.value,
-                });
-                Array.from(editValues).forEach(function (x) {
-                    isid = new DOMParser().parseFromString(x._values.id, "text/html");
-                    var selectedid = isid.body.innerHTML;
-                    if (selectedid == itemId) {
-                        const data = {
-                            name: nameField.value,
-                            file_desc: fileDescField.value,
-                            case: caseVal.getValue().value,
-                            docs: form.elements['docs'].value
-                        }
-                        console.log(data)
-                        $.ajax({
-                            url: `/document/${parseInt(selectedid)}`,
-                            method: "PUT",
-                            data: JSON.stringify(data),
-                            headers:{
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': token
-                            },
-                            beforeSend: ()=>{
-                                $('#add-btn').html(`<div class="spinner-border text-primary" style='width:1rem; height:1rem;' role="status" ><span class="sr-only">loading...</span></div>`)
-                            },
-                            success: (res) =>{
-                                toastr[res['alert-type']](res.message)
-                                x.values({
-                                    id: `000${res.data.id}`,
-                                    name: res.data.name,
-                                    file_desc: res.data.file_desc,
-                                    file_path: res.data.file_path,
-                                    case: res.data.cas.title_file,
-                                });
-                                document.getElementById("close-modal").click();
-                                clearFields();
-                            },
-                            error: (xhr, status, error) => {
-                                $('#add-btn').html(``)
-                                $('#add-btn').text(window.translations.editDocument)
-                                const err = xhr.responseJSON.errors
-                                for(const key in err){
-                                    console.log(key)
-                                    const input = event.target.elements[key] 
-                                    console.log(input)
-                                    if(err[key][0].split('.')[1] === 'required'){
-                                        input.classList.add('is-invalid');
-                                        $(input).next('.invalid-feedback').html(`<strong>this field are required</strong>`);
-                                    }else if(err[key][0].split('.')[1] === 'unique'){
-                                        input.classList.add('is-invalid');
-                                        $(input).next('.invalid-feedback').html(`<strong>this field should be unique </strong>`);
-                                    }else{
-                                        if(input.classList){
+              if(caseVal.getValue().value === ""){
+                    Swal.fire({
+                        title: window.translations.selectCase,
+                        showCloseButton: true
+                    });
+                }else{
+                    var editValues = customerList.get({
+                        id: idField.value,
+                    });
+                    Array.from(editValues).forEach(function (x) {
+                        isid = new DOMParser().parseFromString(x._values.id, "text/html");
+                        var selectedid = isid.body.innerHTML;
+                        if (selectedid == itemId) {
+                            const data = {
+                                name: nameField.value,
+                                file_desc: fileDescField.value,
+                                case: caseVal.getValue().value,
+                                docs: form.elements['docs'].value
+                            }
+                            console.log(data)
+                            $.ajax({
+                                url: `/document/${parseInt(selectedid)}`,
+                                method: "PUT",
+                                data: JSON.stringify(data),
+                                headers:{
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': token
+                                },
+                                beforeSend: ()=>{
+                                    $('#add-btn').html(`<div class="spinner-border text-primary" style='width:1rem; height:1rem;' role="status" ><span class="sr-only">loading...</span></div>`)
+                                },
+                                success: (res) =>{
+                                    toastr[res['alert-type']](res.message)
+                                    x.values({
+                                        id: `000${res.data.id}`,
+                                        name: res.data.name,
+                                        file_desc: res.data.file_desc,
+                                        file_path: res.data.file_path,
+                                        case: res.data.cas.title_file,
+                                    });
+                                    document.getElementById("close-modal").click();
+                                    clearFields();
+                                },
+                                error: (xhr, status, error) => {
+                                    $('#add-btn').html(``)
+                                    $('#add-btn').text(window.translations.editDocument)
+                                    const err = xhr.responseJSON.errors
+                                    for(const key in err){
+                                        console.log(key)
+                                        const input = event.target.elements[key] 
+                                        console.log(input)
+                                        if(err[key][0].split('.')[1] === 'required'){
                                             input.classList.add('is-invalid');
-                                            $(input).next('.invalid-feedback').html(`<strong>${err[key]}</strong>`);
+                                            $(input).next('.invalid-feedback').html(`<strong>this field are required</strong>`);
+                                        }else if(err[key][0].split('.')[1] === 'unique'){
+                                            input.classList.add('is-invalid');
+                                            $(input).next('.invalid-feedback').html(`<strong>this field should be unique </strong>`);
+                                        }else{
+                                            if(input.classList){
+                                                input.classList.add('is-invalid');
+                                                $(input).next('.invalid-feedback').html(`<strong>${err[key]}</strong>`);
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        })
-                    }
-                });
+                            })
+                        }
+                    });
+                }
             }
         }
     }, false)

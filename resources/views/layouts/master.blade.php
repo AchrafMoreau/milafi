@@ -44,12 +44,15 @@
 
 <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 <script>
-    function clearFieldsforClient() {
+    function clearClientFields (){
         $('#name').val("")
         $('#name').attr('class', "form-control")
         $('#contact_info').val("");
         $('#contact_info').attr('class', "form-control")
-        $('#gender').prop('checked', false);
+        const genderInputs = $('input[name="gender"]');
+        genderInputs.each((index, elm) => {
+            $(elm).prop('checked', false);
+        });
         $("#address").val("");
         $('#address').attr('class', "form-control")
         $("#CIN").val("");
@@ -84,7 +87,6 @@
 
             },
             success: (res) =>{
-                clearFieldsforClient()
                 $('.btn-close').click();
                 toastr[res['alert-type']](res.message)
                 let elements = judgeSelect.config.choices
@@ -108,10 +110,7 @@
                     input.classList.add('is-invalid');
                     $(input).next('.invalid-feedback').html(`<strong>${err[key]}</strong>`);
                 }
-
             }
-
-
         })
     }
     const FormSubmition = (event, method, url)=>{
@@ -142,24 +141,20 @@
 
             },
             success: (res) =>{
-                clearFields()
                 $('.btn-close').click();
                 toastr[res['alert-type']](res.message)
 
                 let elements = clientSelect.config.choices
                 elements.push({value: res.data.id , label: res.data.name, selected: true, disabled: false, placeholder: false})
-                console.log(elements)
                 clientSelect.clearStore(); 
                 clientSelect.setChoices(elements, 'value', 'label', false);
-
-                console.log(`New option added: <option value="${res.data.id}">${res.data.name}</option>`);
-                console.log(clientSelectElement.options); 
                 fillPhoneInput(null, res.data.contact_info);
+                clearClientFields()
             },
             error: (xhr, status, error)=>{
                 const err = xhr.responseJSON.errors
                 for(const key in err){
-                    console.log(err[key])
+                    console.log(err[key], key)
                     const input = form.elements[key] 
                     input.classList.add('is-invalid');
                     $(input).next('.invalid-feedback').html(`<strong>${err[key]}</strong>`);
@@ -169,7 +164,6 @@
         });
        
     }
-
 
 </script>
 </html>

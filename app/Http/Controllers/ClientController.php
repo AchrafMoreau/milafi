@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\Cas;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
@@ -24,7 +25,9 @@ class ClientController extends Controller
 
     public function getAll()
     {
-        $clients = Client::with('cas')->get();
+        $clients = Client::with('cas')
+            ->where('user_id', Auth::id())
+            ->get();
         return response()->json($clients, 200);
     }
 
@@ -50,7 +53,6 @@ class ClientController extends Controller
             'CIN' => ['required','string', 'unique:clients']
         ]);
 
-        // dd($request);
 
         // this code should be on the blade  for case selected the new client ----------------------------------------
         // @if($clientSelected)
@@ -60,6 +62,7 @@ class ClientController extends Controller
         // dd($request);
 
         $cl = Client::create([
+            'user_id' => Auth::id(),
             'name' => $request->name,
             'avatar' => $request->avatar,
             'contact_info' => $request->contact_info,
@@ -84,7 +87,9 @@ class ClientController extends Controller
     public function show($id)
     {
         //
-        $cl = Client::with('cas')->findOrFail($id);
+        $cl = Client::with('cas')
+            ->where("user_id", Auth::id())
+            ->findOrFail($id);
         return view('clients.show-client', ['client' => $cl]);
         // return response()->json($client);
     }
@@ -103,7 +108,7 @@ class ClientController extends Controller
     public function update(Request $request, $client)
     {
         //
-        $oldClient = Client::find($client);
+        $oldClient = Client::where('user_id', Auth::id())->find($client);
         $request->validate([
             'name' => ['required', 'max:255'],
             'contact_info' => 'string',
@@ -143,7 +148,7 @@ class ClientController extends Controller
             'ids.*' => 'exists:clients,id'
         ]);
 
-        Client::destroy($req->input('ids'));
+        Client::where('user_id', Auth::id())->destroy($req->input('ids'));
         $notification = array(
             'message' => 'Many Client Deleted successfully',
             'alert-type' => 'success'
@@ -154,7 +159,9 @@ class ClientController extends Controller
     {
         //
         // dd($client);
-        Client::where('id', $client->id)->delete();
+        Client::where('id', $client->id)
+            ->where("user_id", Auth::id())
+            ->delete();
         $notification = array(
             'message' => 'Client Deleted successfully',
             'alert-type' => 'success'

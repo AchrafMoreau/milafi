@@ -9,7 +9,7 @@ use App\Models\Cas;
 class Todo extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', "description", 'dueDate', 'status', 'priority'];
+    protected $fillable = ['title','user_id', "description", 'dueDate', 'status', 'priority'];
 
 
     public function cas(){

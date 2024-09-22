@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Client;
@@ -26,16 +27,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
-        Client::factory(10)->create();
-        Court::factory(10)->create();
-        Judge::factory(10)->create();
-        Cas::factory(50)->create();
-        Document::factory(10)->create();
-        Invoice::factory(10)->create();
-        Procedure::factory(50)->create();
-        Todo::factory(10)->create();
-        Contact::factory(10)->create();
+        // User::factory(10)->create();
+
+
+        // default judges
+        $sqlFilePath = database_path('sql/courts.sql');
+        $sql = File::get($sqlFilePath);
+        DB::unprepared($sql);
+
+        // default judges
+        $sqlFilePath = database_path('sql/judges.sql');
+        $sql = File::get($sqlFilePath);
+        DB::unprepared($sql);
+        // Client::factory(10)->create();
+        // Court::factory(10)->create();
+        // Judge::factory(10)->create();
+        // Cas::factory(50)->create();
+        // Document::factory(10)->create();
+        // Invoice::factory(10)->create();
+        // Procedure::factory(50)->create();
+        // Todo::factory(10)->create();
+        // Contact::factory(10)->create();
         
         if(!User::where('name', 'Achraf')->first()){
             DB::table('users')->insert([

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->unsignedBigInteger('cas_id');
             $table->foreign('cas_id')->references('id')->on('cas')->onDelete('cascade')->onUpdate('cascade');
             $table->string('date');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->time('time');
             $table->text('procedure');
             $table->integer('fee');

@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Factories;
+use App\Models\User;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,6 +21,7 @@ class ContactFactory extends Factory
             //
             "name" => $this->faker->name(),
             "phone" => $this->faker->e164PhoneNumber(),
+            'user_id' => User::inRandomOrder()->value('id'),
             "email" => $this->faker->email(),
             "address" => $this->faker->address(),
             "avatar" => $this->faker->imageUrl(),

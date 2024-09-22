@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Judge;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Court;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,9 @@ class JudgeController extends Controller
 
     public function getAll()
     {
-        $judges = Judge::with(['court'])->get();
+        $judges = Judge::where('user_id', Auth::id())
+            ->orWhere('isDefault', 1)
+            ->with(['court'])->get();
         return response()->json($judges);
     }
 
@@ -48,13 +51,16 @@ class JudgeController extends Controller
         // dd($request);
 
         $ju = Judge::create([
+            "user_id" => Auth::id(),
             'name' => $request->name,
             'contact_info' => $request->contact_info,
             'court_id' => $request->court,
             'gender' => $request->gender
         ]);
 
-        $judge = Judge::with('court')->find($ju->id);
+        $judge = Judge::where('user_id', Auth::id())
+            ->with('court')
+            ->find($ju->id);
 
         $notification = array(
             'message' => 'Judge Created successfully',
@@ -93,7 +99,8 @@ class JudgeController extends Controller
             'court'=> 'required'
         ]);
         
-        $judge = Judge::findOrFail($id);
+        $judge = Judge::where('user_id', Auth::id())
+            ->findOrFail($id);
 
         $judge->name = $request->name;
         $judge->gender = $request->gender;
@@ -102,7 +109,9 @@ class JudgeController extends Controller
 
         $judge->save();
 
-        $juge = Judge::with('court')->find($judge->id);
+        $juge = Judge::where('user_id', Auth::id())
+            ->with('court')
+            ->find($judge->id);
 
         $notification = array(
             'message' => 'Judge Updated successfully',
@@ -125,7 +134,8 @@ class JudgeController extends Controller
         
         // return 'hello';
 
-        Judge::destroy($req->input('ids'));
+        Judge::where('user_id', Auth::id())
+            ->destroy($req->input('ids'));
         $notification = array(
             'message' => 'Many Judges Deleted Successfully',
             'alert-type' => 'success'
@@ -135,7 +145,8 @@ class JudgeController extends Controller
     public function destroy(Judge $judege, $id)
     {
         //
-        Judge::find($id)->delete();
+        Judge::where('user_id', Auth::id())
+            ->find($id)->delete();
         $notification = array(
             'message' => 'Judge Was Deleted Successfully',
             'alert-type' => 'success'

@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('courts', function(Blueprint $table){
             $table->id();
             $table->string('name');
+            $table->boolean('isDefault')->default(false);
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('location');
             $table->enum('category', ['cassation', 'appel', 'première instance', 'Centres des juges résidents', 'appel de commerce', 'commerciaux', 'appel administratives', 'administratifs']);
             $table->timestamps();

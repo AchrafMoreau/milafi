@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TodoController extends Controller
@@ -14,14 +15,16 @@ class TodoController extends Controller
     public function index()
     {
         //
-        $todo = Todo::orderBy('created_at', "ASC")->get();
+        $todo = Todo::where('user_id', Auth::id())
+            ->orderBy('created_at', "ASC")->get();
         return view('todo');
     }
 
-    public function getAll()
-    {
+    public function getAll() {
         
-        $todo = Todo::orderBy('created_at', "ASC")->get();
+        $todo = Todo::where('user_id', Auth::id())
+            ->orderBy('created_at', "ASC")
+            ->get();
         // $todo = Todo::All();
         return response()->json($todo);
     }
@@ -58,6 +61,7 @@ class TodoController extends Controller
         $dateFormat = date_format($date, 'Y-m-d');
 
         $todo = Todo::create([
+            'user_id' => Auth::id(),
             "title" => $request->title,
             'description' => $request->description,
             'dueDate' => $dateFormat,
@@ -112,7 +116,8 @@ class TodoController extends Controller
     {
         //
         // dd($todo->id);
-        $td = Todo::where('id',$todo->id)->delete();
+        $td = Todo::where('user_id', Auth::id())
+            ->where('id',$todo->id)->delete();
         return response()->json(['message' => 'Todo Was Deleted Successfuly']);
     }
 }

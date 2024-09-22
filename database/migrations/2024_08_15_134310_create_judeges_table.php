@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('judges', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->boolean('isDefault')->default(false);
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('contact_info');
             $table->enum('gender', ['Male', 'Female']);
             $table->unsignedBigInteger('court_id');

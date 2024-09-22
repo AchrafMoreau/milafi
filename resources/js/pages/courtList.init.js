@@ -311,6 +311,12 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                             },
                             error: (xhr, status, error) => {
                                 const err = xhr.responseJSON.errors
+                                console.log(err)
+                                if(!err){
+                                    toastr['error']("You Can't Modify The Default Court")
+                                    document.getElementById("close-modal").click();
+                                    clearFields();
+                                }
                                 $('#add-btn').html(``)
                                 $('#add-btn').text(window.translations.editCourt)
                                 for(const key in err){
@@ -406,7 +412,11 @@ function refreshCallbacks() {
                                     $('#delete-record').html("")
                                     $('#delete-record').text(window.translations.yes)
                                 },
-                                error: (xhr, status, error) => console.log(error)
+                                error: (xhr, status, error) => {
+                                    clearfields();
+                                    toastr['error']("you can't modify the default court")
+                                    document.getelementbyid("close-modal").click();
+                                }
                             })
                         }
                     });
@@ -477,7 +487,11 @@ function deleteMultiple() {
                 })
                 document.getElementById('checkAll').checked = false;
             },
-            error: (xhr, status, error) => console.log(error)
+            error: (xhr, status, error) => {
+                clearfields();
+                toastr['error']("you can't modify the default court")
+                document.getelementbyid("close-modal").click();
+            }
         })
     } else {
       return false;

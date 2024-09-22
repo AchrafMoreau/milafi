@@ -74,14 +74,14 @@
                                         <div class="mb-3">
                                             <label for="firstnameInput" class="form-label">@lang('translation.fullName')</label>
                                             <input type="text" class="form-control" id="firstnameInput"
-                                                placeholder="@lang('translation.enterFullName')" name='name' value="{{ Auth::user()->name }}">
+                                                placeholder="@lang('translation.enterFullName')" name='name' required value="{{ Auth::user()->name }}">
                                         </div>
                                     </div>
                                     <div class="col-lg-6 my-2">
                                         <div class="mb-3">
                                             <label for="arabFullName" class="form-label">@lang('translation.fullNameInArab')</label>
                                             <input type="text" class="form-control" id="arabFullName"
-                                                placeholder="@lang('translation.enterFullNameInArab')" name='name_in_arab' value="{{ Auth::user()->name_in_arab }}">
+                                                placeholder="@lang('translation.enterFullNameInArab')" required name='name_in_arab' value="{{ Auth::user()->name_in_arab }}">
                                         </div>
                                     </div>
                                     <!--end col-->
@@ -96,21 +96,21 @@
                                     <div class="col-lg-6 my-2">
                                         <div class="mb-3">
                                             <label for="emailInput" class="form-label">@lang('translation.email')</label>
-                                            <input type="email" class="form-control" id="emailInput" name='email'
+                                            <input type="email" class="form-control" id="emailInput" required  name='email'
                                                 placeholder="@lang('translation.enterEmail')" value="{{ Auth::user()->email }}">
                                         </div>
                                     </div>
                                     <div class="col-lg-4 my-2">
                                         <div class="mb-3">
                                             <label for="cityInput" class="form-label">@lang('translation.city')</label>
-                                            <input type="text" class="form-control" id="cityInput" name='city' placeholder="@lang('translation.enterCity')"
+                                            <input type="text" class="form-control" id="cityInput" required  name='city' placeholder="@lang('translation.enterCity')"
                                                 value="{{ Auth::user()->city }}" />
                                         </div>
                                     </div>
                                     <div class="col-lg-4 my-2">
                                         <div class="mb-3">
                                             <label for="arabCity" class="form-label">@lang('translation.cityInArab')</label>
-                                            <input type="text" class="form-control" id="arabCity" name='city_in_arab' placeholder="@lang('translation.enterCityInArab')"
+                                            <input type="text" class="form-control" id="arabCity" required name='city_in_arab' placeholder="@lang('translation.enterCityInArab')"
                                                 value="{{ Auth::user()->city_in_arab }}" />
                                         </div>
                                     </div>

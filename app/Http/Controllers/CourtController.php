@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Court;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourtController extends Controller
 {
@@ -14,13 +15,15 @@ class CourtController extends Controller
     {
         //
         $category = ['cassation', 'appel', 'première instance', 'Centres des juges résidents', 'appel de commerce', 'commerciaux', 'appel administratives', 'administratifs'];
-        $courts = Court::orderBy('created_at', 'DESC')->paginate(10);
+        $courts = Court::where('user_id', Auth::id())->orderBy('created_at', 'DESC')->paginate(10);
         return view('dashboard-court', ['courts' => $courts, 'categories' => $category]);
     }
 
     public function getAll()
     {
-        $courts = Court::All();
+        $courts = Court::where('user_id', Auth::id())
+            ->orWhere('isDefault', 1)
+            ->get();
         return response()->json($courts);
     }
     /**
@@ -44,6 +47,7 @@ class CourtController extends Controller
         ]);
 
         $court = Court::create([
+            'user_id' => Auth::id(),
             'name' => $request->name,
             'location' => $request->location,
             'category' => $request->category,
@@ -86,7 +90,7 @@ class CourtController extends Controller
             'category' => 'required',
         ]);
         
-        $court = Court::findOrFail($id);
+        $court = Court::where("user_id", Auth::id())->findOrFail($id);
 
         $court->name = $request->name;
         $court->location = $request->location;
@@ -113,7 +117,7 @@ class CourtController extends Controller
         
         // return 'hello';
 
-        Court::destroy($req->input('ids'));
+        Court::where('user_id', Auth::id())->destroy($req->input('ids'));
         $notification = array(
             'message' => 'Many Courts Deleted Successfully',
             'alert-type' => 'success'
@@ -123,7 +127,7 @@ class CourtController extends Controller
     public function destroy(Court $court, $id)
     {
         //
-        Court::find($id)->delete();
+        Court::where('user_id', Auth::id())->find($id)->delete();
         $notification = array(
             'message' => 'Court Deleted successfully',
             'alert-type' => 'success'

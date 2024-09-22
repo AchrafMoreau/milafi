@@ -113,7 +113,7 @@ class EventController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $event = Event::findOrFail($id);
+        $event = Event::where('user_id', Auth::id())->findOrFail($id);
         // dd($event);
 
         $end = null;
@@ -150,8 +150,10 @@ class EventController extends Controller
     public function destroy($id)
     {
         //
-        Event::where('id', $id)->delete();
-        $events = Event::All();
+        Event::where('id', $id)
+            ->where("user_id", Auth::id())
+            ->delete();
+        $events = Event::where('user_id', Auth::id());
         // return response()->json($events);
     }
 
@@ -162,11 +164,13 @@ class EventController extends Controller
             'to' => 'required|date|after_or_equal:start_date',
         ]);
 
-        $procedure = Procedure::with([
-            'cas' => function ($query) {
-                $query->with(['court', 'judge', 'client']); 
-            }
-        ])->whereBetween('date' , [$req->from, $req->to])->get();
+        $procedure = Procedure::where('user_id', Auth::id())
+            ->with([
+                'cas' => function ($query) {
+                    $query->with(['court', 'judge', 'client']); 
+                }
+            ])->whereBetween('date' , [$req->from, $req->to])
+            ->get();
 
         $schedule = [];
         foreach($procedure as $proc){

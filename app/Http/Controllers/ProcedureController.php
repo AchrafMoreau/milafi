@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Procedure;
 
 class ProcedureController extends Controller
@@ -40,6 +41,7 @@ class ProcedureController extends Controller
         ]);
 
         $proc = Procedure::create([
+            'user_id' => Auth::id(),
             'date' => $request->date,
             'procedure' => $request->procedure,
             'time' => $request->time,

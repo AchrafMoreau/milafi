@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text("description");
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->date('dueDate');
             $table->enum('status', ['Completed', 'Inprogress', 'New', 'Pending']);
             $table->enum('priority', ['High', 'Low', 'Medium']);

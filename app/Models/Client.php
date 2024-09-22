@@ -12,7 +12,7 @@ class Client extends Model
 {
     use HasFactory;
     use Sortable;
-    protected $fillable = ['name', 'contact_info', 'address', 'image', 'CIN', 'gender'];
+    protected $fillable = ['name', 'contact_info', 'address', 'image', 'CIN', 'gender', 'user_id'];
     protected $table = 'clients';  
 
     public function cas(){

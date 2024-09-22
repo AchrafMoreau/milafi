@@ -78,6 +78,7 @@ Route::middleware(['auth', 'clearNotification'])->group(function () {
     Route::delete('/doc-delete/{id}', [DocumentController::class, 'destroy']);
     Route::delete('/destroyMany-document', [DocumentController::class, 'destroyMany']);
     Route::post('/store-doc', [DocumentController::class, 'store']);
+    Route::post('/store-doc-fromCase', [DocumentController::class, 'storeFromCase']);
 
 
     // event route
