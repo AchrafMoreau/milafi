@@ -413,7 +413,7 @@ function refreshCallbacks() {
                                     $('#delete-record').text(window.translations.yes)
                                 },
                                 error: (xhr, status, error) => {
-                                    clearfields();
+                                    clearFields();
                                     toastr['error']("you can't modify the default court")
                                     document.getelementbyid("close-modal").click();
                                 }
@@ -488,7 +488,7 @@ function deleteMultiple() {
                 document.getElementById('checkAll').checked = false;
             },
             error: (xhr, status, error) => {
-                clearfields();
+                clearFields();
                 toastr['error']("you can't modify the default court")
                 document.getelementbyid("close-modal").click();
             }

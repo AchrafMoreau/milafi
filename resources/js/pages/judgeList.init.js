@@ -327,7 +327,7 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                                 const err = xhr.responseJSON.errors
                                 console.log(err)
                                 if(!err){
-                                    clearfields();
+                                    clearFields();
                                     console.log('hello')
                                     toastr['error']("you can't modify the default court")
                                     document.getelementbyid("close-modal").click();
@@ -427,7 +427,7 @@ function refreshCallbacks() {
                                     $('#delete-record').text(window.translations.yes)
                                 },
                                 error: (xhr, status, error) => {
-                                    clearfields();
+                                    clearFields();
                                     toastr['error']("you can't modify the default court")
                                     document.getelementbyid("close-modal").click();
                                 }
