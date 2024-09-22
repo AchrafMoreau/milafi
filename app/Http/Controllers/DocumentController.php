@@ -214,6 +214,19 @@ class DocumentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    public function deleteFromCase($id)
+    {
+        //
+        Document::where('user_id', Auth::id())
+            ->findOrFail($id)
+            ->delete();
+
+        $notification = array(
+            'message' => 'Documents Deleted successfully',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+    }
     public function destroy($id)
     {
         //

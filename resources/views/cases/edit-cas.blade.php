@@ -438,7 +438,7 @@
                                                        <div class="mt-4">
                                                             <h4 class="mb-3 text-wrap">@lang('translation.deleteMessage') @lang('translation.document') !</h4>
                                                             <p class="text-muted mb-4 text-wrap">@lang('translation.deleteConfirmation').</p>
-                                                            <form action="{{ url('/doc-delete/'.$doc->id) }}" method='POST'  class="hstack gap-2 justify-content-center">
+                                                            <form action="{{ url('/delete-doc-fromCase/'.$doc->id) }}" method='POST'  class="hstack gap-2 justify-content-center">
                                                                 @csrf
                                                                 @method("DELETE")
                                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>

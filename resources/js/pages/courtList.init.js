@@ -415,7 +415,7 @@ function refreshCallbacks() {
                                 error: (xhr, status, error) => {
                                     clearFields();
                                     toastr['error']("you can't modify the default court")
-                                    document.getelementbyId("close-modal").click();
+                                    document.getElementById("close-modal").click();
                                 }
                             })
                         }
@@ -490,7 +490,7 @@ function deleteMultiple() {
             error: (xhr, status, error) => {
                 clearFields();
                 toastr['error']("you can't modify the default court")
-                document.getelementbyId("close-modal").click();
+                document.getElementById("close-modal").click();
             }
         })
     } else {
