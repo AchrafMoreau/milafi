@@ -116,4 +116,12 @@ Route::middleware(['auth', 'clearNotification'])->group(function () {
     Route::put('/profile/avatar', [ProfileController::class, 'updateAvatar']);
 });
 
+Route::fallback(function () {
+    $path = Request::path();
+    if (preg_match('/\.(png|jpe?g|gif|svg|css|js)$/i', $path)) {
+        abort(404);  // Return a standard 404 for missing assets
+    }
+    return response()->view('errors.err404', [], 404);
+
+});
 require __dir__.'/auth.php';

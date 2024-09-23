@@ -13,11 +13,6 @@
     <!--end side content-->
     <div class="file-manager-content w-100 p-4 pb-0">
         <div class="row mb-4">
-            <div class="col-auto order-1 d-block d-lg-none">
-                <button type="button" class="btn btn-soft-success btn-icon btn-sm fs-16 file-menu-btn">
-                    <i class="ri-menu-2-fill align-bottom"></i>
-                </button>
-            </div>
             <div class="col-sm order-3 order-sm-2 mt-3 mt-sm-0">
                 <h5 class="fw-semibold mb-0">@lang('translation.manageYourTime')</h5>
             </div>
@@ -64,7 +59,7 @@
             </div>
             <div class="todo-task" id="todo-task">
                 <div class="table-responsive">
-                    <table class="table align-middle position-relative table-nowrap">
+                    <table class="table align-middle position-relative ">
                         <thead class="table-active">
                             <tr>
                                 <th scope="col">@lang('translation.title')</th>
@@ -193,10 +188,9 @@
         yes : "{{ __('translation.yesDoIt') }}",
     }
 
-    console.log("hello")
 </script>
 <script src="{{URL::asset('build/libs/dragula/dragula.min.js')}}"></script>
 <script src="{{URL::asset('build/libs/dom-autoscroller/dom-autoscroller.min.js')}}"></script>
-<script src="{{ URL::asset('build/js/app.js') }}"></script>
 <script src="{{URL::asset('build/js/pages/todo.init.js')}}"></script>
+<script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

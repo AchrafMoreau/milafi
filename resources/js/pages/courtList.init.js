@@ -207,7 +207,7 @@ Array.prototype.slice.call(forms).forEach(function (form) {
             ) {
                 if(courtVal.getValue().value === ""){
                     Swal.fire({
-                        title: window.translations.selectCourt,
+                        title: window.translations.selectCategory,
                         showCloseButton: true
                     });
                 }else{

@@ -127,7 +127,7 @@
                         </div>
                         <!--end tab-pane-->
                         <div class="tab-pane" id="changePassword" role="tabpanel">
-                             <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+                             <form method="post"  id='updatePassword' class="mt-6 space-y-6">
                                 @csrf
                                 @method('put')
                                 <div class="row g-2 ">
@@ -136,6 +136,7 @@
                                             <label for="oldpasswordInput" class="form-label">@lang('translation.oldPassword')*</label>
                                             <input type="password" name='current_password' class="form-control" id="oldpasswordInput"
                                                 placeholder="@lang('translation.enterOldPass')">
+                                            <span class="invalid-feedback" role="alert"></span>
                                         </div>
                                     </div>
                                     <!--end col-->
@@ -144,6 +145,7 @@
                                             <label for="newpasswordInput" class="form-label">@lang('translation.newPassword')*</label>
                                             <input type="password" name='password' class="form-control" id="newpasswordInput"
                                                 placeholder="@lang('translation.enterNewPass')">
+                                            <span class="invalid-feedback" role="alert"></span>
                                         </div>
                                     </div>
                                     <!--end col-->
@@ -152,6 +154,7 @@
                                             <label for="confirmpasswordInput" class="form-label">@lang('translation.confirmPassword')*</label>
                                             <input type="password" name='password_confirmation' class="form-control" id="confirmpasswordInput"
                                                 placeholder="@lang('translation.confirmPass')">
+                                            <span class="invalid-feedback" role="alert"></span>
                                         </div>
                                     </div>
                                     <!--end col-->
@@ -174,10 +177,79 @@
             </div>
         </div>
         <!--end col-->
-    </div> -->
+    </div>
     <!--end row-->
 @endsection
 @section('script')
+    <script>
+        $("#updatePassword").on('submit', function(e){
+            e.preventDefault()
+            const form = e.target;
+            let curPass = form.elements['current_password'].value
+            let newPass = form.elements['password'].value
+            let confirm = form.elements['password_confirmation'].value
+
+            if(curPass === "" && newPass === "" && confirm === ""){
+                toastr['error']("@lang('translation.fillAllField')")
+            }else{
+                console.log(newPass, confirm)
+                if(newPass !== confirm){
+                    $('#newpasswordInput').addClass('is-invalid')
+                    $('.invalid-feedback').html(`<strong>@lang('translation.passwordDoesntMatch')</strong>`);
+                    $('#confirmpasswordInput').val('')
+                }else{
+                    const inputs = {
+                        current_password : curPass,
+                        password: newPass,
+                        password_confirmation: confirm
+                    }
+                    console.log(inputs)
+                    $.ajax({
+                        url: '{{ route("password.update") }}',
+                        method: "PUT",
+                        headers:{
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        data: JSON.stringify(inputs),
+                        success: (res)=>{
+                            toastr[res['alert-type']](res.message)
+                            $('#confirmpasswordInput').val('')
+                            $('#confirmpasswordInput').removeClass('is-invalid')
+                            $('#newpasswordInput').val('')
+                            $('#newpasswordInput').removeClass('is-invalid')
+                            $('#oldpasswordInput').val('')
+                            $('#oldpasswordInput').removeClass('is-invalid')
+                            $('.invalid-feedback').html(``);
+                        },
+                        error: (xhr, status, error)=>{
+                            const err = xhr.responseJSON.errors
+                            for(const key in err){
+                                const input = form.elements[key] 
+                                if(err[key][0].split('.')[1] === 'current_password'){
+                                    input.classList.add('is-invalid');
+                                    $(input).next('.invalid-feedback').html(`<strong>@lang('translation.incorecctPass')</strong>`);
+                                }else if(err[key][0].split('.')[1] === 'min.string'){
+                                    input.classList.add('is-invalid');
+                                    $(input).next('.invalid-feedback').html(`<strong>@lang('translation.minPass')</strong>`);
+                                }else{
+                                    input.classList.add('is-invalid');
+                                    $(input).next('.invalid-feedback').html(`<strong>@lang('translation.someError')</strong>`);
+                                }
+                            }
+
+                            // $('newpasswordInput').addClass('is-invalid')
+                            // $('.invalid-feedback').html(`<strong>passwod does't match</strong>`);
+                            // $('newpasswordInput').val('')
+                            // $('confirmpasswordInput').val('')
+                        }
+                    })
+                }
+
+            }
+
+        })
+    </script>
     <script src="{{ URL::asset('build/js/pages/profile-setting.init.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection

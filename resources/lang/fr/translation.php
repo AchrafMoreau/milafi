@@ -1,5 +1,11 @@
 <?php
 return [
+    'updatePassWordMessage' => "le mot de passe a été mis à jour avec succès",
+    'someError' => "Une erreur s'est produite. Veuillez réessayer.",
+    'minPass' => 'Le mot de passe doit comporter au moins 8 caractères et contenir au moins un chiffre',
+    'incorecctPass' => "mot de passe incorrect",
+    'passwordDoesntMatch' => 'le mot de passe ne correspond pas',
+    'fillAllField' => "Vous devez remplir tous les champs avant la soumission",
     'welcomeMessage' => 'Panneau de contrôle et de gestion exceptionnel',
     'signInToContinueToVelzon' => 'Connectez-vous pour continuer sur Milafi',
     'rememberMe' => 'Souviens-toi de moi',

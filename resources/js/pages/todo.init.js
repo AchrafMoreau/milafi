@@ -6,13 +6,13 @@ Contact: Themesbrand@gmail.com
 File: todo init js
 */
 let statusField = document.getElementById("task-status-input");
-statusVal = new Choices(statusField, {
+var statusVal = new Choices(statusField, {
     searchEnabled: false,
 });
 
 
 let priorityField = document.getElementById("priority-field");
-priorityVal = new Choices(priorityField, {
+var priorityVal = new Choices(priorityField, {
     searchEnabled: false,
 });
 
@@ -21,16 +21,6 @@ const dateInput = document.getElementById("task-duedate-input")
 let editList = false;
 
 var todoList = [];
-$.ajax({
-    url: '/getAll',
-    method: "GET",
-    datatype: 'json',
-    success: (res)=>{
-        todoList = res;
-        drawList(todoList);
-    },
-    error: (xhr, status, error)=> console.log(error)
-})
 editList = false;
 
 
@@ -58,6 +48,7 @@ document.getElementById("creattask-form").addEventListener("submit", function (e
         inputDesc = document.getElementById('task-description-input').value
     var statusInputFieldValue = statusVal.getValue(true);
     var priorityInputFieldValue = priorityVal.getValue(true);
+
 
 
     var errorMsg = document.getElementById("task-error-msg");
@@ -89,6 +80,8 @@ document.getElementById("creattask-form").addEventListener("submit", function (e
     }
     
     if (inputTitle !== "" && statusInputFieldValue !== "" && priorityInputFieldValue !== "" && !editList) {
+
+        // let statusField = document.getElementById("task-status-input");
         let newTodo = {
             'title': inputTitle,
             'description': inputDesc,
@@ -112,8 +105,6 @@ document.getElementById("creattask-form").addEventListener("submit", function (e
                 sortElementsById('asc');
                 editList = false;
                 document.getElementById("createTaskBtn-close").click();
-                // $('#delete-record').html("")
-                // $('#delete-record').text(window.translations.yes)
             },
             error: (xhr, status, error) => console.log(error)
         })
@@ -121,7 +112,6 @@ document.getElementById("creattask-form").addEventListener("submit", function (e
     } else if (inputTitle !== "" && statusInputFieldValue !== "" && priorityInputFieldValue !== "" && editList) {
         var getEditid = 0;
         getEditid = document.getElementById("taskid-input").value;
-        console.log(getEditid)
         var editObj = {
             'title': inputTitle,
             'description': inputDesc,
@@ -150,12 +140,10 @@ document.getElementById("creattask-form").addEventListener("submit", function (e
                             item.checkedElem = false
                         }
                     
-                    console.log(res)
                         return res;
                     }
                     return item;
                 });
-                console.log
                 load(todoList)
                 editList = false;
                 document.getElementById("createTaskBtn-close").click();
@@ -239,7 +227,6 @@ var searchTaskList = document.getElementById("searchTaskList");
 searchTaskList.addEventListener("keyup", function () {
     var inputVal = searchTaskList.value.toLowerCase();
     function filterItems(arr, query) {
-        console.log(arr, query)
         return arr.filter(function (el) {
             return el.title.toLowerCase().indexOf(query.toLowerCase()) !== -1
         })
@@ -259,7 +246,6 @@ searchTaskList.addEventListener("keyup", function () {
 
 function loadList(manyTodos) {
     function elmLoader() {
-        console.log(manyTodos)
         document.getElementById("elmLoader").innerHTML = '';
         drawList(manyTodos);
     }
@@ -302,7 +288,7 @@ function drawList(manyTodos) {
                     </div>\
                 </div>\
             </td>\
-            <td> <p class="cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title=" '+ singleTodo.description + '">'+ singleTodo.description.slice(0, 30) + '...</p></td>\
+            <td> <p class="cursor-pointer m-0" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title=" '+ singleTodo.description + '">'+ (singleTodo.description.length > 50 ? singleTodo.description.slice(0, 50) + "..." : singleTodo.description) + '</p></td>\
             <td>' + singleTodo.dueDate + '</td>\
             <td>' + isStatus(singleTodo.status) + '</td>\
             <td>' + isPriority(singleTodo.priority) + '</td>\
@@ -508,7 +494,6 @@ taskSortListInput.passedElement.element.addEventListener('change', function (eve
 
 
 function load(manyTodos) {
-    console.log("from load", manyTodos)
     loadList(manyTodos);
 };
 
@@ -517,3 +502,14 @@ window.onload = function () {
     sortElementsById('asc');
 };
 
+
+$.ajax({
+    url: '/getAll',
+    method: "GET",
+    datatype: 'json',
+    success: (res)=>{
+        todoList = res;
+        drawList(todoList);
+    },
+    error: (xhr, status, error)=> console.log(error)
+})
