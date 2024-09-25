@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title') @lang('translation.form-select') @endsection
 @section('content')
-    @component('components.breadcrumb')
-        @slot('li_1') @lang('translation.cases') @endslot
-        @slot('title') @lang('translation.addcase') @endslot
-    @endcomponent
     <link rel="stylesheet" href="{{ URL::asset('build/libs/filepond/filepond.min.css') }}" type="text/css" />
     <link rel="stylesheet"
         href="{{ URL::asset('build/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css') }}">
@@ -15,7 +11,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
  
-    <div class="row">
+    <div class="row mt-5">
         <form class="col-lg-12" action="{{ url('/case-update/'.$case->id) }}" method="POST">
             @csrf
             @method('POST')

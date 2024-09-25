@@ -7,16 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 @section('content')
-    @component('components.breadcrumb')
-        @slot('li_1')
-            Dashboards
-        @endslot
-        @slot('title')
-            Cases
-        @endslot
-    @endcomponent
     <!-- Rounded with Label -->
-    <div class="p-3 mb-5 rounded mb-4">
+    <div class="p-3 rounded mb-4">
         <form action="{{ url('/importSchadule') }}" method="POST"> 
             @csrf
             @method('POST')

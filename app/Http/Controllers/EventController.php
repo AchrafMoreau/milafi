@@ -27,21 +27,22 @@ class EventController extends Controller
             $dateEnd = new \DateTime($event->end);
             $dateStart = new \DateTime($event->start);
 
-            $endTime = $dateEnd->format('D M d Y H:i:s \G\M\TO (T)');
-            $startTime = $dateStart->format('D M d Y H:i:s \G\M\TO (T)');
+            $endTime = $dateEnd->format('Y-m-d'). "T" .$dateStart->format('H:i:s') . ".000Z";
+            $startTime = $dateStart->format('Y-m-d') . 'T' . $dateStart->format('H:i:s') . ".000Z";           
+            // if($event->id == 5) dd($startTime, $event->start);
             $eventsArray[] = [
                 'id' => $event->id,
                 'title' => $event->title,
                 'start' => $event->start,
-                //  start and time should be return in this format : Sat Aug 31 2024 12:00:00 GMT+0100 (GMT+01:00) 
-                // 'start' => $startTime,
-                'end' => $event->end,
+                'end' =>  $event->end,
                 'allDay' => $event->allDay,
                 'className' => $event->type,
                 'description' => $event->description,
                 'location' => $event->location,
             ];
         }
+
+        // dd($eventsArray);
 
         return response()->json($eventsArray);
     }
@@ -61,34 +62,43 @@ class EventController extends Controller
     {
         //
 
-        $end = null;
-        $start = new \DateTime();
-        if(!empty($request->endTime) && $request->endTime != 'Invalid Date'){
-            $eventEnd = preg_replace('/\s*\(.*\)$/', '', $request->endTime);
-            $end = new \DateTime($eventEnd);
-        } 
-        if(!empty($request->startTime) && $request->startTime != 'Invalid Date'){
-            $eventStart = preg_replace('/\s*\(.*\)$/', '', $request->startTime);
-            $start = new \DateTime($eventStart);
-        }
+        // $end = null;
+        // $start = new \DateTime();
+        // if(!empty($request->endTime) && $request->endTime != 'Invalid Date'){
+        //     $eventEnd = preg_replace('/\s*\(.*\)$/', '', $request->endTime);
+        //     $end = new \DateTime($eventEnd);
+        // } 
+        // if(!empty($request->startTime) && $request->startTime != 'Invalid Date'){
+        //     $eventStart = preg_replace('/\s*\(.*\)$/', '', $request->startTime);
+        //     $start = new \DateTime($eventStart);
+        // }
 
         
-        // dd($request->id);
         $event = Event::create([
             'id' => $request->id,
             'user_id' => Auth::user()->id,
             'type' => $request->className,
             'location' => $request->location,
             'allDay' => $request->eventDay,
-            'start' => $start,
-            'end' => $end,
+            'start' => new \DateTime($request->start),
+            'end' => $request->end ? new \DateTime($request->end) : null,
             'description' => $request->description,
             'title' => $request->title
         ]);
 
+        // dd($event);
         
 
-        return response()->json(['id' => $request->id, 'eventDay' => $event->allDay, 'className'=>$event->type, 'location' => $event->location, 'startTime' => $event->start, 'endTime' => $event->end, 'description' => $event->description, 'title' => $event->title ]);
+        return response()->json([
+            'id' => $request->id, 
+            'eventDay' => $event->allDay, 
+            'className'=>$event->type, 
+            'location' => $event->location, 
+            'startTime' => $event->start, 
+            'endTime' => $event->end,
+            'description' => $event->description, 
+            'title' => $event->title 
+        ]);
     }
 
     /**
@@ -116,31 +126,45 @@ class EventController extends Controller
         $event = Event::where('user_id', Auth::id())->findOrFail($id);
         // dd($event);
 
-        $end = null;
-        $start = null;
+        // $end = null;
+        // $start = null;
 
-        if($request->endTime != 'Invalid Date'){
-            $eventEnd = preg_replace('/\s*\(.*\)$/', '', $request->endTime);
-            $end = new \DateTime($eventEnd);
-        } 
-        if($request->startTime != 'Invalid Date'){
-            $eventStart = preg_replace('/\s*\(.*\)$/', '', $request->startTime);
-            $start = new \DateTime($eventStart);
-        }
-        // dd($request->description);
+        // if($request->endTime != 'Invalid Date'){
+        //     $eventEnd = preg_replace('/\s*\(.*\)$/', '', $request->endTime);
+        //     $end = new \DateTime($eventEnd);
+        // } 
+        // if($request->startTime != 'Invalid Date'){
+        //     $eventStart = preg_replace('/\s*\(.*\)$/', '', $request->startTime);
+        //     $start = new \DateTime($eventStart);
+        // }
+
+        // dd($end, $start);
+        // dd($request);
         // $event->id = $request->id;
         $event->user_id = Auth::user()->id;
         $event->type = $request->className;
         $event->location = $request->location;
         $event->allDay = $request->eventDay;
-        $event->start = $start;
-        $event->end = $end;
+        $event->start = $request->startTime ? new \DateTime($request->startTime) : null;
+        $event->end = $request->endTime ? new \DateTime($request->endTime) : null;
+        // $event->start = $start;
+        // $event->end = $end;
         $event->description = $request->description;
         $event->title = $request->title;
 
         $event->save();
 
-        return response()->json(['id' => $event->id, 'evenDay' => $event->allDay, 'className'=>$event->type, 'location' => $event->location, 'startTime' => $event->start, 'endTime' => $event->end, 'description' => $event->description, 'title' => $event->title ]);
+        // $events = Event::where('user_id', Auth::user()->id)->get();
+        return response()->json([
+            'id' => $event->id, 
+            'eventDay' => $event->allDay, 
+            'className'=>$event->type, 
+            'location' => $event->location, 
+            'start' => $request->startTime, 
+            'end' => $request->endTime,
+            'description' => $event->description, 
+            'title' => $event->title 
+        ]);
 
     }
 
@@ -215,6 +239,79 @@ class EventController extends Controller
         return $pdf->download('WeekSchedule.pdf');
         // return $pdf->stream();
         return view('schedule', compact('schedule'));
+        
+    }
+
+
+    public function importSession()
+    {
+
+        $startOfWeek = Carbon::now()->startOfWeek(); // Get the start of the week (Monday)
+        $endOfWeek = Carbon::now()->endOfWeek();     // Get the end of the week (Sunday)
+        $session = Event::where('user_id', Auth::id())
+            ->whereBetween('start' , [$startOfWeek, $endOfWeek])
+            ->get();
+
+        // dd($session);
+
+        $schedule = [];
+        foreach($session as $proc){
+            // Set the locale to Arabic for the day name only
+            Carbon::setLocale('fr');
+            $date = Carbon::parse($proc->start);
+
+            // Get the day name in Arabic and manually format the rest with Western numerals
+            $arabicDayName = $date->translatedFormat('l'); // Get the day name in Arabic
+            $westernDate = $date->format('Y/m/d'); // Use Western numerals for the date
+            $formattedDate = $arabicDayName . ' ' . $westernDate;
+
+            $type;
+            switch($proc->type){
+                case 'bg-success-subtle':
+                    $type = "notImportant";
+                    break;
+                case 'bg-info-subtle':
+                    $type = 'meeting';
+                    break;
+                case "bg-warning-subtle":
+                    $type = 'session';
+                    break;
+                case 'bg-danger-subtle':
+                    $type = 'veryImportant';
+                    break;
+                default:
+                    $type= '';
+            };
+            $obj = [
+                "title" => $proc->title,
+                "location" => $proc->location,
+                "description" => $proc->description,
+                "type" => $type,
+                'time' => $proc->start
+            ];
+            if (array_key_exists($proc->date, $schedule)) {
+                $schedule[$formattedDate][] = $obj;
+            } else {
+                $schedule[$formattedDate] = [$obj];
+            }
+        };
+
+        // dd($schedule);
+        $reportHtml = view('scheduleSession', compact('schedule'))->render();
+
+        $arabic = new Arabic();
+        $p = $arabic->arIdentify($reportHtml);
+
+        for ($i = count($p)-1; $i >= 0; $i-=2) {
+            $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+            $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+        }
+        // $pdf = PDF::loadHTML($reportHtml);
+        $pdf = PDF::setOption('direction', 'rtl')->loadHTML($reportHtml);
+
+        return $pdf->download('WeekSchedule.pdf');
+        // return $pdf->stream();
+        // return view('scheduleSession', compact('schedule'));
         
     }
 }

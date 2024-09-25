@@ -6,16 +6,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 @section('content')
-    @component('components.breadcrumb')
-        @slot('li_1')
-            Apps
-        @endslot
-        @slot('title')
-            Calendar
-        @endslot
-    @endcomponent
 
-    <div class="row">
+    <div class="row mt-5">
         <div class="col-12">
             <div class="row">
                 <div class="col-xl-3">
@@ -25,6 +17,12 @@
                                 <i class="mdi mdi-plus"></i> 
                                     @lang('translation.createNewEvent')
                             </button>
+                            <a href="{{ url('/importSession') }}">
+                                <button class="btn btn-success w-100 mt-2" id="importSession">
+                                    <i class="mdi mdi-download"></i> 
+                                        @lang('translation.printSchedule')
+                                </button>
+                            </a>
 
                             <div id="external-events">
                                 <br>

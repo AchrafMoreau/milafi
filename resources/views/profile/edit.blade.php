@@ -21,31 +21,9 @@
         </div>
     </div> -->
 
-    <div class="row">
-        <div class="col-xxl-3">
-            <!-- <div class="card mt-n5">
-                <div class="card-body p-4">
-                    <div class="text-center">
-                        <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                            <img src="@if (Auth::user()->avatar != '') {{ URL::asset('images/' . Auth::user()->avatar) }}@else{{ URL::asset('build/images/users/avatar-1.jpg') }} @endif"
-                                class="  rounded-circle avatar-xl img-thumbnail user-profile-image"
-                                alt="user-profile-image">
-                            <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
-                                <input id="profile-img-file-input" type="file" class="profile-img-file-input">
-                                <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
-                                    <span class="avatar-title rounded-circle bg-light text-body">
-                                        <i class="ri-camera-fill"></i>
-                                    </span>
-                                </label>
-                            </div>
-                        </div>
-                        <h5 class="fs-16 mb-1">{{ Auth::user()->name }}</h5>
-                        <p class="text-muted mb-0">{{ Auth::user()->role }}</p>
-                    </div>
-                </div>
-            </div> -->
-        </div>
-        <div class="col-xxl-9">
+    <div class="row mt-5">
+        
+        <div class="col-xxl-12">
             <div class="card mt-xxl-n5">
                 <div class="card-header">
                     <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">

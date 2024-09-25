@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title') @lang('translation.form-select') @endsection
 @section('content')
-    @component('components.breadcrumb')
-        @slot('li_1') Cases @endslot
-        @slot('title') Add Case @endslot
-    @endcomponent
     <link href="{{ URL::asset('build/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/classic.min.css') }}" /> <!-- 'classic' theme -->
     <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/monolith.min.css') }}" /> <!-- 'monolith' theme -->
@@ -27,7 +23,7 @@
             outline: none !important;
         }
     </style>
-    <div class="row">
+    <div class="row mt-5">
         <form class="col-lg-12" action="{{ url('/store-case') }}" method="POST">
             @csrf
             @method('POST')

@@ -8,15 +8,7 @@
 
 @endsection
 @section('content')
-    @component('components.breadcrumb')
-        @slot('li_1')
-            CRM
-        @endslot
-        @slot('title')
-            Contacts
-        @endslot
-    @endcomponent
-    <div class="col-xxl-3">
+    <div class="col-xxl-10 m-auto">
         <div class="card" id="contact-view-detail">
             <div class="card-body text-center">
                 <div class="position-relative d-inline-block">

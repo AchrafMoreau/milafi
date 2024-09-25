@@ -459,8 +459,9 @@ var taskStatusInput = new Choices(document.getElementById('choices-select-status
 
 taskStatusInput.passedElement.element.addEventListener('change', function (event) {
     var taskStatusValue = event.detail.value;
-    if (event.detail.value) {
-        var filterData = todoList.filter(taskList => taskList.status == taskStatusValue);
+    var filterData;
+    if (event.detail.value.length > 0) {
+        filterData = todoList.filter(taskList => taskList.status == taskStatusValue);
         if (filterData.length == 0) {
             document.getElementById("noresult").style.display = "block";
             document.getElementById("todo-task").style.display = "none";
@@ -469,7 +470,16 @@ taskStatusInput.passedElement.element.addEventListener('change', function (event
             document.getElementById("todo-task").style.display = "block";
         }
     } else {
-        var filterData = todoList;
+        
+        filterData = todoList;
+        if (filterData.length == 0) {
+            document.getElementById("noresult").style.display = "block";
+            document.getElementById("todo-task").style.display = "none";
+        } else {
+            document.getElementById("noresult").style.display = "none";
+            document.getElementById("todo-task").style.display = "block";
+        }
+
     }
     load(filterData);
 }, false);

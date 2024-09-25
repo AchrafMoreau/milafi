@@ -1,14 +1,10 @@
 @extends('layouts.master')
 @section('title') @lang('translation.form-select') @endsection
 @section('content')
-    @component('components.breadcrumb')
-        @slot('li_1') Cases @endslot
-        @slot('title') Add Case @endslot
-    @endcomponent
 
     
 
-    <div class="row">
+    <div class="row mt-5">
         <div class="card">
             <table class="table table-borderless mb-0">
                 <tbody>

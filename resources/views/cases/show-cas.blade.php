@@ -1,19 +1,17 @@
 @extends('layouts.master')
 @section('title') @lang('translation.form-select') @endsection
 @section('content')
-    @component('components.breadcrumb')
-        @slot('li_1') Cases @endslot
-        @slot('title') Add Case @endslot
-    @endcomponent
-    <link href="{{ URL::asset('build/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/classic.min.css') }}" /> <!-- 'classic' theme -->
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/monolith.min.css') }}" /> <!-- 'monolith' theme -->
-    <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/nano.min.css') }}" /> <!-- 'nano' theme -->
-
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @section('css')
+        <link href="{{ URL::asset('build/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/classic.min.css') }}" /> <!-- 'classic' theme -->
+        <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/monolith.min.css') }}" /> <!-- 'monolith' theme -->
+        <link rel="stylesheet" href="{{ URL::asset('build/libs/@simonwep/pickr/themes/nano.min.css') }}" /> <!-- 'nano' theme -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+    @endsection
 
 
-    <div class="row">
+
+    <div class="row mt-5">
         <div class="col-lg-12" id='case-form'>
             @csrf
             @method('POST')

@@ -13,17 +13,9 @@
 </style>
 @endsection
 @section('content')
-    @component('components.breadcrumb')
-        @slot('li_1')
-            Dashboards
-        @endslot
-        @slot('title')
-            Clients
-        @endslot
-    @endcomponent
     <!-- Rounded with Label -->
 
-<div class="card mb-5">
+<div class="card mb-5 mt-5">
             
     <div class="card-body">
         <div class="listjs-table" id="customerList">

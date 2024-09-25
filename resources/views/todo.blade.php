@@ -9,7 +9,7 @@
 @endsection
 @section('content')
 
-<div class="chat-wrapper d-lg-flex gap-1 mx-n4 mt-n4 p-1">
+<div class="chat-wrapper d-lg-flex mt-5 gap-1 mx-n4 p-1">
     <!--end side content-->
     <div class="file-manager-content w-100 p-4 pb-0">
         <div class="row mb-4">

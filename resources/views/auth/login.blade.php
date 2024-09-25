@@ -23,7 +23,7 @@
                     <div class="text-center mt-sm-5 mb-4 text-white-50">
                         <div>
                             <a href="" class="d-inline-block auth-logo">
-                                <img src="{{ URL::asset('build/images/logo-02.png')}}" alt="" height="100px">
+                                <img src="{{ URL::asset('build/images/Logo-02.png')}}" alt="" height="100px">
                                 <!-- <h1>lawyer App</h1> -->
                             </a>
                         </div>
@@ -56,9 +56,6 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <!-- <div class="float-end">
-                                            <a href="{{ route('password.update') }}" class="text-muted">@lang('translation.forgotPassword?')</a>
-                                        </div> -->
                                         <label class="form-label" for="password-input">@lang('translation.password') <span class="text-danger">*</span></label>
                                         <div class="position-relative auth-pass-inputgroup mb-3">
                                             <input type="password" class="form-control password-input pe-5 @error('password') is-invalid @enderror" name="password" placeholder="@lang('translation.enterPassword')" id="password-input" value="">

@@ -88,6 +88,7 @@ Route::middleware(['auth', 'clearNotification'])->group(function () {
     Route::put('/events/{id}', [EventController::class, 'update']);
     Route::delete('/events/{id}', [EventController::class, 'destroy']);
     Route::post('/importSchadule', [EventController::class, 'import']);
+    Route::get('/importSession', [EventController::class, 'importSession']);
     // uplaod docs
     Route::post('/upload', [uplaodContnroller::class, 'store']);
     // calander route

@@ -11,16 +11,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 @section('content')
-    @component('components.breadcrumb')
-        @slot('li_1')
-            @lang('translation.dashboards')
-        @endslot
-        @slot('title')
-            @lang('translation.documents')
-        @endslot
-    @endcomponent
     <!-- Rounded with Label -->
-<div class="card mb-5">
+<div class="card mt-5 mb-5">
             
     <div class="card-body">
         <div class="listjs-table" id="customerList">

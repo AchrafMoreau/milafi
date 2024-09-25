@@ -153,7 +153,7 @@ class CasController extends Controller
 
 
         $cas = Cas::where('user_id', Auth::user()->id)
-            ->where('id', $case)
+            ->where('id', $id)
             ->first();
         // $cas->serial_number = $req->serial_number;
         $cas->title_file = $req->title;
