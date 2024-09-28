@@ -1,16 +1,3 @@
-<?php
-    $even = 1;
-    function isActive(){
-        if($even % 2 == 0) {
-            $even++;
-            return true;
-        }else{
-            $even++;
-            return false;
-        }
-    }
-?>
-
 <!DOCTYPE html>
 <html dir='rtl' lang='ar'>
 <head>

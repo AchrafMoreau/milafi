@@ -193,26 +193,26 @@ class EventController extends Controller
 
         $schedule = [];
         foreach($procedure as $proc){
-            // Set the locale to Arabic for the day name only
             Carbon::setLocale('fr');
             $date = Carbon::parse($proc->date);
 
-            // Get the day name in Arabic and manually format the rest with Western numerals
-            $arabicDayName = $date->translatedFormat('l'); // Get the day name in Arabic
-            $westernDate = $date->format('Y/m/d'); // Use Western numerals for the date
+            $arabicDayName = $date->translatedFormat('l'); 
+            $westernDate = $date->format('Y/m/d'); 
             $formattedDate = $arabicDayName . ' ' . $westernDate;
 
+            $time = new \DateTime($proc->time);
+            $timeFormat = $time->format("H:i A");
             $obj = [
                 "court" => $proc->cas->court->name,
                 "title_file" => $proc->cas->title_file,
                 "serial_number" => $proc->cas->serial_number,
                 "decision" => "",
                 "client" => $proc->cas->client->name,
-                "time" => $proc->time,
+                "time" => $timeFormat,
                 "procedure" => $proc->procedure,
                 "require" => ""
             ];
-            if (array_key_exists($proc->date, $schedule)) {
+            if (array_key_exists($formattedDate, $schedule)) {
                 $schedule[$formattedDate][] = $obj;
             } else {
                 $schedule[$formattedDate] = [$obj];
@@ -228,7 +228,6 @@ class EventController extends Controller
             $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
             $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
         }
-        // $pdf = PDF::loadHTML($reportHtml);
         $pdf = PDF::setOption('direction', 'rtl')->loadHTML($reportHtml);
 
         return $pdf->download('WeekSchedule.pdf');
@@ -241,28 +240,26 @@ class EventController extends Controller
     public function importSession()
     {
 
-        $startOfWeek = Carbon::now()->startOfWeek(); // Get the start of the week (Monday)
-        $endOfWeek = Carbon::now()->endOfWeek();     // Get the end of the week (Sunday)
+        $startOfWeek = Carbon::now()->startOfWeek(); 
+        $endOfWeek = Carbon::now()->endOfWeek();
         $session = Event::where('user_id', Auth::id())
             ->whereBetween('start' , [$startOfWeek, $endOfWeek])
             ->get();
 
-        // dd($session);
 
         $schedule = [];
         foreach($session as $proc){
-            // Set the locale to Arabic for the day name only
             Carbon::setLocale('fr');
             $date = Carbon::parse($proc->start);
 
-            $arabicDayName = $date->translatedFormat('l'); // Get the day name in Arabic
-            $westernDate = $date->format('Y/m/d'); // Use Western numerals for the date
+            $arabicDayName = $date->translatedFormat('l'); 
+            $westernDate = $date->format('Y/m/d'); 
             $formattedDate = $arabicDayName . ' ' . $westernDate;
 
             $start = new \DateTime($proc->start);
-            $startTime = $start->format("H:i:s A");
+            $startTime = $start->format("H:i A");
             $end = $proc ? new \DateTime($proc->end) : null;
-            $endTime = $end->format("H:i:s A");
+            $endTime = $end->format("H:i A");
 
             $type;
             switch($proc->type){
