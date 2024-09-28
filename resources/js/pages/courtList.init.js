@@ -377,11 +377,12 @@ function ischeckboxcheck() {
     });
 }
 
+var errorShown = false; 
 function refreshCallbacks() {
     if (removeBtns)
-
     Array.from(removeBtns).forEach(function (btn) {
         btn.addEventListener("click", function (e) {
+            errorShown = false;
             e.target.closest("tr").children[1].innerText;
             itemId = e.target.closest("tr").children[1].innerText;
             var itemValues = customerList.get({
@@ -413,8 +414,11 @@ function refreshCallbacks() {
                                     $('#delete-record').text(window.translations.yes)
                                 },
                                 error: (xhr, status, error) => {
+                                    if (!errorShown) {
+                                        errorShown = true;
+                                        toastr['error']("You can't modify the default court");
+                                    }
                                     clearFields();
-                                    toastr['error']("you can't modify the default court")
                                     document.getElementById("btn-close").click();
                                     $('#delete-record').html("")
                                     $('#delete-record').text(window.translations.yes)
