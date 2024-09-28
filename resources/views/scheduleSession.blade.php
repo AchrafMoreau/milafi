@@ -102,8 +102,8 @@
         <table class="styled-table">
             <thead>
                 <tr>
-                    <th>@lang('translation.startTime')</th>
                     <th>@lang('translation.endTime')</th>
+                    <th>@lang('translation.startTime')</th>
                     <th>@lang('translation.type')</th>
                     <th>@lang('translation.description')</th>
                     <th>@lang('translation.location')</th>
@@ -113,8 +113,8 @@
             <tbody>
                 @foreach($procedures as $procedure)
                     <tr class=" active-row ">
-                        <td>{{ $procedure['start_time'] }}</td>
                         <td>{{ $procedure['end_time'] }}</td>
+                        <td>{{ $procedure['start_time'] }}</td>
                         <td>@lang('translation.'. $procedure['type'])</td>
                         <td>{{ $procedure['description'] }}</td>
                         <td>{{ $procedure['location'] }}</td>

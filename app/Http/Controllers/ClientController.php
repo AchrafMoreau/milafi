@@ -148,7 +148,9 @@ class ClientController extends Controller
             'ids.*' => 'exists:clients,id'
         ]);
 
-        Client::where('user_id', Auth::id())->destroy($req->input('ids'));
+        // Client::where('user_id', Auth::id())->destroy($req->input('ids'));
+        Client::where('user_id', Auth::id())->whereIn('id', $req->input('ids'))->delete();
+
         $notification = array(
             'message' => 'Many Client Deleted successfully',
             'alert-type' => 'success'

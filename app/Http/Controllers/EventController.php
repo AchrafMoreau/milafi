@@ -261,7 +261,6 @@ class EventController extends Controller
 
             $start = new \DateTime($proc->start);
             $startTime = $start->format("H:i:s A");
-            // $time = $proc->date->
             $end = $proc ? new \DateTime($proc->end) : null;
             $endTime = $end->format("H:i:s A");
 
@@ -290,7 +289,7 @@ class EventController extends Controller
                 'start_time' => $startTime,
                 'end_time' => $endTime
             ];
-            if (array_key_exists($proc->date, $schedule)) {
+            if (array_key_exists($formattedDate, $schedule)) {
                 $schedule[$formattedDate][] = $obj;
             } else {
                 $schedule[$formattedDate] = [$obj];

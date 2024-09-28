@@ -1,4 +1,3 @@
-
 var checkAll = document.getElementById("checkAll");
 if (checkAll) {
     checkAll.onclick = function () {
@@ -429,7 +428,9 @@ function refreshCallbacks() {
                                 error: (xhr, status, error) => {
                                     clearFields();
                                     toastr['error']("you can't modify the default court")
-                                    document.getElementById("close-modal").click();
+                                    document.getElementById("btn-close").click();
+                                    $('#delete-record').html("")
+                                    $('#delete-record').text(window.translations.yes)
                                 }
                             })
                         }

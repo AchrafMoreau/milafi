@@ -134,8 +134,10 @@ class JudgeController extends Controller
         
         // return 'hello';
 
-        Judge::where('user_id', Auth::id())
-            ->destroy($req->input('ids'));
+        Judge::where('user_id', Auth::id())->whereIn('id', $req->input('ids'))->delete();
+
+        // Judge::where('user_id', Auth::id())
+        //     ->destroy($req->input('ids'));
         $notification = array(
             'message' => 'Many Judges Deleted Successfully',
             'alert-type' => 'success'

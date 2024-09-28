@@ -187,10 +187,10 @@ class CasController extends Controller
         $req->validate([
             'ids' => 'required|array',
         ]);
-        
-        $da = Cas::whereIn('serial_number', $req->input('ids'))
-            ->where('user_id', Auth::user()->id)
-            ->delete();
+        Cas::where('user_id', Auth::id())->whereIn('id', $req->input('ids'))->delete();
+        // $da = Cas::whereIn('serial_number', $req->input('ids'))
+        //     ->where('user_id', Auth::user()->id)
+        //     ->delete();
         $notification = array(
             'message' => 'Many Cases Deleted Successfully',
             'alert-type' => 'success'

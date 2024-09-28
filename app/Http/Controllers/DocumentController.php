@@ -248,10 +248,11 @@ class DocumentController extends Controller
         ]);
         
         // return 'hello';
+        Document::where('user_id', Auth::id())->whereIn('id', $req->input('ids'))->delete();
 
-        $da = Document::where("user_id", Auth::id())
-            ->whereIn('id', $req->input('ids'))
-            ->delete();
+        // $da = Document::where("user_id", Auth::id())
+        //     ->whereIn('id', $req->input('ids'))
+        //     ->delete();
         $notification = array(
             'message' => 'Many Judges Deleted Successfully',
             'alert-type' => 'success'

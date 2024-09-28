@@ -117,7 +117,9 @@ class CourtController extends Controller
         
         // return 'hello';
 
-        Court::where('user_id', Auth::id())->destroy($req->input('ids'));
+        // Court::where('user_id', Auth::id())->destroy($req->input('ids'));
+        Court::where('user_id', Auth::id())->whereIn('id', $req->input('ids'))->delete();
+
         $notification = array(
             'message' => 'Many Courts Deleted Successfully',
             'alert-type' => 'success'
