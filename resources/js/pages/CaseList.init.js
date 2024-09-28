@@ -3,459 +3,694 @@ Template Name: Velzon - Admin & Dashboard Template
 Author: Themesbrand
 Website: https://Themesbrand.com/
 Contact: Themesbrand@gmail.com
-File: list Js File
+File: Calendar init js
 */
 
+/*
+Template Name: Velzon - Admin & Dashboard Template
+Author: Themesbrand
+Website: https://Themesbrand.com/
+Contact: Themesbrand@gmail.com
+File: Calendar init js
+*/
 
-var checkAll = document.getElementById("checkAll");
-if (checkAll) {
-    checkAll.onclick = function () {
-        var checkboxes = document.querySelectorAll('.form-check-all input[type="checkbox"]');
-        if (checkAll.checked == true) {
-            Array.from(checkboxes).forEach(function (checkbox) {
-                checkbox.checked = true;
-                checkbox.closest("tr").classList.add("table-active");
-            });
-        } else {
-            Array.from(checkboxes).forEach(function (checkbox) {
-                checkbox.checked = false;
-                checkbox.closest("tr").classList.remove("table-active");
-            });
-        }
-    };
+function convertToGMTPlusOne(date) {
+    return new Date(date).toLocaleString({ timeZone: "Africa/Casablanca" });
 }
+var start_date = document.getElementById("event-start-date");
+var timepicker1 = document.getElementById("timepicker1");
+var timepicker2 = document.getElementById("timepicker2");
+var date_range = null;
+var T_check = null;
+var calendar = null;
+var defaultEvents = []
 
-var perPage = 10;
-var editlist = false;
+document.addEventListener("DOMContentLoaded", function () {
 
-//Table
-var options = {
-    valueNames: [
-        "id",
-        "serial_number",
-        "name",
-        "client",
-        "court",
-        "judge",
-        "status",
-    ],
-    page: perPage,
-    pagination: true,
-    plugins: [
-        ListPagination({
-            left: 2,
-            right: 2
-        })
-    ]
-};
-
-// Init list
-if (document.getElementById("customerList"))
-    var customerList = new List("customerList", options).on("updated", function (list) {
-        const search =  $('.search').val()
-        list.matchingItems.length == 0 && search.length < 0 ?
-            (document.getElementsByClassName("noresult")[0].style.display = "block") :
-            (document.getElementsByClassName("noresult")[0].style.display = "none");
-        var isFirst = list.i == 1;
-        var isLast = list.i > list.matchingItems.length - list.page;
-        // make the Prev and Nex buttons disabled on first and last pages accordingly
-        (document.querySelector(".pagination-prev.disabled")) ? document.querySelector(".pagination-prev.disabled").classList.remove("disabled"): '';
-        (document.querySelector(".pagination-next.disabled")) ? document.querySelector(".pagination-next.disabled").classList.remove("disabled"): '';
-        if (isFirst) {
-            document.querySelector(".pagination-prev").classList.add("disabled");
-        }
-        if (isLast) {
-            document.querySelector(".pagination-next").classList.add("disabled");
-        }
-        if (list.matchingItems.length <= perPage) {
-            document.querySelector(".pagination-wrap").style.display = "none";
-        } else {
-            document.querySelector(".pagination-wrap").style.display = "flex";
-        }
-
-        if (list.matchingItems.length == perPage) {
-            document.querySelector(".pagination.listjs-pagination").firstElementChild.children[0].click()
-        }
-
-        if (list.matchingItems.length > 0 ) {
-            document.getElementsByClassName("noresult")[0].style.display = "none";
-        } else if(list.matchingItems.length <= 0 && $('.search').val().length <= 0){
-            console.log('should enter if search is empty and list is empty');
-        }else{
-            document.getElementsByClassName("noresult")[0].style.display = "block";
-            console.log('should not enter if search is fill');
-        }
-        
-    });
-
-const xhttp = new XMLHttpRequest();
-xhttp.onload = function () {
-
-  var json_records = JSON.parse(this.responseText);
-  Array.from(json_records).forEach(raw => {
-    customerList.add({
-      id: raw.id,
-      serial_number: raw.serial_number,
-      name: raw.title_file,
-      client: raw.client.name,
-      court: raw.court.name,
-      judge: raw.judge.name,
-      status: isStatus({id: raw.id, name:raw.status}),
-    });
-    customerList.sort('id', { order: "desc" });
-    refreshCallbacks();
-  });
-  customerList.remove("id", '<a href="javascript:void(0);" class="fw-medium link-primary">test</a>');
-//   $('.name').closest("tr").css('visibility', 'visible');
-
-//   document.getElementsByClassName('firstRaw').style.display = 'block'
-}
-xhttp.open("GET", "/caseJson");
-xhttp.send();
-
-isCount = new DOMParser().parseFromString(
-    customerList.items.slice(-1)[0]._values.id,
-    "text/html"
-);
-
-var isValue = isCount.body.firstElementChild.innerHTML;
-
-var idField = document.getElementById("id-field"),
-    nameField = document.getElementById("name-field"),
-    contact_infoField = document.getElementById("contact_info-field"),
-    genderField = document.getElementById("gender-field"),
-    addressField = document.getElementById("address-field"),
-    cinField = document.getElementById("cin-field"),
-    addBtn = document.getElementById("add-btn"),
-    editBtn = document.getElementById("edit"),
-    removeBtns = document.getElementsByClassName("remove-item-btn"),
-    editBtns = document.getElementsByClassName("edit-item-btn");
-
-    let selectedGender = ''
-    var genderRadios = document.querySelectorAll('input[name="gender"]');
-    genderRadios.forEach(function (radio) {
-        radio.addEventListener('change', function () {
-            selectedGender = this.value; 
-        });
-    });
-refreshCallbacks();
-//filterContact("All");
-
-
-
-// function filterContact(isValue) {
-//     var values_status = isValue;
-//     customerList.filter(function (data) {
-//         var statusFilter = false;
-//         matchData = new DOMParser().parseFromString(
-//             data.values().status,
-//             "text/html"
-//         );
-//         var status = matchData.body.firstElementChild.innerHTML;
-//         if (status == "All" || values_status == "All") {
-//             statusFilter = true;
-//         } else {
-//             statusFilter = status == values_status;
-//         }
-//         return statusFilter;
-//     });
-
-//     customerList.update();
-// }
-
-function updateList() {
-    var values_status = document.querySelector("input[name=status]:checked").value;
-    data = userList.filter(function (item) {
-        var statusFilter = false;
-
-        if (values_status == "All") {
-            statusFilter = true;
-        } else {
-            statusFilter = item.values().sts == values_status;
-        }
-        return statusFilter;
-    });
-    userList.update();
-}
-
-
-if (document.getElementById("showModal")) {
-    document.getElementById("showModal").addEventListener("show.bs.modal", function (e) {
-        if (e.relatedTarget.classList.contains("edit-item-btn")) {
-            document.getElementById("exampleModalLabel").innerHTML = "add CLient";
-            document.getElementById("showModal").querySelector(".modal-footer").style.display = "block";
-            document.getElementById("add-btn").innerHTML = "Update";
-        } else if (e.relatedTarget.classList.contains("add-btn")) {
-            document.getElementById("exampleModalLabel").innerHTML = "Add Customer";
-            document.getElementById("showModal").querySelector(".modal-footer").style.display = "block";
-            document.getElementById("add-btn").innerHTML = "Add Customer";
-        } else {
-            document.getElementById("exampleModalLabel").innerHTML = "List Customer";
-            document.getElementById("showModal").querySelector(".modal-footer").style.display = "none";
-        }
-    });
-    ischeckboxcheck();
-
-    document.getElementById("showModal").addEventListener("hidden.bs.modal", function () {
-        clearFields();
-    });
-}
-document.querySelector("#customerList").addEventListener("click", function () {
-    ischeckboxcheck();
-});
-
-var table = document.getElementById("customerTable");
-// save all tr
-var tr = table.getElementsByTagName("tr");
-var trlist = table.querySelectorAll(".list tr");
-
-var count = 11;
-
-
-
-function isStatus(val) {
-    switch (val.name) {
-        case "Open":
-            return (
-                `<button type="button" data-bs-toggle="dropdown" id=${val.id} aria-haspopup="true" aria-expanded="false" class="btn btn-sm dropdown-toggle bg-success-subtle text-success " >${window.translations.open}</button>
-                <div class="dropdown-menu cursor-pointer">
-                    <a class="dropdown-item" onclick="handleStatusChange('Pending', ${val.id})">${window.translations.pending}</a>
-                    <a class="dropdown-item" onclick="handleStatusChange('Closed', ${val.id})">${window.translations.closed}</a>
-                    <a class="dropdown-item" onclick="handleStatusChange('Open', ${val.id})">${window.translations.open}</a>
-                </div>`
-            );
-        case "Pending":
-            return (
-                `<button type="button" data-bs-toggle="dropdown" id=${val.id} aria-haspopup="true" aria-expanded="false" class="btn btn-sm dropdown-toggle bg-primary-subtle text-primary " >${window.translations.pending}</button>
-                <div class="dropdown-menu cursor-pointer">
-                    <a class="dropdown-item" onclick="handleStatusChange('Pending', ${val.id})">${window.translations.pending}</a>
-                    <a class="dropdown-item" onclick="handleStatusChange('Closed', ${val.id})">${window.translations.closed}</a>
-                    <a class="dropdown-item" onclick="handleStatusChange('Open', ${val.id})">${window.translations.open}</a>
-                </div>`
-            );
-        case "Closed":
-            return (
-                `<button type="button" data-bs-toggle="dropdown" id=${val.id} aria-haspopup="true" aria-expanded="false" class="btn btn-sm dropdown-toggle bg-danger-subtle text-danger " >${window.translations.closed}</button>
-                <div class="dropdown-menu cursor-pointer">
-                    <a class="dropdown-item" onclick="handleStatusChange('Pending', ${val.id})">${window.translations.pending}</a>
-                    <a class="dropdown-item" onclick="handleStatusChange('Closed', ${val.id})">${window.translations.closed}</a>
-                    <a class="dropdown-item" onclick="handleStatusChange('Open', ${val.id})">${window.translations.open}</a>
-                </div>`
-            );
-    }
-}
-
-function ischeckboxcheck() {
-    Array.from(document.getElementsByName("checkAll")).forEach(function (x) {
-        x.addEventListener("click", function (e) {
-            if (e.target.checked) {
-                e.target.closest("tr").classList.add("table-active");
+    upcomingEvent(defaultEvents);
+    $.ajax({
+        url: '/events',
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {
+            'X-CSRF-TOKEN': token
+        },
+        success: (res) => {
+            defaultEvents = res;
+            if (calendar) {
+                calendar.removeAllEvents();
+                calendar.addEventSource(defaultEvents);
             } else {
-                e.target.closest("tr").classList.remove("table-active");
+                calendar = new FullCalendar.Calendar(calendarEl, {
+                    // timeZone: '',
+                    editable: true,
+                    droppable: true,
+                    selectable: true,
+                    navLinks: true,
+                    initialView: getInitialView(),
+                    themeSystem: 'bootstrap',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                    },
+                    windowResize: function (view) {
+                        var newView = getInitialView();
+                        calendar.changeView(newView);
+                    },
+                    eventResize: function(info) {
+                        const title = info.event.title;
+                        const start = info.event.start;
+                        const end = (info.event.end) ? info.event.end : null;
+                        const allDay = info.event.allDay;
+                        const className = info.event.classNames[0];
+                        const description = (info.event._def.extendedProps.description) ? info.event._def.extendedProps.description : 'No Description';
+                        const location = (info.event._def.extendedProps.location) ? info.event._def.extendedProps.location : 'No Loaction';
+                        console.log(info.event.id)
+                        const newEvent =  {
+                            title,
+                            startTime : convertToGMTPlusOne(start),
+                            endTime: convertToGMTPlusOne(end), 
+                            eventDay: allDay, 
+                            className, 
+                            description, 
+                            location
+                        };
+
+                        $.ajax({
+                            url: `/events/${info.event.id}`,
+                            method: 'PUT',
+                            data: JSON.stringify(newEvent),
+                            contentType: 'application/json',
+                            headers: {
+                                'X-CSRF-TOKEN': token
+                            },
+                            success: (res) => {
+                                // defaultEvents = res
+                                upcomingEvent(defaultEvents);
+                                calendar.render()
+                            },
+                            error: (xhr, status, error)=> console.log(error)
+
+                        })
+                        var indexOfSelectedEvent = defaultEvents.findIndex(function (x) {
+                            return x.id == info.event.id
+                        });
+                        if (defaultEvents[indexOfSelectedEvent]) {
+                        }
+                        // upcomingEvent(defaultEvents);
+                    },
+                    eventClick: function (info) {
+                        document.getElementById("edit-event-btn").removeAttribute("hidden");
+                        document.getElementById('btn-save-event').setAttribute("hidden", true);
+                        document.getElementById("edit-event-btn").setAttribute("data-id", "edit-event");
+                        document.getElementById("edit-event-btn").innerHTML = "Edit";
+                        eventClicked();
+                        flatPickrInit();
+                        flatpicekrValueClear();
+                        addEvent.show();
+                        formEvent.reset();
+                        selectedEvent = info.event;
+
+                        // First Modal
+                        document.getElementById("modal-title").innerHTML = "";
+                        document.getElementById("event-location-tag").innerHTML = selectedEvent.extendedProps.location === undefined ? "No Location" : selectedEvent.extendedProps.location;
+                        document.getElementById("event-description-tag").innerHTML = selectedEvent.extendedProps.description === undefined ? "No Description" : selectedEvent.extendedProps.description;
+
+                        // Edit Modal
+                        document.getElementById("event-title").value = selectedEvent.title;
+                        document.getElementById("event-location").value = selectedEvent.extendedProps.location === undefined ? "No Location" : selectedEvent.extendedProps.location;
+                        document.getElementById("event-description").value = selectedEvent.extendedProps.description === undefined ? "No Description" : selectedEvent.extendedProps.description;
+                        document.getElementById("eventid").value = selectedEvent.id;
+
+                        if (selectedEvent.classNames[0]) {
+                            eventCategoryChoice.destroy();
+                            eventCategoryChoice = new Choices("#event-category", {
+                                searchEnabled: false
+                            });
+                            eventCategoryChoice.setChoiceByValue(selectedEvent.classNames[0]);
+                        }
+                        var st_date = selectedEvent.start;
+                        var ed_date = selectedEvent.end;
+
+                        var date_r = function formatDate(date) {
+                            var d = new Date(date),
+                                month = '' + (d.getMonth() + 1),
+                                day = '' + d.getDate(),
+                                year = d.getFullYear();
+                            if (month.length < 2)
+                                month = '0' + month;
+                            if (day.length < 2)
+                                day = '0' + day;
+                            return [year, month, day].join('-');
+                        };
+                        var updateDay = null
+                        if(ed_date != null){
+                            var endUpdateDay = new Date(ed_date);
+                            updateDay = endUpdateDay.setDate(endUpdateDay.getDate() - 1);
+                        }
+                        
+                        var r_date = ed_date == null ? (str_dt(st_date)) : (str_dt(st_date)) + ' to ' + (str_dt(updateDay));
+                        var er_date = ed_date == null ? (date_r(st_date)) : (date_r(st_date)) + ' to ' + (date_r(updateDay));
+
+
+                        flatpickr(start_date, {
+                            defaultDate: er_date,
+                            altInput: true,
+                            altFormat: "j F Y",
+                            dateFormat: "Y-m-d",
+                            mode: ed_date !== null ? "range" : "range",
+                            onChange: function (selectedDates, dateStr, instance) {
+                                var date_range = dateStr;
+                                var dates = date_range.split("to");
+                                if (dates.length > 1) {
+                                    document.getElementById('event-time').setAttribute("hidden", true);
+                                } else {
+                                    document.getElementById("timepicker1").parentNode.classList.remove("d-none");
+                                    document.getElementById("timepicker1").classList.replace("d-none", "d-block");
+                                    document.getElementById("timepicker2").parentNode.classList.remove("d-none");
+                                    document.getElementById("timepicker2").classList.replace("d-none", "d-block");
+                                    document.getElementById('event-time').removeAttribute("hidden");
+                                }
+                            },
+                        });
+                        document.getElementById("event-start-date-tag").innerHTML = r_date;
+
+                        var gt_time = getTime(selectedEvent.start);
+                        var ed_time = getTime(selectedEvent.end);
+
+                        if (gt_time == ed_time) {
+                            document.getElementById('event-time').setAttribute("hidden", true);
+                            flatpickr(document.getElementById("timepicker1"), {
+                                enableTime: true,
+                                noCalendar: true,
+                                dateFormat: "H:i",
+                            });
+                            flatpickr(document.getElementById("timepicker2"), {
+                                enableTime: true,
+                                noCalendar: true,
+                                dateFormat: "H:i",
+                            });
+                        } else {
+                            document.getElementById('event-time').removeAttribute("hidden");
+                            flatpickr(document.getElementById("timepicker1"), {
+                                enableTime: true,
+                                noCalendar: true,
+                                dateFormat: "H:i",
+                                defaultDate: gt_time
+                            });
+
+                            flatpickr(document.getElementById("timepicker2"), {
+                                enableTime: true,
+                                noCalendar: true,
+                                dateFormat: "H:i",
+                                defaultDate: ed_time
+                            });
+                            document.getElementById("event-timepicker1-tag").innerHTML = tConvert(gt_time);
+                            document.getElementById("event-timepicker2-tag").innerHTML = tConvert(ed_time);
+                        }
+                        newEventData = null;
+                        modalTitle.innerText = selectedEvent.title;
+                        // formEvent.classList.add("view-event");
+                        document.getElementById('btn-delete-event').removeAttribute('hidden');
+                    },
+                    dateClick: function (info) {
+                        addNewEvent(info);
+                    },
+                    events: defaultEvents,
+                    eventReceive: function (info) {
+                        var newid = parseInt(info.event.id);
+                        console.log(newid);
+                        var newEvent = {
+                            id: newid,
+                            title: info.event.title,
+                            start: convertToGMTPlusOne(info.event.start),
+                            allDay: convertToGMTPlusOne(info.event.allDay),
+                            className: info.event.classNames[0],
+                            description: 'No Description',
+                            location: 'No Location',
+                        };
+
+                        $.ajax({
+                            url: '/events',
+                            method: 'POST',
+                            data: JSON.stringify(newEvent),
+                            contentType: 'application/json',
+                            headers: {
+                                'X-CSRF-TOKEN': token
+                            },
+                            success: () => {
+                                defaultEvents.push(newEvent);
+                                upcomingEvent(defaultEvents);
+                            },
+                            error: (xhr, status, error)=> console.log(error)
+
+                        })
+                        console.log(info, newEvent);
+                    },
+                    eventDrop: function (info) {
+                        var indexOfSelectedEvent = defaultEvents.findIndex(function (x) {
+                            return x.id == info.event.id
+                        });
+                        if (defaultEvents[indexOfSelectedEvent]) {
+                            defaultEvents[indexOfSelectedEvent].title = info.event.title;
+                            defaultEvents[indexOfSelectedEvent].start = info.event.start;
+                            defaultEvents[indexOfSelectedEvent].end = (info.event.end) ? info.event.end : null;
+                            defaultEvents[indexOfSelectedEvent].allDay = info.event.allDay;
+                            defaultEvents[indexOfSelectedEvent].className = info.event.classNames[0];
+                            defaultEvents[indexOfSelectedEvent].description = (info.event._def.extendedProps.description) ? info.event._def.extendedProps.description : '';
+                            defaultEvents[indexOfSelectedEvent].location = (info.event._def.extendedProps.location) ? info.event._def.extendedProps.location : '';
+                        }
+                        upcomingEvent(defaultEvents);
+                    }
+                });
+                calendar.render();
             }
-        });
+            upcomingEvent(defaultEvents);
+        },
+        error: (xhr, status, error) => console.log(error)
     });
-}
 
-function refreshCallbacks() {
-    
-    if($('.view')){
-        $('.view').on('click', (e)=>{
-            const itemId = e.target.closest("tr").children[1].innerText;
-            window.location = `/cas/${itemId}`
-        })
+    flatPickrInit();
+    var addEvent = new bootstrap.Modal(document.getElementById('event-modal'), {
+        keyboard: false
+    });
+    document.getElementById('event-modal');
+    var modalTitle = document.getElementById('modal-title');
+    var formEvent = document.getElementById('form-event');
+    var selectedEvent = null;
+    var forms = document.getElementsByClassName('needs-validation');
+    /* initialize the calendar */
+
+    var date = new Date();
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
+    var Draggable = FullCalendar.Draggable;
+    var externalEventContainerEl = document.getElementById('external-events');
+
+    // init draggable
+    new Draggable(externalEventContainerEl, {
+        itemSelector: '.external-event',
+        eventData: function (eventEl) {
+            return {
+                id: Math.floor(Math.random() * 11000),
+                title: eventEl.innerText,
+                allDay: true,
+                start: new Date(),
+                className: eventEl.getAttribute('data-class')
+            };
+        }
+    });
+
+    var calendarEl = document.getElementById('calendar');
+
+    function addNewEvent(info) {
+        document.getElementById('form-event').reset();
+        document.getElementById('btn-delete-event').setAttribute('hidden', true);
+        addEvent.show();
+        formEvent.classList.remove("was-validated");
+        formEvent.reset();
+        selectedEvent = null;
+        modalTitle.innerText = 'Add Event';
+        newEventData = info;
+        document.getElementById("edit-event-btn").setAttribute("data-id", "new-event");
+        document.getElementById('edit-event-btn').click();
+        document.getElementById("edit-event-btn").setAttribute("hidden", true);
     }
 
-    if($('.edit')){
-        $('.edit').on('click', (e)=>{
-            const itemId = e.target.closest("tr").children[1].innerText;
-            window.location = `/case-edit/${itemId}`
-        })
+    function getInitialView() {
+        if (window.innerWidth >= 768 && window.innerWidth < 1200) {
+            return 'timeGridWeek';
+        } else if (window.innerWidth <= 768) {
+            return 'listMonth';
+        } else {
+            return 'dayGridMonth';
+        }
     }
 
-    
-    if(editBtn){
-        Array.from(editBtn).forEach(function (btn) {
-            btn.addEventListener("click", function (e) {
-                const itemId = e.target.closest("tr").children[1].innerText;
-                var itemValues = customerList.get({
-                    id: itemId,
+    var eventCategoryChoice = new Choices("#event-category", {
+        searchEnabled: false
+    });
+
+
+
+    /*Add new event*/
+    // Form to add new event
+    formEvent.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var updatedTitle = document.getElementById("event-title").value;
+        var updatedCategory = document.getElementById('event-category').value;
+        var start_date = (document.getElementById("event-start-date").value).split("to");
+        var updateStartDate = new Date(start_date[0].trim());
+
+        var newdate = new Date(start_date[1]);
+        newdate.setDate(newdate.getDate() + 1);
+
+        var updateEndDate = (start_date[1]) ? newdate : '';
+
+        var end_date = null;
+        var event_location = document.getElementById("event-location").value;
+        var eventDescription = document.getElementById("event-description").value;
+        var eventid = document.getElementById("eventid").value;
+        var all_day = false;
+        console.log(start_date, start_date.length > 1)
+        if (start_date.length > 1) {
+            var end_date = new Date(start_date[1]);
+            end_date.setDate(end_date.getDate() + 1);
+            start_date = new Date(start_date[0]);
+            all_day = true;
+        } else {
+            var e_date = start_date;
+            var start_time = (document.getElementById("timepicker1").value).trim();
+            var end_time = (document.getElementById("timepicker2").value).trim();
+            start_date = new Date(start_date + "T" + start_time);
+            end_date = new Date(e_date + "T" + end_time);
+            console.log(start_date, end_date)
+        }
+        var e_id = defaultEvents.length + 1;
+
+        // validation
+        if (forms[0].checkValidity() === false) {
+            forms[0].classList.add('was-validated');
+        } else {
+            if (selectedEvent) {
+                selectedEvent.setProp("id", eventid);
+                selectedEvent.setProp("title", updatedTitle);
+                selectedEvent.setProp("classNames", [updatedCategory]);
+                selectedEvent.setStart(updateStartDate);
+                selectedEvent.setEnd(updateEndDate);
+                selectedEvent.setAllDay(all_day);
+                selectedEvent.setExtendedProp("description", eventDescription);
+                selectedEvent.setExtendedProp("location", event_location);
+                console.log(start_date)
+                $.ajax({
+                    url: `/events/${selectedEvent.id}`, 
+                    method: 'PUT',
+                    data: JSON.stringify({
+                        title : updatedTitle,
+                        startTime : convertToGMTPlusOne(start_date),
+                        endTime : convertToGMTPlusOne(end_date),
+                        allDay : all_day,
+                        className : updatedCategory,
+                        description : eventDescription,
+                        location : event_location,
+                    }),
+                    contentType: 'application/json',
+                    headers:{
+                        'X-CSRF-TOKEN': token
+                    },
+                    success: (res) =>  {
+                        window.location.reload()
+                        toastr[res['alert-type']](res.message)
+                    },
+                    error: (xhr, stauts, error) => console.log(error)
+                });
+                // console.log(selectedEvent)
+                // var indexOfSelectedEvent = defaultEvents.findIndex(function (x) {
+                //     return x.id == selectedEvent.id
+                // });
+                // if (defaultEvents[indexOfSelectedEvent]) {
+                //     console.log(defaultEvents[indexOfSelectedEvent]);
+                // }
+                // initCalendar(defaultEvents).render()
+                // default
+            } else {
+                console.log(start_date);
+                var newEvent = {
+                    id: e_id,
+                    title: updatedTitle,
+                    start: convertToGMTPlusOne(start_date),
+                    end: convertToGMTPlusOne(end_date),
+                    allDay: all_day,
+                    className: updatedCategory,
+                    description: eventDescription,
+                    location: event_location
+                };
+                $.ajax({
+                    url: '/events', 
+                    method: 'POST',
+                    data: JSON.stringify(newEvent),
+                    contentType: 'application/json',
+                    headers:{
+                        'X-CSRF-TOKEN': token
+                    },
+                    success: () => {
+                        defaultEvents.push({...newEvent, start:start_date, end:end_date});
+                        if (calendar) {
+                            calendar.addEvent({...newEvent, start:start_date, end:end_date});
+                            console.log(calendar)
+                            upcomingEvent(defaultEvents);
+                        }
+                        return;
+                    },
+                    error: (xhr, status, error)=> console.log(error)
+
                 });
 
-            })
-        })
-    }
-
-
-    // if (removeBtns)
-    // Array.from(removeBtns).forEach(function (btn) {
-    //     btn.addEventListener("click", function (e) {
-
-    //         itemId = e.target.closest("tr").children[1].innerText;
-    //         var itemValues = customerList.get({
-    //             id: itemId,
-    //         });
-
-
-    //         Array.from(itemValues).forEach(function (x) {
-    //             deleteid = new DOMParser().parseFromString(x._values.id, "text/html");
-    //             var isElem = deleteid.body;
-    //             var isdeleteid = deleteid.body.innerHTML;
-    //             const modal = new bootstrap.Modal(document.getElementById('deleteRecordModal'))
-    //             if (isdeleteid == itemId) {
-
-    //                 $("#delete-record").on("click", function () {
-    //                     if(itemId == x._values.id){
-    //                         $.ajax({
-    //                             url: `/case-delete/${isdeleteid}`,
-    //                             method: "DELETE",
-    //                             headers:{
-    //                                 'Content-Type': 'application/json',
-    //                                 'X-CSRF-TOKEN': token
-    //                             },
-    //                             success: (res) =>{
-    //                                 toastr[res['alert-type']](res.message)
-    //                                 customerList.remove("id", isElem.innerHTML);
-    //                                 console.log(document.getElementById("btn-close"));
-    //                                 document.getElementById("btn-close").click();
-    //                                 modal.hide()
-    //                                 ct = 0
-                                    
-    //                             },
-    //                             error: (xhr, status, error) => console.log(error)
-    //                         })
-    //                     }
-    //                 });
-    //             }
-    //         });
-    //     });
-    // });
-
-
-    if (removeBtns)
-    Array.from(removeBtns).forEach(function (btn) {
-        btn.addEventListener("click", function (e) {
-            e.target.closest("tr").children[1].innerText;
-            itemId = e.target.closest("tr").children[1].innerText;
-            var itemValues = customerList.get({
-                id: itemId,
-            });
-
-            Array.from(itemValues).forEach(function (x) {
-                deleteid = new DOMParser().parseFromString(x._values.id, "text/html");
-                var isElem = deleteid.body;
-                var isdeleteid = deleteid.body.innerHTML;
-                if (isdeleteid == itemId) {
-                    document.getElementById("delete-record").addEventListener("click", function () {
-                        if(itemId == x._values.id){
-                            $.ajax({
-                                url: `/case-delete/${isdeleteid}`,
-                                method: "DELETE",
-                                headers:{
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': token
-                                },
-                                beforeSend: ()=>{
-                                    $('#delete-record').html(`<div class="spinner-border text-primary" style='width:1rem; height:1rem;' role="status" ><span class="sr-only">loading...</span></div>`)
-                                },
-                                success: (res) =>{
-                                    toastr[res['alert-type']](res.message)
-                                    customerList.remove("id", isElem.innerHTML);
-                                    document.getElementById("btn-close").click();
-                                    $('#delete-record').html("")
-                                    $('#delete-record').text(window.translations.yes)
-                                },
-                                error: (xhr, status, error) => console.log(error)
-                            })
-                        }
-                    });
-                }
-            });
-        });
-    });
-}
-
-
-
-function deleteMultiple() {
-  ids_array = [];
-  var items = document.getElementsByName('chk_child');
-  Array.from(items).forEach(function (ele) {
-    if (ele.checked == true) {
-      var trNode = ele.parentNode.parentNode.parentNode;
-      var id = trNode.querySelector('.id').innerHTML;
-      ids_array.push(id);
-    }
-  });
-
-  if (typeof ids_array !== 'undefined' && ids_array.length > 0) {
-    if (confirm('Are you sure you want to delete this?')) {
-        $.ajax({
-            url: "/destroyMany-case",
-            method: "DELETE",
-            data: {ids: ids_array},
-            headers:{
-                'X-CSRF-TOKEN': token
-            },
-            success: (res)=>{
-                toastr[res['alert-type']](res.message)
-                Array.from(ids_array).forEach(function (id) {
-                    customerList.remove("id", id);
-                })
-                document.getElementById('checkAll').checked = false;
-            },
-            error: (xhr, status, error) => console.log(error)
-        })
-    } else {
-      return false;
-    }
-  } else {
-    Swal.fire({
-      title: 'Please select at least one checkbox',
-      confirmButtonClass: 'btn btn-info',
-      buttonsStyling: false,
-      showCloseButton: true
-    });
-  }
-}
-
-
-
-document.querySelectorAll(".listjs-table").forEach(function(item){
-    item.querySelector(".pagination-next").addEventListener("click", function () {
-        (item.querySelector(".pagination.listjs-pagination")) ? (item.querySelector(".pagination.listjs-pagination").querySelector(".active")) ?
-         item.querySelector(".pagination.listjs-pagination").querySelector(".active").nextElementSibling.children[0].click(): '': '';
-    });
-});
-
-document.querySelectorAll(".listjs-table").forEach(function(item){
-    item.querySelector(".pagination-prev").addEventListener("click", function () {
-        (item.querySelector(".pagination.listjs-pagination")) ? (item.querySelector(".pagination.listjs-pagination").querySelector(".active")) ?
-         item.querySelector(".pagination.listjs-pagination").querySelector(".active").previousSibling.children[0].click(): '': '';
-    });
-});
-
-
-// data- attribute example
-var attroptions = {
-    valueNames: [
-        'name',
-        'born',
-        {
-            data: ['id']
-        },
-        {
-            attr: 'src',
-            name: 'image'
-        },
-        {
-            attr: 'href',
-            name: 'link'
-        },
-        {
-            attr: 'data-timestamp',
-            name: 'timestamp'
+                
+            }
+            addEvent.hide();
         }
-    ]
+    });
+
+    document.getElementById("btn-delete-event").addEventListener("click", function (e) {
+        if(selectedEvent){
+            $.ajax({
+                url: `/events/${selectedEvent.id}`,
+                method: 'DELETE',
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                success: (res) => {
+                    for (var i = 0; i < defaultEvents.length; i++) {
+                        if (defaultEvents[i].id == selectedEvent.id) {
+                            defaultEvents.splice(i, 1);
+                            i--;
+                        }
+                    }
+                    upcomingEvent(defaultEvents);
+                    selectedEvent.remove();
+                    selectedEvent = null;
+                    addEvent.hide();
+                },
+                error: (xhr, status, error)=> console.log(error)
+
+            })
+        
+        }
+    });
+    document.getElementById("btn-new-event").addEventListener("click", function (e) {
+        flatpicekrValueClear();
+        flatPickrInit();
+        addNewEvent();
+        document.getElementById("edit-event-btn").setAttribute("data-id", "new-event");
+        document.getElementById('edit-event-btn').click();
+        document.getElementById("edit-event-btn").setAttribute("hidden", true);
+    });
+});
+
+
+function flatPickrInit() {
+    var config = {
+        enableTime: true,
+        noCalendar: true,
+    };
+    var date_range = flatpickr(
+        start_date, {
+            enableTime: false,
+            mode: "range",
+            minDate: "today",
+            onChange: function (selectedDates, dateStr, instance) {
+                var date_range = dateStr;
+                var dates = date_range.split("to");
+                if (dates.length > 1) {
+                    document.getElementById('event-time').setAttribute("hidden", true);
+                } else {
+                    document.getElementById("timepicker1").parentNode.classList.remove("d-none");
+                    document.getElementById("timepicker1").classList.replace("d-none", "d-block");
+                    document.getElementById("timepicker2").parentNode.classList.remove("d-none");
+                    document.getElementById("timepicker2").classList.replace("d-none", "d-block");
+                    document.getElementById('event-time').removeAttribute("hidden");
+                }
+            },
+        });
+    flatpickr(timepicker1, config);
+    flatpickr(timepicker2, config);
+
+}
+
+function flatpicekrValueClear() {
+    start_date.flatpickr().clear();
+    timepicker1.flatpickr().clear();
+    timepicker2.flatpickr().clear();
+}
+
+
+function eventClicked() {
+    document.getElementById('form-event').classList.add("view-event");
+    document.getElementById("event-title").classList.replace("d-block", "d-none");
+    document.getElementById("event-category").classList.replace("d-block", "d-none");
+    document.getElementById("event-start-date").parentNode.classList.add("d-none");
+    document.getElementById("event-start-date").classList.replace("d-block", "d-none");
+    document.getElementById('event-time').setAttribute("hidden", true);
+    document.getElementById("timepicker1").parentNode.classList.add("d-none");
+    document.getElementById("timepicker1").classList.replace("d-block", "d-none");
+    document.getElementById("timepicker2").parentNode.classList.add("d-none");
+    document.getElementById("timepicker2").classList.replace("d-block", "d-none");
+    document.getElementById("event-location").classList.replace("d-block", "d-none");
+    document.getElementById("event-description").classList.replace("d-block", "d-none");
+    document.getElementById("event-start-date-tag").classList.replace("d-none", "d-block");
+    document.getElementById("event-timepicker1-tag").classList.replace("d-none", "d-block");
+    document.getElementById("event-timepicker2-tag").classList.replace("d-none", "d-block");
+    document.getElementById("event-location-tag").classList.replace("d-none", "d-block");
+    document.getElementById("event-description-tag").classList.replace("d-none", "d-block");
+    document.getElementById('btn-save-event').setAttribute("hidden", true);
+}
+
+function editEvent(data) {
+    var data_id = data.getAttribute("data-id");
+    if (data_id == 'new-event') {
+        document.getElementById('modal-title').innerHTML = "";
+        document.getElementById('modal-title').innerHTML = "Add Event";
+        document.getElementById("btn-save-event").innerHTML = "Add Event";
+        eventTyped();
+    } else if (data_id == 'edit-event') {
+        data.innerHTML = "Cancel";
+        data.setAttribute("data-id", 'cancel-event');
+        document.getElementById("btn-save-event").innerHTML = "Update Event";
+        data.removeAttribute("hidden");
+        eventTyped();
+    } else {
+        data.innerHTML = "Edit";
+        data.setAttribute("data-id", 'edit-event');
+        eventClicked();
+    }
+}
+
+function eventTyped() {
+    document.getElementById('form-event').classList.remove("view-event");
+    document.getElementById("event-title").classList.replace("d-none", "d-block");
+    document.getElementById("event-category").classList.replace("d-none", "d-block");
+    document.getElementById("event-start-date").parentNode.classList.remove("d-none");
+    document.getElementById("event-start-date").classList.replace("d-none", "d-block");
+    document.getElementById("timepicker1").parentNode.classList.remove("d-none");
+    document.getElementById("timepicker1").classList.replace("d-none", "d-block");
+    document.getElementById("timepicker2").parentNode.classList.remove("d-none");
+    document.getElementById("timepicker2").classList.replace("d-none", "d-block");
+    document.getElementById("event-location").classList.replace("d-none", "d-block");
+    document.getElementById("event-description").classList.replace("d-none", "d-block");
+    document.getElementById("event-start-date-tag").classList.replace("d-block", "d-none");
+    document.getElementById("event-timepicker1-tag").classList.replace("d-block", "d-none");
+    document.getElementById("event-timepicker2-tag").classList.replace("d-block", "d-none");
+    document.getElementById("event-location-tag").classList.replace("d-block", "d-none");
+    document.getElementById("event-description-tag").classList.replace("d-block", "d-none");
+    document.getElementById('btn-save-event').removeAttribute("hidden");
+}
+
+// upcoming Event
+function upcomingEvent(a) {
+    a.sort(function (o1, o2) {
+
+        return (new Date(o1.start)) - (new Date(o2.start));
+    });
+    document.getElementById("upcoming-event-list").innerHTML = null;
+    Array.from(a).forEach(function (element) {
+        var title = element.title;
+
+        if (element.end) {
+            endUpdatedDay = new Date(element.end);
+            var updatedDay = endUpdatedDay.setDate(endUpdatedDay.getDate() - 1);
+          }
+        var e_dt = updatedDay ? updatedDay : undefined;
+        if (e_dt == "Invalid Date" || e_dt == undefined) {
+            e_dt = null;
+        } else {
+            const newDate = new Date(e_dt).toLocaleDateString('en', { year: 'numeric', month: 'numeric', day: 'numeric' });
+            e_dt = new Date(newDate)
+              .toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })
+              .split(" ")
+              .join(" ");
+        }
+        var st_date = element.start ? str_dt(element.start) : null;
+        var ed_date = updatedDay ? str_dt(updatedDay) : null;
+        if (st_date === ed_date) {
+            e_dt = null;
+        }
+        var startDate = element.start;
+        if (startDate === "Invalid Date" || startDate === undefined) {
+            startDate = null;
+        } else {
+            const newDate = new Date(startDate).toLocaleDateString('en', { year: 'numeric', month: 'numeric', day: 'numeric' });
+            startDate = new Date(newDate)
+              .toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })
+              .split(" ")
+              .join(" ");
+        }
+
+        var end_dt = (e_dt) ? " to " + e_dt : '';
+        var category = (element.className).split("-");
+        var description = (element.description) ? element.description : "";
+        var e_time_s = tConvert(getTime(element.start));
+        var e_time_e = tConvert(getTime(updatedDay));
+        if (e_time_s == e_time_e) {
+            var e_time_s = "Full day event";
+            var e_time_e = null;
+        }
+        var e_time_e = (e_time_e) ? " to " + e_time_e : "";
+
+        u_event = "<div class='card mb-3'>\
+                        <div class='card-body'>\
+                            <div class='d-flex mb-3'>\
+                                <div class='flex-grow-1'><i class='mdi mdi-checkbox-blank-circle me-2 text-" + category[1] + "'></i><span class='fw-medium'>" + startDate + end_dt + " </span></div>\
+                                <div class='flex-shrink-0'><small class='badge bg-primary-subtle text-primary ms-auto'>" + e_time_s + e_time_e + "</small></div>\
+                            </div>\
+                            <h6 class='card-title fs-16'> " + title + "</h6>\
+                            <p class='text-muted text-truncate-two-lines mb-0'> " + description + "</p>\
+                        </div>\
+                    </div>";
+        document.getElementById("upcoming-event-list").innerHTML += u_event;
+    });
 };
 
+function getTime(params) {
+    params = new Date(params);
+    if (params.getHours() != null) {
+        var hour = params.getHours();
+        var minute = (params.getMinutes()) ? params.getMinutes() : 0;
+        return hour + ":" + minute;
+    }
+}
+
+function tConvert(time) {
+    var t = time.split(":");
+    var hours = t[0];
+    var minutes = t[1];
+    var newformat = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    return (hours + ':' + minutes + ' ' + newformat);
+}
+
+var str_dt = function formatDate(date) {
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var d = new Date(date),
+        month = '' + monthNames[(d.getMonth())],
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+    return [day + " " + month, year].join(',');
+};

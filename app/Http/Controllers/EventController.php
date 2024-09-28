@@ -24,11 +24,11 @@ class EventController extends Controller
         $events = Event::where('user_id', Auth::user()->id)->get();
         $eventsArray = [];
         foreach ($events as $event) {
-            $dateEnd = new \DateTime($event->end);
-            $dateStart = new \DateTime($event->start);
+            // $dateEnd = new \DateTime($event->end);
+            // $dateStart = new \DateTime($event->start);
 
-            $endTime = $dateEnd->format('Y-m-d'). "T" .$dateStart->format('H:i:s') . ".000Z";
-            $startTime = $dateStart->format('Y-m-d') . 'T' . $dateStart->format('H:i:s') . ".000Z";           
+            // $endTime = $dateEnd->format('Y-m-d'). "T" .$dateStart->format('H:i:s') . ".000Z";
+            // $startTime = $dateStart->format('Y-m-d') . 'T' . $dateStart->format('H:i:s') . ".000Z";           
             // if($event->id == 5) dd($startTime, $event->start);
             $eventsArray[] = [
                 'id' => $event->id,
@@ -154,17 +154,12 @@ class EventController extends Controller
 
         $event->save();
 
-        // $events = Event::where('user_id', Auth::user()->id)->get();
-        return response()->json([
-            'id' => $event->id, 
-            'eventDay' => $event->allDay, 
-            'className'=>$event->type, 
-            'location' => $event->location, 
-            'start' => $request->startTime, 
-            'end' => $request->endTime,
-            'description' => $event->description, 
-            'title' => $event->title 
-        ]);
+
+        $notification = array(
+            'message' => 'Event Updated successfully',
+            'alert-type' => 'success'
+        );
+        return response()->json($notification);
 
     }
 
@@ -260,10 +255,15 @@ class EventController extends Controller
             Carbon::setLocale('fr');
             $date = Carbon::parse($proc->start);
 
-            // Get the day name in Arabic and manually format the rest with Western numerals
             $arabicDayName = $date->translatedFormat('l'); // Get the day name in Arabic
             $westernDate = $date->format('Y/m/d'); // Use Western numerals for the date
             $formattedDate = $arabicDayName . ' ' . $westernDate;
+
+            $start = new \DateTime($proc->start);
+            $startTime = $start->format("H:i:s A");
+            // $time = $proc->date->
+            $end = $proc ? new \DateTime($proc->end) : null;
+            $endTime = $end->format("H:i:s A");
 
             $type;
             switch($proc->type){
@@ -287,7 +287,8 @@ class EventController extends Controller
                 "location" => $proc->location,
                 "description" => $proc->description,
                 "type" => $type,
-                'time' => $proc->start
+                'start_time' => $startTime,
+                'end_time' => $endTime
             ];
             if (array_key_exists($proc->date, $schedule)) {
                 $schedule[$formattedDate][] = $obj;
