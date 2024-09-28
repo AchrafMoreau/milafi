@@ -6,7 +6,9 @@ Contact: Themesbrand@gmail.com
 File: Calendar init js
 */
 
-
+function convertToGMTPlusOne(date) {
+    return new Date(date).toLocaleString({ timeZone: "Africa/Casablanca" });
+}
 var start_date = document.getElementById("event-start-date");
 var timepicker1 = document.getElementById("timepicker1");
 var timepicker2 = document.getElementById("timepicker2");
@@ -21,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
     $.ajax({
         url: '/events',
         method: 'GET',
-        constactType: 'application/json',
+        contentType: 'application/json',
         headers: {
             'X-CSRF-TOKEN': token
         },
@@ -32,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 calendar.addEventSource(defaultEvents);
             } else {
                 calendar = new FullCalendar.Calendar(calendarEl, {
-                    timeZone: 'local',
+                    // timeZone: '',
                     editable: true,
                     droppable: true,
                     selectable: true,
@@ -57,26 +59,28 @@ document.addEventListener("DOMContentLoaded", function () {
                         const description = (info.event._def.extendedProps.description) ? info.event._def.extendedProps.description : 'No Description';
                         const location = (info.event._def.extendedProps.location) ? info.event._def.extendedProps.location : 'No Loaction';
                         console.log(info.event.id)
+                        const newEvent =  {
+                            title,
+                            startTime : convertToGMTPlusOne(start),
+                            endTime: convertToGMTPlusOne(end), 
+                            eventDay: allDay, 
+                            className, 
+                            description, 
+                            location
+                        };
 
                         $.ajax({
                             url: `/events/${info.event.id}`,
                             method: 'PUT',
-                            data: {
-                                title,
-                                startTime : start,
-                                endTime: end, 
-                                eventDay: allDay, 
-                                className, 
-                                description, 
-                                location
-                            },
-                            constactType: 'application/json',
+                            data: JSON.stringify(newEvent),
+                            contentType: 'application/json',
                             headers: {
                                 'X-CSRF-TOKEN': token
                             },
                             success: (res) => {
-                                defaultEvents = res
+                                // defaultEvents = res
                                 upcomingEvent(defaultEvents);
+                                calendar.render()
                             },
                             error: (xhr, status, error)=> console.log(error)
 
@@ -199,7 +203,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         newEventData = null;
                         modalTitle.innerText = selectedEvent.title;
-
                         // formEvent.classList.add("view-event");
                         document.getElementById('btn-delete-event').removeAttribute('hidden');
                     },
@@ -213,28 +216,22 @@ document.addEventListener("DOMContentLoaded", function () {
                         var newEvent = {
                             id: newid,
                             title: info.event.title,
-                            start: info.event.start,
-                            allDay: info.event.allDay,
-                            className: info.event.classNames[0]
+                            start: convertToGMTPlusOne(info.event.start),
+                            allDay: convertToGMTPlusOne(info.event.allDay),
+                            className: info.event.classNames[0],
+                            description: 'No Description',
+                            location: 'No Location',
                         };
 
                         $.ajax({
                             url: '/events',
                             method: 'POST',
-                            data: {
-                                description: 'No Description',
-                                location: 'No Location',
-                                title : newEvent.title,
-                                startTime: newEvent.start,
-                                eventDay: newEvent.allDay,
-                                className: newEvent.className,
-                                id: newid
-                            },
-                            constactType: 'application/json',
+                            data: JSON.stringify(newEvent),
+                            contentType: 'application/json',
                             headers: {
                                 'X-CSRF-TOKEN': token
                             },
-                            success: (res) => {
+                            success: () => {
                                 defaultEvents.push(newEvent);
                                 upcomingEvent(defaultEvents);
                             },
@@ -349,6 +346,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var eventDescription = document.getElementById("event-description").value;
         var eventid = document.getElementById("eventid").value;
         var all_day = false;
+        console.log(start_date, start_date.length > 1)
         if (start_date.length > 1) {
             var end_date = new Date(start_date[1]);
             end_date.setDate(end_date.getDate() + 1);
@@ -360,6 +358,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var end_time = (document.getElementById("timepicker2").value).trim();
             start_date = new Date(start_date + "T" + start_time);
             end_date = new Date(e_date + "T" + end_time);
+            console.log(start_date, end_date)
         }
         var e_id = defaultEvents.length + 1;
 
@@ -376,25 +375,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 selectedEvent.setAllDay(all_day);
                 selectedEvent.setExtendedProp("description", eventDescription);
                 selectedEvent.setExtendedProp("location", event_location);
+                console.log(start_date)
                 $.ajax({
                     url: `/events/${selectedEvent.id}`, 
                     method: 'PUT',
-                    data: {
+                    data: JSON.stringify({
                         title : updatedTitle,
-                        startTime : updateStartDate,
-                        endTime : updateEndDate,
+                        startTime : convertToGMTPlusOne(start_date),
+                        endTime : convertToGMTPlusOne(end_date),
                         allDay : all_day,
                         className : updatedCategory,
                         description : eventDescription,
                         location : event_location,
-                    },
-                    constactType: 'application/json',
+                    }),
+                    contentType: 'application/json',
                     headers:{
                         'X-CSRF-TOKEN': token
                     },
                     success: (res) =>  {
-                        calendar.render()
                         window.location.reload()
+                        toastr[res['alert-type']](res.message)
                     },
                     error: (xhr, stauts, error) => console.log(error)
                 });
@@ -408,12 +408,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 // initCalendar(defaultEvents).render()
                 // default
             } else {
-                console.log(e_id);
+                console.log(start_date);
                 var newEvent = {
                     id: e_id,
                     title: updatedTitle,
-                    start: start_date,
-                    end: end_date,
+                    start: convertToGMTPlusOne(start_date),
+                    end: convertToGMTPlusOne(end_date),
                     allDay: all_day,
                     className: updatedCategory,
                     description: eventDescription,
@@ -422,24 +422,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 $.ajax({
                     url: '/events', 
                     method: 'POST',
-                    data: {
-                        id: newEvent.id,
-                        className: newEvent.className,
-                        title : newEvent.title,
-                        location : newEvent.location, 
-                        eventDay: newEvent.allDay,
-                        startTime: newEvent.start, 
-                        endTime: newEvent.end, 
-                        description: newEvent.description
-                    },
-                    constactType: 'application/json',
+                    data: JSON.stringify(newEvent),
+                    contentType: 'application/json',
                     headers:{
                         'X-CSRF-TOKEN': token
                     },
-                    success: (res) => {
-                        defaultEvents.push(newEvent);
+                    success: () => {
+                        defaultEvents.push({...newEvent, start:start_date, end:end_date});
                         if (calendar) {
-                            calendar.addEvent(newEvent);
+                            calendar.addEvent({...newEvent, start:start_date, end:end_date});
+                            console.log(calendar)
                             upcomingEvent(defaultEvents);
                         }
                         return;
@@ -459,7 +451,7 @@ document.addEventListener("DOMContentLoaded", function () {
             $.ajax({
                 url: `/events/${selectedEvent.id}`,
                 method: 'DELETE',
-                constactType: 'application/json',
+                contentType: 'application/json',
                 headers: {
                     'X-CSRF-TOKEN': token
                 },
