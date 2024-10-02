@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         const className = info.event.classNames[0];
                         const description = (info.event._def.extendedProps.description) ? info.event._def.extendedProps.description : 'No Description';
                         const location = (info.event._def.extendedProps.location) ? info.event._def.extendedProps.location : 'No Loaction';
-                        console.log(info.event.id)
                         const newEvent =  {
                             title,
                             startTime : convertToGMTPlusOne(start),
@@ -212,7 +211,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     events: defaultEvents,
                     eventReceive: function (info) {
                         var newid = parseInt(info.event.id);
-                        console.log(newid);
                         var newEvent = {
                             id: newid,
                             title: info.event.title,
@@ -238,7 +236,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             error: (xhr, status, error)=> console.log(error)
 
                         })
-                        console.log(info, newEvent);
                     },
                     eventDrop: function (info) {
                         var indexOfSelectedEvent = defaultEvents.findIndex(function (x) {
@@ -346,7 +343,6 @@ document.addEventListener("DOMContentLoaded", function () {
         var eventDescription = document.getElementById("event-description").value;
         var eventid = document.getElementById("eventid").value;
         var all_day = false;
-        console.log(start_date, start_date.length > 1)
         if (start_date.length > 1) {
             var end_date = new Date(start_date[1]);
             end_date.setDate(end_date.getDate() + 1);
@@ -358,7 +354,6 @@ document.addEventListener("DOMContentLoaded", function () {
             var end_time = (document.getElementById("timepicker2").value).trim();
             start_date = new Date(start_date + "T" + start_time);
             end_date = new Date(e_date + "T" + end_time);
-            console.log(start_date, end_date)
         }
         var e_id = defaultEvents.length + 1;
 
@@ -375,7 +370,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 selectedEvent.setAllDay(all_day);
                 selectedEvent.setExtendedProp("description", eventDescription);
                 selectedEvent.setExtendedProp("location", event_location);
-                console.log(start_date)
                 $.ajax({
                     url: `/events/${selectedEvent.id}`, 
                     method: 'PUT',
@@ -408,7 +402,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 // initCalendar(defaultEvents).render()
                 // default
             } else {
-                console.log(start_date);
                 if(start_date == 'Invalid Date' && end_date == "Invalid Date"){
                     Swal.fire({
                     title: window.translations.selectDate,
@@ -439,7 +432,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             defaultEvents.push({...newEvent, start:start_date, end:end_date});
                             if (calendar) {
                                 calendar.addEvent({...newEvent, start:start_date, end:end_date});
-                                console.log(calendar)
                                 upcomingEvent(defaultEvents);
                             }
                             return;

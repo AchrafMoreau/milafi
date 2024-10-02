@@ -144,7 +144,6 @@ File: Chat init js
     // get contacts list
     getJSON("chat-contacts-list.json", function (err, data) {
         if (err !== null) {
-            console.log("Something went wrong: " + err);
         } else {
             usersList = data;
             data.sort(function (a, b) {
@@ -396,7 +395,6 @@ File: Chat init js
     function getChatMessages(jsonFileUrl) {
         getJSONFile(jsonFileUrl, function (err, data) {
             if (err !== null) {
-                console.log("Something went wrong: " + err);
             } else {
                 var chatsData =
                     currentSelectedChat == "users" ? data[0].chats : data[0].channel_chat;

@@ -131,7 +131,6 @@ function updateList() {
             statusFilter = true;
         } else {
             statusFilter = item.values().sts == values_status;
-            console.log(statusFilter, "statusFilter");
         }
         return statusFilter;
     });
@@ -354,7 +353,6 @@ function deleteMultiple(prop) {
   });
   if (typeof ids_array !== 'undefined' && ids_array.length > 0) {
     if (confirm('Are you sure you want to delete this?')) {
-        console.log(ids_array)
         const url = '/destroyMany-'+ prop;
         const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         fetch(url, {

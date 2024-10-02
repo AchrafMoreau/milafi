@@ -105,7 +105,6 @@
             error: (xhr, status, error)=>{
                 const err = xhr.responseJSON.errors
                 for(const key in err){
-                    console.log(err[key])
                     const input = form.elements[key] 
                     input.classList.add('is-invalid');
                     $(input).next('.invalid-feedback').html(`<strong>${err[key]}</strong>`);
@@ -154,7 +153,6 @@
             error: (xhr, status, error)=>{
                 const err = xhr.responseJSON.errors
                 for(const key in err){
-                    console.log(err[key], key)
                     const input = form.elements[key] 
                     input.classList.add('is-invalid');
                     $(input).next('.invalid-feedback').html(`<strong>${err[key]}</strong>`);

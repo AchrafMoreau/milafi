@@ -625,14 +625,12 @@ function eventTyped() {
 
 // upcoming Event
 function upcomingEvent(a) {
-    console.log(a)
     a.sort(function (o1, o2) {
         return (new Date(o1.start)) - (new Date(o2.start));
     });
     document.getElementById("upcoming-event-list").innerHTML = null;
     Array.from(a).forEach(function (element) {
         var title = element.title;
-        console.log(element.end, element);
         if (element.end) {
             endUpdatedDay = new Date(element.end);
             var updatedDay = endUpdatedDay.setDate(endUpdatedDay.getDate() - 1);

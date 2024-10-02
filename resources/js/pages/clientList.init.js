@@ -99,7 +99,6 @@ xhttp.onload = function () {
     refreshCallbacks();
   });
   customerList.remove("id", '<a href="javascript:void(0);" class="fw-medium link-primary">test</a>');
-  console.log(document.getElementById("firstRaw"))
 
 //   document.getElementsByClassName('firstRaw').style.display = 'block'
 }
@@ -204,7 +203,6 @@ var count = 11;
 
 var forms = document.querySelectorAll('.tablelist-form')
 Array.prototype.slice.call(forms).forEach(function (form) {
-    console.log(form)
     form.addEventListener('submit', function (event) {
         if (!form.checkValidity()) {
             event.preventDefault();
@@ -324,9 +322,7 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                                 $('#add-btn').text(window.translations.editClient)
                                 const err = xhr.responseJSON.errors
                                 for(const key in err){
-                                    console.log(key)
                                     const input = event.target.elements[key] 
-                                    console.log(input)
                                     if(err[key][0].split('.')[1] === 'required'){
                                         input.classList.add('is-invalid');
                                         $(input).next('.invalid-feedback').html(`<strong>this field are required</strong>`);

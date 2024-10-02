@@ -121,7 +121,6 @@ contactList.items.forEach((elm) =>{
 
 // contactList.sort('id', { order: "desc" });
 
-console.log(contactList)
 
 // const xhttp = new XMLHttpRequest();
 // xhttp.onload = function () {
@@ -282,7 +281,6 @@ Array.prototype.slice.call(forms).forEach(function (form) {
             email_idField.value !== "" &&
             phoneField.value !== "" &&
             designationField.value !== "" && editlist) {
-                console.log(idField.value)
                 var tagInputFieldValue = tagInputField.getValue(true);
                 Array.from(tagInputFieldValue).forEach((tag, index) => {
                     tagHtmlValue += '<span class="badge bg-primary-subtle text-primary me-1">' + tag + '</span>'
@@ -391,7 +389,6 @@ function refreshCallbacks() {
                         phoneField.value = x._values.phone;
                         if(tagBadge){
                             Array.from(tagBadge).forEach((item) => {
-                                console.log(item.id)
                                 tagInputField.setChoiceByValue(item.id);
                             })
                         }

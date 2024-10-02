@@ -170,7 +170,6 @@
             if(curPass === "" && newPass === "" && confirm === ""){
                 toastr['error']("@lang('translation.fillAllField')")
             }else{
-                console.log(newPass, confirm)
                 if(newPass !== confirm){
                     $('#newpasswordInput').addClass('is-invalid')
                     $('.invalid-feedback').html(`<strong>@lang('translation.passwordDoesntMatch')</strong>`);
@@ -181,7 +180,6 @@
                         password: newPass,
                         password_confirmation: confirm
                     }
-                    console.log(inputs)
                     $.ajax({
                         url: '{{ route("password.update") }}',
                         method: "PUT",

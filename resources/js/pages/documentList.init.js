@@ -129,7 +129,6 @@ if (document.getElementById("customerList"))
             console.log('should enter if search is empty and list is empty');
         }else{
             document.getElementsByClassName("noresult")[0].style.display = "block";
-            console.log('should not enter if search is fill');
         }
         
     });
@@ -151,7 +150,6 @@ xhttp.onload = function () {
     refreshCallbacks();
   });
   customerList.remove("id", '<a href="javascript:void(0);" class="fw-medium link-primary">...</a>');
-  console.log(customerList)
 
 //   document.getElementsByClassName('firstRaw').style.display = 'block'
 }
@@ -257,7 +255,6 @@ var count = 11;
 var forms = document.querySelectorAll('.tablelist-form')
 Array.prototype.slice.call(forms).forEach(function (form) {
     form.addEventListener('submit', function (event) {
-        console.log(form.checkValidity())
         if (!form.checkValidity()) {
             event.preventDefault();
             event.stopPropagation();
@@ -273,7 +270,6 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                         showCloseButton: true
                     });
                 }else{
-                    console.log(form.elements['docs'].value);
                     const data = {
                         name: nameField.value,
                         file_desc: fileDescField.value,
@@ -361,7 +357,6 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                                 case: caseVal.getValue().value,
                                 docs: form.elements['docs'].value
                             }
-                            console.log(data)
                             $.ajax({
                                 url: `/document/${parseInt(selectedid)}`,
                                 method: "PUT",
@@ -390,9 +385,7 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                                     $('#add-btn').text(window.translations.editDocument)
                                     const err = xhr.responseJSON.errors
                                     for(const key in err){
-                                        console.log(key)
                                         const input = event.target.elements[key] 
-                                        console.log(input)
                                         if(err[key][0].split('.')[1] === 'required'){
                                             input.classList.add('is-invalid');
                                             $(input).next('.invalid-feedback').html(`<strong>this field are required</strong>`);

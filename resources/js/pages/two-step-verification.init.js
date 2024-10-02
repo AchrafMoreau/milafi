@@ -19,7 +19,6 @@ function moveToNext(index, event) {
         } else {
             getInputElement(index).blur();
             // Submit code
-            console.log('submit code');
         }
     }
     if (eventCode === 8 && index !== 1) {

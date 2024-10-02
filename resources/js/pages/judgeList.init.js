@@ -72,7 +72,6 @@ if (document.getElementById("customerList"))
             console.log('should enter if search is empty and list is empty');
         }else{
             document.getElementsByClassName("noresult")[0].style.display = "block";
-            console.log('should not enter if search is fill');
         }
         
     });
@@ -93,7 +92,6 @@ xhttp.onload = function () {
     refreshCallbacks();
   });
   customerList.remove("id", '<a href="javascript:void(0);" class="fw-medium link-primary">...</a>');
-  console.log(customerList)
 
 //   document.getElementsByClassName('firstRaw').style.display = 'block'
 }
@@ -198,7 +196,6 @@ var count = 11;
 var forms = document.querySelectorAll('.tablelist-form')
 Array.prototype.slice.call(forms).forEach(function (form) {
     form.addEventListener('submit', function (event) {
-        console.log(form.checkValidity())
         if (!form.checkValidity()) {
             event.preventDefault();
             event.stopPropagation();
@@ -210,7 +207,6 @@ Array.prototype.slice.call(forms).forEach(function (form) {
             ) {
 
                 const initGender = document.querySelector('input[name="gender"]:checked')
-                console.log(initGender)
                 const data = {
                     name: nameField.value,
                     contact_info: contact_infoField.value,
@@ -218,7 +214,6 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                     court: courtsField.value,
                 }
 
-                console.log(data)
                 
                 $.ajax({
                     url: "/store-judge",
@@ -236,8 +231,6 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                     },
                     success: (res) =>{
                         toastr[res['alert-type']](res.message)
-                        console.log(res.data.gender)
-                        console.log(res.data.gender === "Male" ? window.translations.male : window.translations.female), 
                         customerList.add({
                             id: `000${res.data.id}`,
                             name: res.data.name,
@@ -256,7 +249,6 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                         $('#add-btn').text(window.translations.addJudge)
                         const err = xhr.responseJSON.errors
                         for(const key in err){
-                            console.log(key)
                             if(key === 'court'){
                                 Swal.fire({
                                     title: window.translations.selectCourt,
@@ -296,7 +288,6 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                             gender: selectedGender ? selectedGender : x._values.gender,
                             court: courtsField.value,
                         }
-                        console.log(data)
                         $.ajax({
                             url: `/judge/${parseInt(selectedid)}`,
                             method: "PUT",
@@ -324,17 +315,13 @@ Array.prototype.slice.call(forms).forEach(function (form) {
                                 $('#add-btn').html(``)
                                 $('#add-btn').text(window.translations.editJudge)
                                 const err = xhr.responseJSON.errors
-                                console.log(err)
                                 if(!err){
                                     clearFields();
-                                    console.log('hello')
                                     toastr['error']("you can't modify the default court")
                                     document.getElementById("close-modal").click();
                                 }else{
                                     for(const key in err){
-                                        console.log(key)
                                         const input = event.target.elements[key] 
-                                        console.log(input)
                                         if(err[key][0].split('.')[1] === 'required'){
                                             input.classList.add('is-invalid');
                                             $(input).next('.invalid-feedback').html(`<strong>this field are required</strong>`);
@@ -407,7 +394,6 @@ function refreshCallbacks() {
                 deleteid = new DOMParser().parseFromString(x._values.id, "text/html");
                 var isElem = deleteid.body;
                 var isdeleteid = deleteid.body.innerHTML;
-                console.log("isdeleteID", isdeleteid, "itemID", itemId, "x_value.id" , x._values.id)
                 if (isdeleteid == itemId) {
                     document.getElementById("delete-record").addEventListener("click", function () {
                         if(itemId == isdeleteid){

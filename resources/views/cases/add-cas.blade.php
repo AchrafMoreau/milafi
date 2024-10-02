@@ -441,7 +441,6 @@
 
 
         const fillPhoneInput = (event, phoneNumber=null)=>{
-            console.log(phoneNumber, event)
             const id = event?.target?.value
             const client = @json($clients);
             if(id) {

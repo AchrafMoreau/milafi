@@ -361,7 +361,6 @@
     <script>
         $("#add-user").on('submit', (e)=>{
             e.preventDefault()
-            console.log("hello")
             const form = e.target
             const email = form.elements['email'].value
             const role = form.elements['role'].value
@@ -373,7 +372,6 @@
             const password = form.elements['password'].value
             const confirmPass = form.elements['password_confirmation'].value
             const data = {email, name, arabName, gender, city, arabCity, password, password_confirmation:confirmPass, role}
-            console.log(token);
             $.ajax({
                 url: "/users",
                 method: "POST",

@@ -83,7 +83,6 @@ if (document.getElementById("customerList"))
             console.log('should enter if search is empty and list is empty');
         }else{
             document.getElementsByClassName("noresult")[0].style.display = "block";
-            console.log('should not enter if search is fill');
         }
         
     });
