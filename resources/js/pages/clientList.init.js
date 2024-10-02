@@ -51,7 +51,8 @@ var options = {
 // Init list
 if (document.getElementById("customerList"))
     var customerList = new List("customerList", options).on("updated", function (list) {
-        list.matchingItems.length == 0 ?
+        const search =  $('.search').val()
+        list.matchingItems.length == 0 && search.length < 0 ?
             (document.getElementsByClassName("noresult")[0].style.display = "block") :
             (document.getElementsByClassName("noresult")[0].style.display = "none");
         var isFirst = list.i == 1;
@@ -75,11 +76,15 @@ if (document.getElementById("customerList"))
             document.querySelector(".pagination.listjs-pagination").firstElementChild.children[0].click()
         }
 
-        if (list.matchingItems.length > 0) {
+        if (list.matchingItems.length > 0 ) {
             document.getElementsByClassName("noresult")[0].style.display = "none";
-        } else {
+        } else if(list.matchingItems.length <= 0 && $('.search').val().length <= 0){
+            ('should enter if search is empty and list is empty');
+        }else{
             document.getElementsByClassName("noresult")[0].style.display = "block";
+            ('should not enter if search is fill');
         }
+        
     });
 
 const xhttp = new XMLHttpRequest();
