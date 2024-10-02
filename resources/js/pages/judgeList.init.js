@@ -522,8 +522,9 @@ function deleteMultiple() {
                 document.getElementById('checkAll').checked = false;
             },
             error: (xhr, status, error) => {
-                clearfields();
+                clearFields();
                 toastr['error']("you can't modify the default court")
+                document.getElementById('checkAll').checked = false;
                 document.getElementById("close-modal").click();
             }
         })

@@ -20,7 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth' =>  \App\Http\Middleware\Authenticate::class,
             'clearNotification' =>  \App\Http\Middleware\ClearNotificationSession::class,
-            'PDF' => Mccarlosen\LaravelMpdf\Facades\LaravelMpdf::class
+            'PDF' => Mccarlosen\LaravelMpdf\Facades\LaravelMpdf::class,
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+
         ]);
         $middleware->append([
             // \App\Http\Middleware\Authenticate::class,

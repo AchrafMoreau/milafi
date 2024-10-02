@@ -116,8 +116,21 @@ class CourtController extends Controller
         ]);
         
         // return 'hello';
+        $ids = $req->input('ids');
+        
+        $defaultCourt = Court::whereIn('id', $ids)
+            ->where('isDefault', true)
+            ->first();
 
-        // Court::where('user_id', Auth::id())->destroy($req->input('ids'));
+        if ($defaultCourt) {
+            $notification = [
+                'message' => 'You cannot delete a default Court',
+                'alert-type' => 'error',
+            ];
+
+            return response()->json($notification, 403);
+        }
+
         Court::where('user_id', Auth::id())->whereIn('id', $req->input('ids'))->delete();
 
         $notification = array(

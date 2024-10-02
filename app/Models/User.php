@@ -30,6 +30,7 @@ class User extends Authenticatable
         'name_in_arab',
         'city_in_arab',
         'phone',
+        'role',
         'background'
     ];
 

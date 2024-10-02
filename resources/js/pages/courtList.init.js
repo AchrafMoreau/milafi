@@ -496,6 +496,7 @@ function deleteMultiple() {
             error: (xhr, status, error) => {
                 clearFields();
                 toastr['error']("you can't modify the default court")
+                document.getElementById('checkAll').checked = false;
                 document.getElementById("close-modal").click();
             }
         })

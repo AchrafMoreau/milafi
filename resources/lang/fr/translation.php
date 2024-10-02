@@ -1,5 +1,7 @@
 <?php
 return [
+    'users' => 'utilisateurs',
+    'addUser' => "ajouter un utilisateur",
     'updatePassWordMessage' => "le mot de passe a été mis à jour avec succès",
     'someError' => "Une erreur s'est produite. Veuillez réessayer.",
     'minPass' => 'Le mot de passe doit comporter au moins 8 caractères et contenir au moins un chiffre',

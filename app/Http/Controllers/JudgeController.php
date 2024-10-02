@@ -131,13 +131,24 @@ class JudgeController extends Controller
         $req->validate([
             'ids' => 'required|array',
         ]);
+
+        $ids = $req->input('ids');
         
-        // return 'hello';
+        $defaultJudge = Judge::whereIn('id', $ids)
+            ->where('isDefault', true)
+            ->first();
 
-        Judge::where('user_id', Auth::id())->whereIn('id', $req->input('ids'))->delete();
+        if ($defaultJudge) {
+            $notification = [
+                'message' => 'You cannot delete a default judge',
+                'alert-type' => 'error',
+            ];
 
-        // Judge::where('user_id', Auth::id())
-        //     ->destroy($req->input('ids'));
+            return response()->json($notification, 403);
+        }
+
+        Judge::where('user_id', Auth::id())->whereIn('id', $ids)->delete();
+
         $notification = array(
             'message' => 'Many Judges Deleted Successfully',
             'alert-type' => 'success'

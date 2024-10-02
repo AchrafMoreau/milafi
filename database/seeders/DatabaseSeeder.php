@@ -49,14 +49,14 @@ class DatabaseSeeder extends Seeder
         // Todo::factory(10)->create();
         // Contact::factory(10)->create();
         
-        if(!User::where('name', 'Achraf')->first()){
+        if(!User::where('name', 'Admin')->first()){
             DB::table('users')->insert([
-                'name'=> "Achraf",
-                'password'=> Hash::make('0210moreau'),
-                'email' => 'achraf@gmail.com',
-                'role' => 'Admin',
+                'name'=> "Admin",
+                'password'=> Hash::make('admin123'),
+                'email' => 'admin@admin.com',
+                'role' => 'SuperAdmin',
                 'city' => 'Agadir',
-                'name_in_arab' => 'اشرف',
+                'name_in_arab' => 'ادمين',
                 'city_in_arab' => 'كلميم',
                 'gender' => "Male",
             ]);

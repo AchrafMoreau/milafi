@@ -12,12 +12,10 @@ use App\Http\Controllers\uplaodContnroller;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\UsersController;
 
 
 
-Route::get("/dashboard", function(){
-    return view("calendar");
-})->name('dashboard');
 
 
 
@@ -32,6 +30,10 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('roo
 
 Route::middleware(['auth', 'clearNotification'])->group(function () {
     //  client routes for user / lawyer
+    Route::get("/dashboard", function(){
+        return view("calendar");
+    })->name('dashboard');
+
     Route::get('/client', [ClientController::class, 'index']);
     Route::get('/clientJson', [ClientController::class, 'getAll']);
     Route::get("/client/{client}", [ClientController::class, 'show']);
@@ -103,10 +105,7 @@ Route::middleware(['auth', 'clearNotification'])->group(function () {
     // contact route for user / laywer
     Route::resource('/contact', ContactController::class);
     Route::get('/getAllContact', [ContactController::class, 'getAll']);
-
-
     
-
     // procedure route for user / laywer
     Route::post('/procedude-add/{id}', [ProcedureController::class, 'store']);
     // dashboard 
@@ -115,6 +114,15 @@ Route::middleware(['auth', 'clearNotification'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::put('/profile/avatar', [ProfileController::class, 'updateAvatar']);
+});
+
+Route::middleware(['admin', 'auth', 'clearNotification'])->group(function (){
+
+    Route::get('/users', [UsersController::class, 'index']);
+    Route::post('/users', [UsersController::class, 'store']);
+    Route::delete('/userse/${id}', [UsersController::class, 'destroy']);
+    Route::put('/profile/${id}', [UsersController::class, 'update']);
+
 });
 
 Route::fallback(function () {

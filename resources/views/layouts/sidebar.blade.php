@@ -56,6 +56,16 @@
                     </a>
                 </li>
 
+                @if(Auth::user()->role === 'SuperAdmin')
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="/users" >
+                            <i class="ri-account-circle-line"></i> 
+                            <span>@lang('translation.users')</span> 
+                        </a>
+                    </li>
+                @endif
+
+
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="/calendar" >
                         <i class=" las la-calendar"></i> 
