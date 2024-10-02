@@ -1,5 +1,8 @@
 <?php
 return [
+    'updateEvent' => 'تحديث الحدث',
+    'addEvent' => 'إضافة حدث',
+    'PleaseselectaValidDateTime' => "الرجاء إدخال تاريخ ووقت صالح",
     'enterValidPas' => "أدخل كلمة مرور صالحة تتكون من 8 أحرف ورقم واحد على الأقل",
     'users' => 'المستخدمون',
     'addUser' => "إضافة مستخدم",

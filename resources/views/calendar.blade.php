@@ -237,6 +237,16 @@
     </div> <!-- end row-->
 @endsection
 @section('script')
+    <script>
+        window.translations = {
+            selectDate: "{{ __('translation.PleaseselectaValidDateTime') }}",
+            addEvent : "{{ __('translation.addEvent') }}",
+            edit: "{{ __('translation.edit') }}",
+            updateEvent: "{{ __('translation.updateEvent') }}",
+            yes: "{{ __('translation.yes') }}",
+            close: "{{ __('translation.close') }}",
+        }
+    </script>
 
     <script src="{{ URL::asset('build/libs/fullcalendar/index.global.min.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/calendar.init.js') }}"></script>

@@ -1,5 +1,8 @@
 <?php
 return [
+    'updateEvent' => "mettre à jour l'événement",
+    'addEvent' => 'ajouter un événement',
+    'PleaseselectaValidDateTime' => "veuillez entrer une date et une heure valides",
     'users' => 'utilisateurs',
     'addUser' => "ajouter un utilisateur",
     'updatePassWordMessage' => "le mot de passe a été mis à jour avec succès",

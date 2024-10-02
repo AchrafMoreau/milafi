@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         document.getElementById("edit-event-btn").removeAttribute("hidden");
                         document.getElementById('btn-save-event').setAttribute("hidden", true);
                         document.getElementById("edit-event-btn").setAttribute("data-id", "edit-event");
-                        document.getElementById("edit-event-btn").innerHTML = "Edit";
+                        document.getElementById("edit-event-btn").innerHTML = window.translations.edit;
                         eventClicked();
                         flatPickrInit();
                         flatpicekrValueClear();
@@ -409,7 +409,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 // default
             } else {
                 console.log(start_date);
-                var newEvent = {
+                if(start_date == 'Invalid Date' && end_date == "Invalid Date"){
+                    Swal.fire({
+                    title: window.translations.selectDate,
+                    confirmButtonClass: 'btn btn-info',
+                    buttonsStyling: false,
+                    showCloseButton: true
+                    });
+                }else{
+                    var newEvent = {
                     id: e_id,
                     title: updatedTitle,
                     start: convertToGMTPlusOne(start_date),
@@ -418,31 +426,31 @@ document.addEventListener("DOMContentLoaded", function () {
                     className: updatedCategory,
                     description: eventDescription,
                     location: event_location
-                };
-                $.ajax({
-                    url: '/events', 
-                    method: 'POST',
-                    data: JSON.stringify(newEvent),
-                    contentType: 'application/json',
-                    headers:{
-                        'X-CSRF-TOKEN': token
-                    },
-                    success: () => {
-                        defaultEvents.push({...newEvent, start:start_date, end:end_date});
-                        if (calendar) {
-                            calendar.addEvent({...newEvent, start:start_date, end:end_date});
-                            console.log(calendar)
-                            upcomingEvent(defaultEvents);
-                        }
-                        return;
-                    },
-                    error: (xhr, status, error)=> console.log(error)
+                    };
+                    $.ajax({
+                        url: '/events', 
+                        method: 'POST',
+                        data: JSON.stringify(newEvent),
+                        contentType: 'application/json',
+                        headers:{
+                            'X-CSRF-TOKEN': token
+                        },
+                        success: () => {
+                            defaultEvents.push({...newEvent, start:start_date, end:end_date});
+                            if (calendar) {
+                                calendar.addEvent({...newEvent, start:start_date, end:end_date});
+                                console.log(calendar)
+                                upcomingEvent(defaultEvents);
+                            }
+                            return;
+                        },
+                        error: (xhr, status, error)=> console.log(error)
 
-                });
-
+                    });
+                    addEvent.hide();
+                }
                 
             }
-            addEvent.hide();
         }
     });
 
@@ -545,17 +553,17 @@ function editEvent(data) {
     var data_id = data.getAttribute("data-id");
     if (data_id == 'new-event') {
         document.getElementById('modal-title').innerHTML = "";
-        document.getElementById('modal-title').innerHTML = "Add Event";
-        document.getElementById("btn-save-event").innerHTML = "Add Event";
+        document.getElementById('modal-title').innerHTML = window.translations.addEvent;
+        document.getElementById("btn-save-event").innerHTML = window.translations.addEvent;
         eventTyped();
     } else if (data_id == 'edit-event') {
-        data.innerHTML = "Cancel";
+        data.innerHTML = window.translations.close;
         data.setAttribute("data-id", 'cancel-event');
-        document.getElementById("btn-save-event").innerHTML = "Update Event";
+        document.getElementById("btn-save-event").innerHTML = window.translations.updateEvent;
         data.removeAttribute("hidden");
         eventTyped();
     } else {
-        data.innerHTML = "Edit";
+        data.innerHTML = window.translations.edit;
         data.setAttribute("data-id", 'edit-event');
         eventClicked();
     }

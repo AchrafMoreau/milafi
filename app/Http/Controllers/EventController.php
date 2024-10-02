@@ -62,6 +62,25 @@ class EventController extends Controller
     {
         //
 
+
+        $start = $request->start == "Invalid Date" ? new \DateTime() :  new \DateTime($request->start);
+        $end;
+        if($request->end == "Invalid Date" && $request->end){
+            $endTime = new \DateTime();
+            $end = $endTime->modify('+1 hours');
+        }else{
+            $end = new \DateTime($request->end);
+        }
+        // if($request->end == 'Invalid Date'){
+        //     // $eventEnd = preg_replace('/\s*\(.*\)$/', '', $request->endTime);
+        //     dd($request->end);
+        // } 
+        // if($request->start == 'Invalid Date'){
+        //     // $eventStart = preg_replace('/\s*\(.*\)$/', '', $request->startTime);
+        //     $request->start = new \DateTime();
+        // }
+
+        // dd($end, $start);
         // $end = null;
         // $start = new \DateTime();
         // if(!empty($request->endTime) && $request->endTime != 'Invalid Date'){
@@ -80,8 +99,8 @@ class EventController extends Controller
             'type' => $request->className,
             'location' => $request->location,
             'allDay' => $request->eventDay,
-            'start' => new \DateTime($request->start),
-            'end' => $request->end ? new \DateTime($request->end) : null,
+            'start' => $start,
+            'end' => $end,
             'description' => $request->description,
             'title' => $request->title
         ]);
@@ -129,17 +148,7 @@ class EventController extends Controller
         // $end = null;
         // $start = null;
 
-        // if($request->endTime != 'Invalid Date'){
-        //     $eventEnd = preg_replace('/\s*\(.*\)$/', '', $request->endTime);
-        //     $end = new \DateTime($eventEnd);
-        // } 
-        // if($request->startTime != 'Invalid Date'){
-        //     $eventStart = preg_replace('/\s*\(.*\)$/', '', $request->startTime);
-        //     $start = new \DateTime($eventStart);
-        // }
-
         // dd($end, $start);
-        // dd($request);
         // $event->id = $request->id;
         $event->user_id = Auth::user()->id;
         $event->type = $request->className;
@@ -189,6 +198,7 @@ class EventController extends Controller
                     $query->with(['court', 'judge', 'client']); 
                 }
             ])->whereBetween('date' , [$req->from, $req->to])
+            ->orderBy('date', 'asc')
             ->get();
 
         $schedule = [];
@@ -244,6 +254,7 @@ class EventController extends Controller
         $endOfWeek = Carbon::now()->endOfWeek();
         $session = Event::where('user_id', Auth::id())
             ->whereBetween('start' , [$startOfWeek, $endOfWeek])
+            ->orderBy('start', 'asc')
             ->get();
 
 

@@ -116,14 +116,14 @@ Route::middleware(['auth', 'clearNotification'])->group(function () {
     Route::put('/profile/avatar', [ProfileController::class, 'updateAvatar']);
 });
 
-Route::middleware(['admin', 'auth', 'clearNotification'])->group(function (){
+// Route::middleware(['admin', 'auth', 'clearNotification'])->group(function (){
 
-    Route::get('/users', [UsersController::class, 'index']);
-    Route::post('/users', [UsersController::class, 'store']);
-    Route::delete('/userse/${id}', [UsersController::class, 'destroy']);
-    Route::put('/profile/${id}', [UsersController::class, 'update']);
+//     Route::get('/users', [UsersController::class, 'index']);
+//     Route::post('/users', [UsersController::class, 'store']);
+//     Route::delete('/userse/${id}', [UsersController::class, 'destroy']);
+//     Route::put('/profile/${id}', [UsersController::class, 'update']);
 
-});
+// });
 
 Route::fallback(function () {
     $path = Request::path();
