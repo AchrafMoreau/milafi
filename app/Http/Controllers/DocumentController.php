@@ -146,8 +146,13 @@ class DocumentController extends Controller
     {
         //
         $doc = Document::where('user_id', Auth::id())
-            ->findOrFail($id);
-        return view('documents.view-document', ['doc' => $doc]);
+            ->find($id);
+            
+        if($doc){
+            return view('documents.view-document', ['doc' => $doc]);
+        }else{
+            return redirect('/document');
+        }
     }
 
     /**

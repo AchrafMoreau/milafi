@@ -175,13 +175,13 @@ refreshCallbacks();
 
 document.getElementById("showModal").addEventListener("show.bs.modal", function (e) {
     if (e.relatedTarget.classList.contains("edit-item-btn")) {
-        document.getElementById("exampleModalLabel").innerHTML = "Edit Contact";
+        document.getElementById("exampleModalLabel").innerHTML = window.translations.editContact;
         document.getElementById("showModal").querySelector(".modal-footer").style.display = "block";
-        document.getElementById("add-btn").innerHTML = "Update";
+        document.getElementById("add-btn").innerHTML = window.translations.edit;
     } else if (e.relatedTarget.classList.contains("add-btn")) {
-        document.getElementById("exampleModalLabel").innerHTML = "Add Contact";
+        document.getElementById("exampleModalLabel").innerHTML = window.translations.addContact;
         document.getElementById("showModal").querySelector(".modal-footer").style.display = "block";
-        document.getElementById("add-btn").innerHTML = "Add Contact";
+        document.getElementById("add-btn").innerHTML = window.translations.addContact;
     } else {
         document.getElementById("exampleModalLabel").innerHTML = "List Contact";
         document.getElementById("showModal").querySelector(".modal-footer").style.display = "none";

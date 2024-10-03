@@ -99,9 +99,16 @@ var options = {
 if (document.getElementById("customerList"))
     var customerList = new List("customerList", options).on("updated", function (list) {
         const search =  $('.search').val()
-        list.matchingItems.length == 0 && search.length < 0 ?
+        list.matchingItems.length == 0 && search.length > 0 ?
             (document.getElementsByClassName("noresult")[0].style.display = "block") :
             (document.getElementsByClassName("noresult")[0].style.display = "none");
+        if(customerList.items.length < 2 && search.length == 0){
+            document.getElementById("emptyFields").style.display = 'table-row';
+        }else{
+            if(document.getElementById("emptyFields")){
+                document.getElementById("emptyFields").style.display = 'none';
+            }
+        }
         var isFirst = list.i == 1;
         var isLast = list.i > list.matchingItems.length - list.page;
         // make the Prev and Nex buttons disabled on first and last pages accordingly
@@ -126,7 +133,7 @@ if (document.getElementById("customerList"))
         if (list.matchingItems.length > 0 ) {
             document.getElementsByClassName("noresult")[0].style.display = "none";
         } else if(list.matchingItems.length <= 0 && $('.search').val().length <= 0){
-            console.log('should enter if search is empty and list is empty');
+            document.getElementById("emptyFields").style.display = 'table-row'
         }else{
             document.getElementsByClassName("noresult")[0].style.display = "block";
         }
@@ -146,6 +153,9 @@ xhttp.onload = function () {
       file_path: raw.file_path,
       date: timeAgo(new Date(raw.updated_at) - 3 * 60 * 1000)
     });
+    if(!json_records.length){
+        document.getElementById("emptyFields").style.display = 'table-row'
+    }
     customerList.sort('id', { order: "desc" });
     refreshCallbacks();
   });
@@ -574,7 +584,7 @@ function deleteMultiple() {
     }
   } else {
     Swal.fire({
-      title: 'Please select at least one checkbox',
+      title: window.translations.selectCheckBox,
       confirmButtonClass: 'btn btn-info',
       buttonsStyling: false,
       showCloseButton: true

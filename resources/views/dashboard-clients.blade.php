@@ -96,6 +96,15 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr style='display:none;' id='emptyFields'>
+                                <td colspan="8" style="text-align: center; vertical-align: middle;">
+                                    <h2>@lang('translation.NoResultWasFound')</h2>
+                                    <p class='text-muted'>
+                                        @lang('translation.noresultMessage')
+                                    </p>
+
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <div class="noresult" style="display: none">
@@ -135,7 +144,7 @@
             
                 
                 <div class="modal-body">
-                    <form class="tablelist-form" autocomplete="off">
+                    <form class="tablelist-form" >
                         <div class="row g-3">
                             <div class="mb-3" id="modal-id" style="display: none;">
                                 <label for="id-field" class="form-label">ID</label>
@@ -233,6 +242,7 @@
 @section('script')
     <script>
         window.translations = {
+            selectCheckBox: "{{ __('translation.selectCheckBox') }}",
             addClient: "{{ __('translation.addclient') }}",
             editClient: "{{ __('translation.editClient') }}",
             male: "{{ __('translation.male') }}",

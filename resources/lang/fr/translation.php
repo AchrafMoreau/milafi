@@ -1,5 +1,7 @@
 <?php
 return [
+    'editContact' => 'modifier le contact',
+    'selectCheckBox' => "veuillez d'abord cocher au moins une case",
     'updateEvent' => "mettre à jour l'événement",
     'addEvent' => 'ajouter un événement',
     'PleaseselectaValidDateTime' => "veuillez entrer une date et une heure valides",

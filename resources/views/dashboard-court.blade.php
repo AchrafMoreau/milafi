@@ -81,6 +81,14 @@
                             </td>
 
                         </tr>
+                        <tr style='display:none;' id='emptyFields'>
+                            <td colspan="8" style="text-align: center; vertical-align: middle;">
+                                <h2>@lang('translation.NoResultWasFound')</h2>
+                                <p class='text-muted'>
+                                    @lang('translation.noresultMessage')
+                                </p>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class="noresult" style="display: none">
@@ -205,6 +213,7 @@
 @section('script')
     <script>
         window.translations = {
+            selectCheckBox: "{{ __('translation.selectCheckBox') }}",
             addCourt: "{{ __('translation.addCourt') }}",
             editCourt: "{{ __('translation.editCourt') }}",
             male: "{{ __('translation.male') }}",

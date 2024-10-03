@@ -130,11 +130,16 @@ class CasController extends Controller
         $judge = Judge::where('user_id', Auth::user()->id)
             ->orWhere('isDefault', 1)
             ->get();
+
         $cas = Cas::with(['client', 'court', 'judge', 'document', 'procedure'])
             ->where('user_id', Auth::user()->id)
             ->where('id', $id) 
             ->first();
-        return view('cases.edit-cas', ['case' => $cas, 'clients' => $clients, 'judges' => $judge, 'court' => $courts]);
+        if($cas){
+            return view('cases.edit-cas', ['case' => $cas, 'clients' => $clients, 'judges' => $judge, 'court' => $courts]);
+        }else{
+            return redirect('/cas');
+        }
 
     }
 

@@ -1,5 +1,7 @@
 <?php
 return [
+    'editContact' => 'تعديل جهة الاتصال',
+    'selectCheckBox' => 'الرجاء تحديد مربع اختيار واحد على الأقل أولاً',
     'updateEvent' => 'تحديث الحدث',
     'addEvent' => 'إضافة حدث',
     'PleaseselectaValidDateTime' => "الرجاء إدخال تاريخ ووقت صالح",

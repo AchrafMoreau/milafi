@@ -17,7 +17,7 @@ class ClientController extends Controller
     public function index()
     {
         //
-        $clients = Client::with('cas')->orderBy('created_at' , 'DESC')->Paginate(10);
+        $clients = Client::all()->count();
         // $clients = Client::Paginate(10);
         return view('dashboard-clients', ["clients" => $clients]);
         // return response()->json($clients);

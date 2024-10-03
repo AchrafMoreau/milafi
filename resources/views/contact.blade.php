@@ -132,9 +132,8 @@
                                     <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
                                         colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
                                     </lord-icon>
-                                    <h5 class="mt-2">Sorry! No Result Found</h5>
-                                    <p class="text-muted mb-0">We've searched more than 150+ contacts We did not find any
-                                        contacts for you search.</p>
+                                    <h5 class="mt-2">@lang('translation.NoResultWasFound')</h5>
+                                    <p class="text-muted mb-0">@lang('translation.searchNotFound').</p>
                                 </div>
                             </div>
                         </div>
@@ -260,6 +259,16 @@
     <!--end row-->
 @endsection
 @section('script')
+    <script>
+        window.translations = {
+            selectCheckBox: "{{ __('translation.selectCheckBox') }}",
+            addContact: "{{ __('translation.addContact') }}",
+            editContact: "{{ __('translation.editContact') }}",
+            male: "{{ __('translation.male') }}",
+            female: "{{ __('translation.female') }}",
+            edit: "{{ __('translation.edit') }}",
+        }
+    </script>
     <script src="{{ URL::asset('build/libs/list.js/list.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/list.pagination.js/list.pagination.min.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/crm-contact.init.js') }}"></script>
